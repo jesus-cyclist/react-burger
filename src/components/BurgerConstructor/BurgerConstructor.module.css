@@ -1,0 +1,6 @@
+.column {
+  flex: 1 1 50%;
+  border: 1px solid green;
+  height: 300px;
+  margin-left: 20px;
+}

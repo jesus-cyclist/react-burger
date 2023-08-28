@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import AppHeaderStyles from './AppHeader.module.css'
 import { Logo } from '@ya.praktikum/react-developer-burger-ui-components'
 import AppHeaderItem from '../AppHeaderItem/AppHeaderItem'
