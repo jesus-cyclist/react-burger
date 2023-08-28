@@ -1,0 +1,37 @@
+@font-face {
+  font-family: 'JetBrainsMono';
+  font-style: normal;
+  font-weight: 700;
+  src: url('../fonts/JetBrainsMono-Bold.woff2') format('woff');
+}
+
+@font-face {
+  font-family: 'JetBrainsMono';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/JetBrainsMono-Regular.woff2') format('woff');
+}
+
+@font-face {
+  font-family: 'Iceland';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/Iceland-Regular.ttf') format('ttf');
+}
+
+.App {
+  font-family: 'JetBrainsMono', Arial, sans-serif;
+  line-height: 24px;
+  font-size: 16px;
+  user-select: none;
+}
+
+.wrapper {
+  max-width: 1240px;
+  margin: 0 auto;
+  height: 500px;
+}
+
+.main {
+  display: flex;
+}

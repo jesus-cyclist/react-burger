@@ -1,0 +1,22 @@
+.item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.itemLast {
+  margin-bottom: 0px;
+}
+
+.dragIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.dragIconHidden {
+  opacity: 0;
+}
