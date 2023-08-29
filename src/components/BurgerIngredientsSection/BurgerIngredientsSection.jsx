@@ -10,14 +10,14 @@ const BurgerIngredientsSection = ({ title }) => {
   }
 
   return (
-    <div className={style.section}>
+    <li className={style.section}>
       <h2 className={style.title}>{title}</h2>
       <div className={style.list}>
         {sortedData().map((item) => (
           <BurgerIngredientsItem key={item._id} item={item} />
         ))}
       </div>
-    </div>
+    </li>
   )
 }
 

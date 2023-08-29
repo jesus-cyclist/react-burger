@@ -5,6 +5,7 @@ import {
   ProfileIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import AppHeaderItemStyles from './AppHeaderItem.module.css'
+import PropTypes from 'prop-types'
 
 const AppHeaderItem = (props) => {
   function chooseElement() {
@@ -18,9 +19,15 @@ const AppHeaderItem = (props) => {
   return (
     <>
       {chooseElement(props.title)}
-      <span className={AppHeaderItemStyles.title}>{props.title}</span>
+      <a href="#" className={AppHeaderItemStyles.title}>
+        {props.title}
+      </a>
     </>
   )
+}
+
+AppHeaderItem.propTypes = {
+  title: PropTypes.string.isRequired,
 }
 
 export default AppHeaderItem

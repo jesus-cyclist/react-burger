@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import style from './BurgerConstructor.module.css'
 import order from '../../utils/order'
 import BurgerConstructorItem from '../BurgerConstructorItem/BurgerConstructorItem'
@@ -8,15 +8,17 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
 const BurgerConstructor = () => {
-  const breadIdentification = () => {
-    return order.find((item) => item.type === 'bun')
-  }
-  const ingredientsIdentification = () => {
-    return order.filter((item) => item.type !== 'bun')
-  }
-  const totalAmount = () => {
-    return order.reduce((acc, item) => (acc += item.price), 0)
-  }
+  const bread = 'bun'
+  const breadIdentification = () => order.find((item) => item.type === bread)
+  //правильно ли я понял, что эти тоже имеет смысл обернуть?
+  const ingredientsIdentification = () =>
+    order.filter((item) => item.type !== bread)
+  //правильно ли я понял, что эти тоже имеет смысл обернуть?
+
+  const totalAmount = useMemo(
+    () => () => order.reduce((acc, item) => (acc += item.price), 0),
+    [order]
+  ) //как вы указали у меня вылазит ошибка, правильно ли тут написано?
 
   return (
     <div className={style.column}>
@@ -26,7 +28,7 @@ const BurgerConstructor = () => {
         isLocked={true}
         thumbnail={breadIdentification().image}
         price={breadIdentification().price}
-        dragIcon={'false'}
+        dragIcon={false}
       />
       <div className={style.ingredients}>
         {ingredientsIdentification().map((item, ind, arr) => (
@@ -36,7 +38,6 @@ const BurgerConstructor = () => {
             price={item.price}
             thumbnail={item.image}
             isLocked={false}
-            dragIcon={'true'}
             last={ind === arr.length - 1 ? false : true}
           />
         ))}
@@ -48,7 +49,7 @@ const BurgerConstructor = () => {
         isLocked={true}
         thumbnail={breadIdentification().image}
         price={breadIdentification().price}
-        dragIcon={'false'}
+        dragIcon={false}
       />
       <div className={style.order}>
         <div className={style.total}>
