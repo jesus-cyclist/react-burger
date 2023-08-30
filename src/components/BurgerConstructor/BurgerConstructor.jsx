@@ -9,29 +9,32 @@ import {
 
 const BurgerConstructor = () => {
   const bread = 'bun'
-  const breadIdentification = () => order.find((item) => item.type === bread)
-  //правильно ли я понял, что эти тоже имеет смысл обернуть?
-  const ingredientsIdentification = () =>
-    order.filter((item) => item.type !== bread)
-  //правильно ли я понял, что эти тоже имеет смысл обернуть?
+  const breadIdentification = useMemo(
+    () => order.find((item) => item.type === bread),
+    [order]
+  )
+  const ingredientsIdentification = useMemo(
+    () => order.filter((item) => item.type !== bread),
+    [order]
+  )
 
   const totalAmount = useMemo(
-    () => () => order.reduce((acc, item) => (acc += item.price), 0),
+    () => order.reduce((acc, item) => (acc += item.price), 0),
     [order]
-  ) //как вы указали у меня вылазит ошибка, правильно ли тут написано?
+  )
 
   return (
     <div className={style.column}>
       <BurgerConstructorItem
-        text={`${breadIdentification().name}  (верх)`}
+        text={`${breadIdentification.name}  (верх)`}
         type="top"
         isLocked={true}
-        thumbnail={breadIdentification().image}
-        price={breadIdentification().price}
+        thumbnail={breadIdentification.image}
+        price={breadIdentification.price}
         dragIcon={false}
       />
       <div className={style.ingredients}>
-        {ingredientsIdentification().map((item, ind, arr) => (
+        {ingredientsIdentification.map((item, ind, arr) => (
           <BurgerConstructorItem
             key={item._id}
             text={item.name}
@@ -44,16 +47,16 @@ const BurgerConstructor = () => {
       </div>
 
       <BurgerConstructorItem
-        text={`${breadIdentification().name}  (низ)`}
+        text={`${breadIdentification.name}  (низ)`}
         type="bottom"
         isLocked={true}
-        thumbnail={breadIdentification().image}
-        price={breadIdentification().price}
+        thumbnail={breadIdentification.image}
+        price={breadIdentification.price}
         dragIcon={false}
       />
       <div className={style.order}>
         <div className={style.total}>
-          <span className={style.totalCost}>{totalAmount()}</span>
+          <span className={style.totalCost}>{totalAmount}</span>
           <CurrencyIcon type="primary" />
         </div>
         <Button htmlType="submit" type="primary" size="large">
