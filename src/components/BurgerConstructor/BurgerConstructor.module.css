@@ -1,47 +1,4 @@
 .column {
   flex: 1 1 50%;
   margin-left: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding-top: 100px;
-}
-
-.ingredients {
-  max-height: 55vh;
-  overflow-y: scroll;
-}
-
-.ingredients::-webkit-scrollbar {
-  width: 6px;
-  background-color: #131316;
-}
-
-.ingredients::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  background-color: #515265;
-}
-
-.ingredients::-webkit-scrollbar-corner,
-.ingredients::-webkit-scrollbar-butto {
-  display: none;
-}
-
-.order {
-  display: flex;
-  justify-content: end;
-  align-items: center;
-  padding: 40px 16px 0 0;
-}
-
-.total {
-  margin-right: 40px;
-  font-family: 'Iceland', Arial, sans-serif;
-  font-size: 48px;
-  line-height: 36px;
-}
-
-.totalCost {
-  margin-right: 8px;
 }

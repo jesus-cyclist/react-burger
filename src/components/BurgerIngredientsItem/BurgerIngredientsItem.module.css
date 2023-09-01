@@ -1,6 +1,7 @@
 .ingredient {
   flex: 1 1 45%;
   max-width: 50%;
+  cursor: pointer;
 }
 
 .ingredient:nth-child(odd) {

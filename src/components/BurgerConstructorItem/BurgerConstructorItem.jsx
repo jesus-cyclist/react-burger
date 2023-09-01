@@ -6,9 +6,12 @@ import {
 import style from './BurgerConstructorItem.module.css'
 import PropTypes from 'prop-types'
 
-const BurgerConstructorItem = ({ dragIcon, last, ...props }) => {
+const BurgerConstructorItem = ({ dragIcon, last, onClick, ...props }) => {
   return (
-    <div className={last ? style.item : style.item + ' ' + style.itemLast}>
+    <div
+      className={last ? style.item : style.item + ' ' + style.itemLast}
+      onClick={onClick}
+    >
       <div
         className={
           dragIcon === true
@@ -37,6 +40,7 @@ BurgerConstructorItem.propTypes = {
   text: PropTypes.string.isRequired,
   thumbnail: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
 }
 
 export default BurgerConstructorItem

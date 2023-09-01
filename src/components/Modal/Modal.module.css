@@ -1,0 +1,11 @@
+.modal {
+  width: 720px;
+  height: 540px;
+  background-color: #131316;
+  z-index: 1;
+  border-radius: 40px;
+}
+
+.modalOrder {
+  height: 720px;
+}
