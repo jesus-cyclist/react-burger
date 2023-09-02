@@ -5,9 +5,9 @@ import ModalOverlay from '../ModalOverlay/ModalOverlay'
 import PropTypes from 'prop-types'
 
 const BurgerIngredientsItem = (props) => {
-  const { item, setModalData } = props
+  const { item, setClickedElement } = props
   return (
-    <div className={style.ingredient} onClick={() => setModalData(item)}>
+    <div className={style.ingredient} onClick={() => setClickedElement(item)}>
       <div className={style.logoBox}>
         <img className={style.logo} src={item.image} alt={item.name} />
       </div>
@@ -22,7 +22,7 @@ const BurgerIngredientsItem = (props) => {
 
 BurgerIngredientsItem.propTypes = {
   item: PropTypes.object.isRequired,
-  setModalData: PropTypes.func.isRequired,
+  setClickedElement: PropTypes.func.isRequired,
 }
 
 export default BurgerIngredientsItem

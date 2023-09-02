@@ -3,16 +3,16 @@ import styles from './BurgerIngredientsNav.module.css'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 
 const BurgerIngredientsNav = () => {
-  const [current, setCurrent] = React.useState('Булки')
+  const [current, setCurrent] = React.useState('buh')
   return (
     <div className={styles.menu}>
-      <Tab value="Булки" active={current === 'Булки'} onClick={setCurrent}>
+      <Tab value="buh" active={current === 'buh'} onClick={setCurrent}>
         Булки
       </Tab>
-      <Tab value="Соусы" active={current === 'Соусы'} onClick={setCurrent}>
+      <Tab value="sauce" active={current === 'sauce'} onClick={setCurrent}>
         Соусы
       </Tab>
-      <Tab value="Начинки" active={current === 'Начинки'} onClick={setCurrent}>
+      <Tab value="main" active={current === 'main'} onClick={setCurrent}>
         Начинки
       </Tab>
     </div>

@@ -8,22 +8,22 @@ import style from './BurgerConstructorList.module.css'
 import PropTypes from 'prop-types'
 
 const BurgerConstructorList = (props) => {
-  const { order, setModalData } = props
+  const { ingredientsApiData, setClickedElement } = props
 
   const bread = 'bun'
   const breadIdentification = useMemo(
-    () => order.find((item) => item.type === bread),
-    [order]
+    () => ingredientsApiData.find((item) => item.type === bread),
+    [ingredientsApiData]
   )
 
   const ingredientsIdentification = useMemo(
-    () => order.filter((item) => item.type !== bread),
-    [order]
+    () => ingredientsApiData.filter((item) => item.type !== bread),
+    [ingredientsApiData]
   )
 
   const totalAmount = useMemo(
-    () => order.reduce((acc, item) => (acc += item.price), 0),
-    [order]
+    () => ingredientsApiData.reduce((acc, item) => (acc += item.price), 0),
+    [ingredientsApiData]
   )
 
   return (
@@ -31,11 +31,10 @@ const BurgerConstructorList = (props) => {
       <BurgerConstructorItem
         text={`${breadIdentification.name}  (верх)`}
         type="top"
-        isLocked={true}
         thumbnail={breadIdentification.image}
         price={breadIdentification.price}
         dragIcon={false}
-        onClick={() => setModalData(breadIdentification)}
+        onClick={() => setClickedElement(breadIdentification)}
       />
       <div className={style.ingredients}>
         {ingredientsIdentification.map((item, ind, arr) => (
@@ -46,18 +45,17 @@ const BurgerConstructorList = (props) => {
             thumbnail={item.image}
             isLocked={false}
             last={ind === arr.length - 1 ? false : true}
-            onClick={() => setModalData(item)}
+            onClick={() => setClickedElement(item)}
           />
         ))}
       </div>
       <BurgerConstructorItem
         text={`${breadIdentification.name}  (низ)`}
         type="bottom"
-        isLocked={true}
         thumbnail={breadIdentification.image}
         price={breadIdentification.price}
         dragIcon={false}
-        onClick={() => setModalData(breadIdentification)}
+        onClick={() => setClickedElement(breadIdentification)}
       />
       <div className={style.order}>
         <div className={style.total}>
@@ -68,7 +66,7 @@ const BurgerConstructorList = (props) => {
           htmlType="submit"
           type="primary"
           size="large"
-          onClick={() => setModalData('order')}
+          onClick={() => setClickedElement('order')}
         >
           Оформить заказ
         </Button>
@@ -78,8 +76,23 @@ const BurgerConstructorList = (props) => {
 }
 
 BurgerConstructorList.propTypes = {
-  order: PropTypes.array.isRequired,
-  setModalData: PropTypes.func.isRequired,
+  ingredientsApiData: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      type: PropTypes.string.isRequired,
+      proteins: PropTypes.number.isRequired,
+      fat: PropTypes.number.isRequired,
+      carbohydrates: PropTypes.number.isRequired,
+      calories: PropTypes.number.isRequired,
+      price: PropTypes.number.isRequired,
+      image: PropTypes.string.isRequired,
+      image_mobile: PropTypes.string.isRequired,
+      image_large: PropTypes.string.isRequired,
+      __v: PropTypes.number.isRequired,
+    })
+  ).isRequired,
+  setClickedElement: PropTypes.func.isRequired,
 }
 
 export default BurgerConstructorList

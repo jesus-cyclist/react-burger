@@ -30,6 +30,7 @@ BurgerConstructorItem.defaultProps = {
   dragIcon: true,
   last: false,
   type: '',
+  isLocked: true,
 }
 
 BurgerConstructorItem.propTypes = {

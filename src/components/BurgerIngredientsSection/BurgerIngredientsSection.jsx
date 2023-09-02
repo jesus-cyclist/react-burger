@@ -4,10 +4,11 @@ import style from './BurgerIngredientsSection.module.css'
 import PropTypes from 'prop-types'
 
 const BurgerIngredientsSection = (props) => {
-  const { setModalData, title, ingredientsList } = props
+  const { title, ingredientsApiData, setClickedElement } = props
+
   const list = { Булки: 'bun', Соусы: 'sauce', Начинки: 'main' }
   const sortedData = () => {
-    return ingredientsList.filter((item) => item.type === list[title])
+    return ingredientsApiData.filter((item) => item.type === list[title])
   }
 
   return (
@@ -18,7 +19,7 @@ const BurgerIngredientsSection = (props) => {
           <BurgerIngredientsItem
             key={item._id}
             item={item}
-            setModalData={setModalData}
+            setClickedElement={setClickedElement}
           />
         ))}
       </div>
@@ -27,9 +28,24 @@ const BurgerIngredientsSection = (props) => {
 }
 
 BurgerIngredientsSection.propTypes = {
-  ingredientsList: PropTypes.array.isRequired,
+  ingredientsApiData: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      type: PropTypes.string.isRequired,
+      proteins: PropTypes.number.isRequired,
+      fat: PropTypes.number.isRequired,
+      carbohydrates: PropTypes.number.isRequired,
+      calories: PropTypes.number.isRequired,
+      price: PropTypes.number.isRequired,
+      image: PropTypes.string.isRequired,
+      image_mobile: PropTypes.string.isRequired,
+      image_large: PropTypes.string.isRequired,
+      __v: PropTypes.number.isRequired,
+    })
+  ).isRequired,
   title: PropTypes.string.isRequired,
-  setModalData: PropTypes.func.isRequired,
+  setClickedElement: PropTypes.func.isRequired,
 }
 
 export default BurgerIngredientsSection
