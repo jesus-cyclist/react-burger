@@ -12,6 +12,17 @@ const ModalOverlay = (props) => {
 
   useEffect(() => setModalData(clickedElement), [clickedElement])
 
+  useEffect(() => {
+    document.addEventListener('keyup', (e) => {
+      e.key === 'Escape' && setClickedElement('')
+    })
+    return () => {
+      document.removeEventListener('keyup', (e) => {
+        e.key === 'Escape' && setClickedElement('')
+      })
+    }
+  }, [])
+
   return createPortal(
     <div className={style.modalOverlay}>
       <div

@@ -15,17 +15,6 @@ function App() {
     request(setIngredientsApiData)
   }, [])
 
-  useEffect(() => {
-    document.addEventListener('keyup', (e) => {
-      e.key === 'Escape' && setClickedElement('')
-    })
-    return () => {
-      document.removeEventListener('keyup', (e) => {
-        e.key === 'Escape' && setClickedElement('')
-      })
-    }
-  }, [])
-
   return (
     <div className="App">
       <AppHeader />
