@@ -1,18 +1,22 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import style from './BurgerConstructor.module.css'
 import BurgerConstructorList from '../BurgerConstructorList/BurgerConstructorList'
 
 import PropTypes from 'prop-types'
 
 const BurgerConstructor = (props) => {
-  const { setModalData, ingredientsApiData, setClickedElement } = props
+  const { ingredientsApiData, openModal, closeModal } = props
+
+  if (!ingredientsApiData) {
+    return <h2>Loading</h2>
+  }
 
   return (
     <div className={style.column}>
       <BurgerConstructorList
         ingredientsApiData={ingredientsApiData}
-        setModalData={setModalData}
-        setClickedElement={setClickedElement}
+        openModal={openModal}
+        closeModal={closeModal}
       />
     </div>
   )
@@ -38,7 +42,8 @@ BurgerConstructor.propsTypes = {
       })
     ),
   ]).isRequired,
-  setClickedElement: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
 }
 
 export default BurgerConstructor

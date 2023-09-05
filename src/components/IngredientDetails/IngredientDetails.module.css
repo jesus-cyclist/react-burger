@@ -3,6 +3,13 @@
   color: #fff;
   font-family: 'JetBrainsMono', Arial, sans-serif;
   text-align: left;
+  border: 1px solid white;
+  width: 720px;
+  height: 540px;
+  z-index: 10;
+  background: #131316;
+  border: 2px solid #25254d;
+  border-radius: 30px;
 }
 
 .header {

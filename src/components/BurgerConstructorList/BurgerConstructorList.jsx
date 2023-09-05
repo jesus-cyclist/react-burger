@@ -6,9 +6,11 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import style from './BurgerConstructorList.module.css'
 import PropTypes from 'prop-types'
+import OrderDetails from '../OrderDetails/OrderDetails'
+import IngredientDetails from '../IngredientDetails/IngredientDetails'
 
 const BurgerConstructorList = (props) => {
-  const { ingredientsApiData, setClickedElement } = props
+  const { ingredientsApiData, openModal, closeModal } = props
 
   const bread = 'bun'
   const breadIdentification = useMemo(
@@ -34,7 +36,14 @@ const BurgerConstructorList = (props) => {
         thumbnail={breadIdentification.image}
         price={breadIdentification.price}
         dragIcon={false}
-        onClick={() => setClickedElement(breadIdentification)}
+        onClick={() =>
+          openModal(
+            <IngredientDetails
+              data={breadIdentification}
+              closeModal={closeModal}
+            />
+          )
+        }
       />
       <div className={style.ingredients}>
         {ingredientsIdentification.map((item, ind, arr) => (
@@ -45,7 +54,11 @@ const BurgerConstructorList = (props) => {
             thumbnail={item.image}
             isLocked={false}
             last={ind === arr.length - 1 ? false : true}
-            onClick={() => setClickedElement(item)}
+            onClick={() =>
+              openModal(
+                <IngredientDetails data={item} closeModal={closeModal} />
+              )
+            }
           />
         ))}
       </div>
@@ -55,7 +68,14 @@ const BurgerConstructorList = (props) => {
         thumbnail={breadIdentification.image}
         price={breadIdentification.price}
         dragIcon={false}
-        onClick={() => setClickedElement(breadIdentification)}
+        onClick={() =>
+          openModal(
+            <IngredientDetails
+              data={breadIdentification}
+              closeModal={closeModal}
+            />
+          )
+        }
       />
       <div className={style.order}>
         <div className={style.total}>
@@ -66,7 +86,7 @@ const BurgerConstructorList = (props) => {
           htmlType="submit"
           type="primary"
           size="large"
-          onClick={() => setClickedElement('order')}
+          onClick={() => openModal(<OrderDetails closeModal={closeModal} />)}
         >
           Оформить заказ
         </Button>
@@ -92,7 +112,8 @@ BurgerConstructorList.propTypes = {
       __v: PropTypes.number.isRequired,
     })
   ).isRequired,
-  setClickedElement: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
 }
 
 export default BurgerConstructorList

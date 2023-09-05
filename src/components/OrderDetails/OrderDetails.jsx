@@ -4,18 +4,20 @@ import {
   CheckMarkIcon,
   CloseIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components'
+import PropTypes from 'prop-types'
 
-const OrderDetails = () => {
+const OrderDetails = (props) => {
+  const { closeModal } = props
+
   return (
     <div className={style.wrapper}>
-      <div className={style.control}>
-        <CloseIcon type={'primary'} />
-      </div>
+      <button className={style.control}>
+        <CloseIcon type={'primary'} onClick={closeModal} />
+      </button>
       <div className={style.order}>
         <div className={style.main}>
           <div className={style.orderNumber}>
             <p className="text text_type_digits-large">123456</p>
-            {/* как шэдэу цифрам задать? */}
           </div>
           <span className={style.orderNumberText}>идентификатор заказа</span>
           <div className={style.logoConfirm}>
@@ -34,6 +36,10 @@ const OrderDetails = () => {
       </div>
     </div>
   )
+}
+
+OrderDetails.propTypes = {
+  closeModal: PropTypes.func.isRequired,
 }
 
 export default OrderDetails

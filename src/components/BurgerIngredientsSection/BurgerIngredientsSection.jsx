@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import BurgerIngredientsItem from '../BurgerIngredientsItem/BurgerIngredientsItem'
 import style from './BurgerIngredientsSection.module.css'
 import PropTypes from 'prop-types'
 
 const BurgerIngredientsSection = (props) => {
-  const { title, ingredientsApiData, setClickedElement } = props
+  const { title, ingredientsApiData, openModal, closeModal } = props
 
   const list = { Булки: 'bun', Соусы: 'sauce', Начинки: 'main' }
   const sortedData = () => {
@@ -19,7 +19,8 @@ const BurgerIngredientsSection = (props) => {
           <BurgerIngredientsItem
             key={item._id}
             item={item}
-            setClickedElement={setClickedElement}
+            openModal={openModal}
+            closeModal={closeModal}
           />
         ))}
       </div>
@@ -45,7 +46,8 @@ BurgerIngredientsSection.propTypes = {
     })
   ).isRequired,
   title: PropTypes.string.isRequired,
-  setClickedElement: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
 }
 
 export default BurgerIngredientsSection

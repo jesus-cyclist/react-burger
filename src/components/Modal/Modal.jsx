@@ -1,50 +1,43 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import style from './Modal.module.css'
-import IngredientDetails from '../IngredientDetails/IngredientDetails'
-import OrderDetails from '../OrderDetails/OrderDetails'
 import PropTypes from 'prop-types'
+import ModalOverlay from '../ModalOverlay/ModalOverlay'
+import { createPortal } from 'react-dom'
+
+const reactModal = document.querySelector('#react-modals')
 
 const Modal = (props) => {
-  const { modalData, setClickedElement } = props
-  return (
-    <div
-      className={
-        modalData === 'order'
-          ? style.modal + ' ' + style.modalOrder
-          : style.modal
-      }
-    >
-      {modalData === 'order' ? (
-        <OrderDetails />
-      ) : (
-        <IngredientDetails
-          modalData={modalData}
-          setClickedElement={setClickedElement}
-        />
-      )}
-    </div>
+  const { isModalActive, closeModal, children } = props
+
+  useEffect(() => {
+    document.addEventListener('keyup', (e) => {
+      e.key === 'Escape' && closeModal()
+    })
+    return () => {
+      document.removeEventListener('keyup', (e) => {
+        e.key === 'Escape' && closeModal()
+      })
+    }
+  }, [])
+
+  if (!isModalActive) {
+    return null
+  }
+
+  return createPortal(
+    <div className={style.modal}>
+      {children}
+      <ModalOverlay closeModal={closeModal} />
+    </div>,
+    reactModal
   )
 }
 
 Modal.propTypes = {
-  modalData: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.shape({
-      _id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      type: PropTypes.string.isRequired,
-      proteins: PropTypes.number.isRequired,
-      fat: PropTypes.number.isRequired,
-      carbohydrates: PropTypes.number.isRequired,
-      calories: PropTypes.number.isRequired,
-      price: PropTypes.number.isRequired,
-      image: PropTypes.string.isRequired,
-      image_mobile: PropTypes.string.isRequired,
-      image_large: PropTypes.string.isRequired,
-      __v: PropTypes.number.isRequired,
-    }),
-  ]).isRequired,
-  setClickedElement: PropTypes.func.isRequired,
+  isModalActive: PropTypes.bool.isRequired,
+  closeModal: PropTypes.func.isRequired,
+  children: PropTypes.oneOfType([PropTypes.null, PropTypes.node]).isRequired,
+  //не работает чилдрен
 }
 
 export default Modal

@@ -4,43 +4,47 @@ import './styles/App.css'
 import AppHeader from './components/AppHeader/AppHeader'
 import BurgerIngredients from './components/BurgerIngredients/BurgerIngredients'
 import BurgerConstructor from './components/BurgerConstructor/BurgerConstructor'
-import ModalOverlay from './components/ModalOverlay/ModalOverlay'
 import { request } from './utils/request'
+import Modal from './components/Modal/Modal'
 
 function App() {
-  const [ingredientsApiData, setIngredientsApiData] = useState('')
-  const [clickedElement, setClickedElement] = useState('')
+  const [ingredientsApiData, setIngredientsApiData] = useState(null)
+  const [isModalActive, setIsModalActive] = useState(false)
+  const [modalContent, setModalContent] = useState(null)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
-    request(setIngredientsApiData)
+    request(setIngredientsApiData, setError)
   }, [])
+
+  const openModal = (content: any) => {
+    setIsModalActive(true)
+    setModalContent(content)
+  }
+
+  const closeModal = () => {
+    setIsModalActive(false)
+    setModalContent(null)
+  }
 
   return (
     <div className="App">
       <AppHeader />
       <div className="wrapper">
         <main className="main">
-          {ingredientsApiData.length === 0 ? (
-            <h2>loading</h2>
-          ) : (
-            <>
-              <BurgerIngredients
-                ingredientsApiData={ingredientsApiData}
-                setClickedElement={setClickedElement}
-              />
-              <BurgerConstructor
-                ingredientsApiData={ingredientsApiData}
-                setClickedElement={setClickedElement}
-              />
-            </>
-          )}
-
-          {clickedElement && (
-            <ModalOverlay
-              clickedElement={clickedElement}
-              setClickedElement={setClickedElement}
-            />
-          )}
+          <BurgerIngredients
+            ingredientsApiData={ingredientsApiData}
+            openModal={openModal}
+            closeModal={closeModal}
+          />
+          <BurgerConstructor
+            ingredientsApiData={ingredientsApiData}
+            openModal={openModal}
+            closeModal={closeModal}
+          />
+          <Modal closeModal={closeModal} isModalActive={isModalActive}>
+            {modalContent}
+          </Modal>
         </main>
       </div>
       {/* <a

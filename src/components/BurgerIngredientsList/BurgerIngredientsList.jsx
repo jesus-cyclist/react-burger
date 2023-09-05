@@ -4,7 +4,7 @@ import BurgerIngredientsSection from '../BurgerIngredientsSection/BurgerIngredie
 import PropTypes from 'prop-types'
 
 const BurgerIngredientsList = (props) => {
-  const { ingredientsApiData, setClickedElement } = props
+  const { ingredientsApiData, openModal, closeModal } = props
 
   const title = ['Булки', 'Соусы', 'Начинки']
 
@@ -15,7 +15,8 @@ const BurgerIngredientsList = (props) => {
           key={item}
           title={item}
           ingredientsApiData={ingredientsApiData}
-          setClickedElement={setClickedElement}
+          openModal={openModal}
+          closeModal={closeModal}
         />
       ))}
     </ul>
@@ -24,7 +25,7 @@ const BurgerIngredientsList = (props) => {
 
 BurgerIngredientsList.propTypes = {
   ingredientsApiData: PropTypes.oneOfType([
-    PropTypes.string.isRequired,
+    PropTypes.bool.isRequired,
     PropTypes.arrayOf(
       PropTypes.shape({
         _id: PropTypes.string.isRequired,
@@ -42,8 +43,8 @@ BurgerIngredientsList.propTypes = {
       })
     ),
   ]).isRequired,
-
-  setClickedElement: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
 }
 
 export default BurgerIngredientsList
