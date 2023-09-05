@@ -1,0 +1,69 @@
+.wrapper {
+  padding: 120px 100px;
+  position: relative;
+  z-index: 10;
+  width: 720px;
+  height: 720px;
+  border-radius: 30px;
+  background: #131316;
+  border: 2px solid #25254d;
+}
+
+.control {
+  position: absolute;
+  top: 60px;
+  right: 40px;
+  cursor: pointer;
+}
+
+.order {
+  min-height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.orderNumber {
+  margin-bottom: 32px;
+  text-shadow: 0px 4px 32px rgba(51, 51, 255, 0.5),
+    0px 0px 8px rgba(51, 51, 255, 0.25), 0px 0px 16px rgba(51, 51, 255, 0.25);
+}
+
+.orderNumberText {
+  font-size: 24px;
+  line-height: 30px;
+  font-weight: 700;
+  font-family: 'JetBrainsMono', Arial, sans-serif;
+  margin-bottom: 60px;
+  display: block;
+}
+
+.logoConfirm {
+  margin-bottom: 60px;
+  min-width: 120px;
+  min-height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.startedCookingText {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+  font-family: 'JetBrainsMono', Arial, sans-serif;
+}
+
+.waitToBeReadyText {
+  display: block;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+  font-family: 'JetBrainsMono', Arial, sans-serif;
+  color: #8585ad;
+}
