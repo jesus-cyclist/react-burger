@@ -32,19 +32,25 @@ function App() {
       <AppHeader />
       <div className="wrapper">
         <main className="main">
-          <BurgerIngredients
-            ingredientsApiData={ingredientsApiData}
-            openModal={openModal}
-            closeModal={closeModal}
-          />
-          <BurgerConstructor
-            ingredientsApiData={ingredientsApiData}
-            openModal={openModal}
-            closeModal={closeModal}
-          />
-          <Modal closeModal={closeModal} isModalActive={isModalActive}>
-            {modalContent}
-          </Modal>
+          {ingredientsApiData ? (
+            <>
+              <BurgerIngredients
+                ingredientsApiData={ingredientsApiData}
+                openModal={openModal}
+                closeModal={closeModal}
+              />
+              <BurgerConstructor
+                ingredientsApiData={ingredientsApiData}
+                openModal={openModal}
+                closeModal={closeModal}
+              />
+            </>
+          ) : (
+            <h2>Lodaing</h2>
+          )}
+          {isModalActive && modalContent && (
+            <Modal closeModal={closeModal}>{modalContent}</Modal>
+          )}
         </main>
       </div>
       {/* <a

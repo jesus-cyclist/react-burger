@@ -2,6 +2,7 @@ import React from 'react'
 import BurgerIngredientsItem from '../BurgerIngredientsItem/BurgerIngredientsItem'
 import style from './BurgerIngredientsSection.module.css'
 import PropTypes from 'prop-types'
+import { ingredientPropType } from '../../utils/prop-types'
 
 const BurgerIngredientsSection = (props) => {
   const { title, ingredientsApiData, openModal, closeModal } = props
@@ -29,22 +30,8 @@ const BurgerIngredientsSection = (props) => {
 }
 
 BurgerIngredientsSection.propTypes = {
-  ingredientsApiData: PropTypes.arrayOf(
-    PropTypes.shape({
-      _id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      type: PropTypes.string.isRequired,
-      proteins: PropTypes.number.isRequired,
-      fat: PropTypes.number.isRequired,
-      carbohydrates: PropTypes.number.isRequired,
-      calories: PropTypes.number.isRequired,
-      price: PropTypes.number.isRequired,
-      image: PropTypes.string.isRequired,
-      image_mobile: PropTypes.string.isRequired,
-      image_large: PropTypes.string.isRequired,
-      __v: PropTypes.number.isRequired,
-    })
-  ).isRequired,
+  ingredientsApiData: PropTypes.arrayOf(ingredientPropType.isRequired)
+    .isRequired,
   title: PropTypes.string.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,

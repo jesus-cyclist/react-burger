@@ -7,7 +7,7 @@ import { createPortal } from 'react-dom'
 const reactModal = document.querySelector('#react-modals')
 
 const Modal = (props) => {
-  const { isModalActive, closeModal, children } = props
+  const { closeModal, children } = props
 
   useEffect(() => {
     document.addEventListener('keyup', (e) => {
@@ -20,10 +20,6 @@ const Modal = (props) => {
     }
   }, [])
 
-  if (!isModalActive) {
-    return null
-  }
-
   return createPortal(
     <div className={style.modal}>
       {children}
@@ -34,10 +30,8 @@ const Modal = (props) => {
 }
 
 Modal.propTypes = {
-  isModalActive: PropTypes.bool.isRequired,
   closeModal: PropTypes.func.isRequired,
-  children: PropTypes.oneOfType([PropTypes.null, PropTypes.node]).isRequired,
-  //не работает чилдрен
+  children: PropTypes.element.isRequired,
 }
 
 export default Modal
