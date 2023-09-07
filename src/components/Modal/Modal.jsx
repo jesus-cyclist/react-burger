@@ -1,13 +1,15 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import style from './Modal.module.css'
 import PropTypes from 'prop-types'
 import ModalOverlay from '../ModalOverlay/ModalOverlay'
 import { createPortal } from 'react-dom'
+import { ModalDataContext } from '../../context/appContext'
 
 const reactModal = document.querySelector('#react-modals')
 
 const Modal = (props) => {
-  const { closeModal, children } = props
+  const { children } = props
+  const { closeModal } = useContext(ModalDataContext)
 
   useEffect(() => {
     document.addEventListener('keyup', (e) => {
@@ -30,7 +32,6 @@ const Modal = (props) => {
 }
 
 Modal.propTypes = {
-  closeModal: PropTypes.func.isRequired,
   children: PropTypes.element.isRequired,
 }
 

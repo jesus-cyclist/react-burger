@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import style from './BurgerIngredientsItem.module.css'
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import PropTypes from 'prop-types'
 import IngredientDetails from '../IngredientDetails/IngredientDetails'
+import { ModalDataContext } from '../../context/appContext'
 
 const BurgerIngredientsItem = (props) => {
-  const { item, openModal, closeModal } = props
+  const { openModal, closeModal } = useContext(ModalDataContext)
+  const { item } = props
 
   return (
     <div
@@ -41,8 +43,6 @@ BurgerIngredientsItem.propTypes = {
     image_large: PropTypes.string.isRequired,
     __v: PropTypes.number.isRequired,
   }).isRequired,
-  openModal: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
 }
 
 export default BurgerIngredientsItem

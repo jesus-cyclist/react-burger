@@ -1,4 +1,4 @@
-export const request = (setState, setError) => {
+export const ingredientsApiRequest = (setState, setError) => {
   const url = 'https://norma.nomoreparties.space/api/ingredients'
   fetch(url)
     .then((response) =>

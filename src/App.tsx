@@ -4,8 +4,13 @@ import './styles/App.css'
 import AppHeader from './components/AppHeader/AppHeader'
 import BurgerIngredients from './components/BurgerIngredients/BurgerIngredients'
 import BurgerConstructor from './components/BurgerConstructor/BurgerConstructor'
-import { request } from './utils/request'
+import { ingredientsApiRequest } from './utils/ingredientsApiRequest'
 import Modal from './components/Modal/Modal'
+import {
+  ErrorDataContext,
+  IngredientsDataContext,
+  ModalDataContext,
+} from './context/appContext'
 
 function App() {
   const [ingredientsApiData, setIngredientsApiData] = useState(null)
@@ -14,7 +19,7 @@ function App() {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    request(setIngredientsApiData, setError)
+    ingredientsApiRequest(setIngredientsApiData, setError)
   }, [])
 
   const openModal = (content: any) => {
@@ -32,25 +37,36 @@ function App() {
       <AppHeader />
       <div className="wrapper">
         <main className="main">
-          {ingredientsApiData ? (
+          <ErrorDataContext.Provider value={{ setError }}>
+            <IngredientsDataContext.Provider value={{ ingredientsApiData }}>
+              <ModalDataContext.Provider value={{ closeModal, openModal }}>
+                {ingredientsApiData && (
+                  <>
+                    <BurgerIngredients />
+                    <BurgerConstructor />
+                  </>
+                )}
+                {isModalActive && modalContent && <Modal>{modalContent}</Modal>}{' '}
+              </ModalDataContext.Provider>
+            </IngredientsDataContext.Provider>
+          </ErrorDataContext.Provider>
+          {/* {ingredientsApiData && (
             <>
-              <BurgerIngredients
-                ingredientsApiData={ingredientsApiData}
-                openModal={openModal}
-                closeModal={closeModal}
-              />
-              <BurgerConstructor
-                ingredientsApiData={ingredientsApiData}
-                openModal={openModal}
-                closeModal={closeModal}
-              />
+              <ErrorDataContext.Provider value={{ setError }}>
+                <IngredientsDataContext.Provider value={{ ingredientsApiData }}>
+                  <ModalDataContext.Provider value={{ closeModal, openModal }}>
+                    <BurgerIngredients />
+                    <BurgerConstructor />
+                  </ModalDataContext.Provider>
+                </IngredientsDataContext.Provider>
+              </ErrorDataContext.Provider>
             </>
-          ) : (
-            <h2>Lodaing</h2>
           )}
           {isModalActive && modalContent && (
-            <Modal closeModal={closeModal}>{modalContent}</Modal>
-          )}
+            <ModalDataContext.Provider value={{ closeModal, openModal }}>
+              <Modal>{modalContent}</Modal>
+            </ModalDataContext.Provider>
+          )} */}
         </main>
       </div>
       {/* <a
