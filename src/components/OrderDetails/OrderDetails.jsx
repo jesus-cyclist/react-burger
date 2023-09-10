@@ -5,7 +5,7 @@ import {
   CloseIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import PropTypes from 'prop-types'
-import { orderApiRequest } from '../../utils/orderApiRequest'
+import { orderApiRequest } from '../../utils/request'
 import { ErrorDataContext, ModalDataContext } from '../../context/appContext'
 
 const OrderDetails = (props) => {

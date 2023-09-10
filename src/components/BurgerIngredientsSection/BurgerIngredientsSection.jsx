@@ -12,7 +12,7 @@ const BurgerIngredientsSection = (props) => {
   const sortedData = useMemo(
     () => ingredientsApiData.filter((item) => item.type === list[title]),
     [ingredientsApiData, title]
-  )
+  ) //реакт просит обернуть list  в юз мемо, но я не очень понял как это сделать
 
   return (
     <li className={style.section}>

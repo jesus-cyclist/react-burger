@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import './styles/reset.css'
 import './styles/App.css'
+import './styles/reset.css'
 import AppHeader from './components/AppHeader/AppHeader'
 import BurgerIngredients from './components/BurgerIngredients/BurgerIngredients'
 import BurgerConstructor from './components/BurgerConstructor/BurgerConstructor'
-import { ingredientsApiRequest } from './utils/ingredientsApiRequest'
+import { ingredientsApiRequest } from './utils/request'
 import Modal from './components/Modal/Modal'
 import {
   ErrorDataContext,
@@ -46,27 +46,10 @@ function App() {
                     <BurgerConstructor />
                   </>
                 )}
-                {isModalActive && modalContent && <Modal>{modalContent}</Modal>}{' '}
+                {isModalActive && modalContent && <Modal>{modalContent}</Modal>}
               </ModalDataContext.Provider>
             </IngredientsDataContext.Provider>
           </ErrorDataContext.Provider>
-          {/* {ingredientsApiData && (
-            <>
-              <ErrorDataContext.Provider value={{ setError }}>
-                <IngredientsDataContext.Provider value={{ ingredientsApiData }}>
-                  <ModalDataContext.Provider value={{ closeModal, openModal }}>
-                    <BurgerIngredients />
-                    <BurgerConstructor />
-                  </ModalDataContext.Provider>
-                </IngredientsDataContext.Provider>
-              </ErrorDataContext.Provider>
-            </>
-          )}
-          {isModalActive && modalContent && (
-            <ModalDataContext.Provider value={{ closeModal, openModal }}>
-              <Modal>{modalContent}</Modal>
-            </ModalDataContext.Provider>
-          )} */}
         </main>
       </div>
       {/* <a

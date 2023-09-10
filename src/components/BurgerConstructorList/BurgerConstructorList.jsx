@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useReducer } from 'react'
+import React, { useContext, useEffect, useReducer } from 'react'
 import BurgerConstructorItem from '../BurgerConstructorItem/BurgerConstructorItem'
 import {
   Button,
@@ -54,7 +54,7 @@ const BurgerConstructorList = () => {
     ingredientsList: null,
   })
 
-  useMemo(
+  useEffect(
     () =>
       dispatchTotalAmount({
         type: 'update',
