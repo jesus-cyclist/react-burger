@@ -1,19 +1,23 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import style from './BurgerIngredientsItem.module.css'
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import PropTypes from 'prop-types'
+import { useAppDispatch } from '../../hooks/hooks'
+import { OPEN_MODAL } from '../../services/actions/modal'
 import IngredientDetails from '../IngredientDetails/IngredientDetails'
-import { ModalDataContext } from '../../context/appContext'
 
 const BurgerIngredientsItem = (props) => {
-  const { openModal, closeModal } = useContext(ModalDataContext)
+  const dispatch = useAppDispatch()
   const { item } = props
 
   return (
     <div
       className={style.ingredient}
       onClick={() =>
-        openModal(<IngredientDetails data={item} closeModal={closeModal} />)
+        dispatch({
+          type: OPEN_MODAL,
+          content: <IngredientDetails data={item} />,
+        })
       }
     >
       <div className={style.logoBox}>

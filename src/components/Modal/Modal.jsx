@@ -1,23 +1,24 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import style from './Modal.module.css'
 import PropTypes from 'prop-types'
 import ModalOverlay from '../ModalOverlay/ModalOverlay'
 import { createPortal } from 'react-dom'
-import { ModalDataContext } from '../../context/appContext'
+import { useAppDispatch } from '../../hooks/hooks'
+import { CLOSE_MODAL } from '../../services/actions/modal'
 
 const reactModal = document.querySelector('#react-modals')
 
 const Modal = (props) => {
   const { children } = props
-  const { closeModal } = useContext(ModalDataContext)
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     document.addEventListener('keyup', (e) => {
-      e.key === 'Escape' && closeModal()
+      e.key === 'Escape' && dispatch({ type: CLOSE_MODAL })
     })
     return () => {
       document.removeEventListener('keyup', (e) => {
-        e.key === 'Escape' && closeModal()
+        e.key === 'Escape' && dispatch({ type: CLOSE_MODAL })
       })
     }
   }, [])
@@ -25,7 +26,7 @@ const Modal = (props) => {
   return createPortal(
     <div className={style.modal}>
       {children}
-      <ModalOverlay closeModal={closeModal} />
+      <ModalOverlay />
     </div>,
     reactModal
   )

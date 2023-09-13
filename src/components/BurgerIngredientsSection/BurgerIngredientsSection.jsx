@@ -1,21 +1,24 @@
-import React, { useContext, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import BurgerIngredientsItem from '../BurgerIngredientsItem/BurgerIngredientsItem'
 import style from './BurgerIngredientsSection.module.css'
 import PropTypes from 'prop-types'
-import { IngredientsDataContext } from '../../context/appContext'
+import { useAppSelector } from '../../hooks/hooks'
 
 const BurgerIngredientsSection = (props) => {
-  const { ingredientsApiData } = useContext(IngredientsDataContext)
+  const ingredients = useAppSelector(
+    (state) => state.rootReducer.ingredientsMenu.ingredients.data
+  )
+
   const { title } = props
 
   const list = { Булки: 'bun', Соусы: 'sauce', Начинки: 'main' }
   const sortedData = useMemo(
-    () => ingredientsApiData.filter((item) => item.type === list[title]),
-    [ingredientsApiData, title]
-  ) //реакт просит обернуть list  в юз мемо, но я не очень понял как это сделать
+    () => ingredients.filter((item) => item.type === list[title]),
+    [ingredients, title]
+  )
 
   return (
-    <li className={style.section}>
+    <li className={style.section} id={list[title]}>
       <h2 className={style.title}>{title}</h2>
       <div className={style.list}>
         {sortedData.map((item) => (

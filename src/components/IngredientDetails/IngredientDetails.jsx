@@ -2,15 +2,22 @@ import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import React from 'react'
 import style from './IngredientDetails.module.css'
 import PropTypes from 'prop-types'
+import { CLOSE_MODAL } from '../../services/actions/modal'
+import { useAppDispatch } from '../../hooks/hooks'
 
 const IngredientDetails = (props) => {
-  const { data, closeModal } = props
+  const dispatch = useAppDispatch()
+  const { data } = props
+
   return (
     <div className={style.block}>
       <div className={style.header}>
         <h2 className={style.title}>Детали ингредиента</h2>
         <button>
-          <CloseIcon type={'primary'} onClick={closeModal} />
+          <CloseIcon
+            type={'primary'}
+            onClick={() => dispatch({ type: CLOSE_MODAL })}
+          />
         </button>
       </div>
       <div className={style.ingredient}>
@@ -56,7 +63,6 @@ IngredientDetails.propTypes = {
     image_large: PropTypes.string.isRequired,
     __v: PropTypes.number.isRequired,
   }).isRequired,
-  closeModal: PropTypes.func.isRequired,
 }
 
 export default IngredientDetails

@@ -4,62 +4,53 @@ import './styles/reset.css'
 import AppHeader from './components/AppHeader/AppHeader'
 import BurgerIngredients from './components/BurgerIngredients/BurgerIngredients'
 import BurgerConstructor from './components/BurgerConstructor/BurgerConstructor'
-import { ingredientsApiRequest } from './utils/request'
+import { request } from './utils/request'
 import Modal from './components/Modal/Modal'
 import {
-  ErrorDataContext,
-  IngredientsDataContext,
-  ModalDataContext,
-} from './context/appContext'
+  GET_ITEMS_REQUEST,
+  GET_ITEMS_SUCCESS,
+  GET_ITEMS_FAILED,
+} from './services/actions/ingredientsMenu'
+import { useAppDispatch } from './hooks/hooks'
+import { useAppSelector } from './hooks/hooks'
 
 function App() {
-  const [ingredientsApiData, setIngredientsApiData] = useState(null)
-  const [isModalActive, setIsModalActive] = useState(false)
-  const [modalContent, setModalContent] = useState(null)
-  const [error, setError] = useState(null)
+  const { downloadedSuccess } = useAppSelector(
+    (state) => state.rootReducer.ingredientsMenu
+  )
+  const { isModalActive, modalContent } = useAppSelector(
+    (state) => state.rootReducer.modal
+  )
+
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
-    ingredientsApiRequest(setIngredientsApiData, setError)
+    const requestObj = {
+      routing: 'ingredients',
+      action: {
+        request: GET_ITEMS_REQUEST,
+        success: GET_ITEMS_SUCCESS,
+        failed: GET_ITEMS_FAILED,
+      },
+    }
+
+    dispatch(request(requestObj))
   }, [])
-
-  const openModal = (content: any) => {
-    setIsModalActive(true)
-    setModalContent(content)
-  }
-
-  const closeModal = () => {
-    setIsModalActive(false)
-    setModalContent(null)
-  }
 
   return (
     <div className="App">
       <AppHeader />
       <div className="wrapper">
         <main className="main">
-          <ErrorDataContext.Provider value={{ setError }}>
-            <IngredientsDataContext.Provider value={{ ingredientsApiData }}>
-              <ModalDataContext.Provider value={{ closeModal, openModal }}>
-                {ingredientsApiData && (
-                  <>
-                    <BurgerIngredients />
-                    <BurgerConstructor />
-                  </>
-                )}
-                {isModalActive && modalContent && <Modal>{modalContent}</Modal>}
-              </ModalDataContext.Provider>
-            </IngredientsDataContext.Provider>
-          </ErrorDataContext.Provider>
+          {downloadedSuccess && (
+            <>
+              <BurgerIngredients />
+              <BurgerConstructor />
+            </>
+          )}
+          {isModalActive && modalContent && <Modal>{modalContent}</Modal>}
         </main>
       </div>
-      {/* <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a> */}
     </div>
   )
 }

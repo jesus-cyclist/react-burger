@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useReducer } from 'react'
+import React from 'react'
 import BurgerConstructorItem from '../BurgerConstructorItem/BurgerConstructorItem'
 import {
   Button,
@@ -7,83 +7,38 @@ import {
 import style from './BurgerConstructorList.module.css'
 import OrderDetails from '../OrderDetails/OrderDetails'
 import IngredientDetails from '../IngredientDetails/IngredientDetails'
-import {
-  IngredientsDataContext,
-  ModalDataContext,
-} from '../../context/appContext'
-
-const totalAmountReducer = (state, action) => {
-  switch (action.type) {
-    case 'update':
-      const bread = 'bun'
-      const breadId = action.payload.find((item) => item.type === bread)
-
-      const fillingId = action.payload.filter((item) => item.type !== bread)
-
-      const totalAmount = action.payload.reduce(
-        (acc, item) => (acc += item.price),
-        0
-      )
-
-      const ingredientsList = action.payload.reduce((acc, item) => {
-        acc.push(item._id)
-        return acc
-      }, [])
-
-      return {
-        totalAmount: totalAmount,
-        filling: fillingId,
-        bread: breadId,
-        downloaded: true,
-        ingredientsList: ingredientsList,
-      }
-    default:
-      return state
-  }
-}
+import { useAppSelector, useAppDispatch } from '../../hooks/hooks'
+import { OPEN_MODAL } from '../../services/actions/modal'
 
 const BurgerConstructorList = () => {
-  const { ingredientsApiData } = useContext(IngredientsDataContext)
-  const { openModal, closeModal } = useContext(ModalDataContext)
-
-  const [listData, dispatchTotalAmount] = useReducer(totalAmountReducer, {
-    downloaded: false,
-    totalAmount: 0,
-    bread: null,
-    filling: null,
-    ingredientsList: null,
-  })
-
-  useEffect(
-    () =>
-      dispatchTotalAmount({
-        type: 'update',
-        payload: ingredientsApiData,
-      }),
-    [ingredientsApiData]
+  const { buh, filling, totalAmount } = useAppSelector(
+    (state) => state.rootReducer.constructorList
   )
+
+  const dispatch = useAppDispatch()
 
   return (
     <div className={style.list}>
-      {listData.downloaded && (
+      {totalAmount > 0 && (
         <>
-          <BurgerConstructorItem
-            text={`${listData.bread.name}  (верх)`}
-            type="top"
-            thumbnail={listData.bread.image}
-            price={listData.bread.price}
-            dragIcon={false}
-            onClick={() =>
-              openModal(
-                <IngredientDetails
-                  data={listData.bread}
-                  closeModal={closeModal}
-                />
-              )
-            }
-          />
+          {buh && (
+            <BurgerConstructorItem
+              text={`${buh.name}  (верх)`}
+              type="top"
+              thumbnail={buh.image}
+              price={buh.price}
+              dragIcon={false}
+              onClick={() =>
+                dispatch({
+                  type: OPEN_MODAL,
+                  content: <IngredientDetails data={buh} />,
+                })
+              }
+            />
+          )}
+
           <div className={style.ingredients}>
-            {listData.filling.map((item, ind, arr) => (
+            {filling.map((item, ind, arr) => (
               <BurgerConstructorItem
                 key={item._id}
                 text={item.name}
@@ -92,31 +47,33 @@ const BurgerConstructorList = () => {
                 isLocked={false}
                 last={ind === arr.length - 1 ? false : true}
                 onClick={() =>
-                  openModal(
-                    <IngredientDetails data={item} closeModal={closeModal} />
-                  )
+                  dispatch({
+                    type: OPEN_MODAL,
+                    content: <IngredientDetails data={item} />,
+                  })
                 }
               />
             ))}
           </div>
-          <BurgerConstructorItem
-            text={`${listData.bread.name}  (низ)`}
-            type="bottom"
-            thumbnail={listData.bread.image}
-            price={listData.bread.price}
-            dragIcon={false}
-            onClick={() =>
-              openModal(
-                <IngredientDetails
-                  data={listData.bread}
-                  closeModal={closeModal}
-                />
-              )
-            }
-          />
+          {buh && (
+            <BurgerConstructorItem
+              text={`${buh.name}  (низ)`}
+              type="bottom"
+              thumbnail={buh.image}
+              price={buh.price}
+              dragIcon={false}
+              onClick={() =>
+                dispatch({
+                  type: OPEN_MODAL,
+                  content: <IngredientDetails data={buh} />,
+                })
+              }
+            />
+          )}
+
           <div className={style.order}>
             <div className={style.total}>
-              <span className={style.totalCost}>{listData.totalAmount}</span>
+              <span className={style.totalCost}>{totalAmount}</span>
               <CurrencyIcon type="primary" />
             </div>
             <Button
@@ -124,9 +81,10 @@ const BurgerConstructorList = () => {
               type="primary"
               size="large"
               onClick={() =>
-                openModal(
-                  <OrderDetails ingredientsList={listData.ingredientsList} />
-                )
+                dispatch({
+                  type: OPEN_MODAL,
+                  content: <OrderDetails />,
+                })
               }
             >
               Оформить заказ

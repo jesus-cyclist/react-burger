@@ -1,28 +1,54 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import style from './OrderDetails.module.css'
 import {
   CheckMarkIcon,
   CloseIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components'
-import PropTypes from 'prop-types'
-import { orderApiRequest } from '../../utils/request'
-import { ErrorDataContext, ModalDataContext } from '../../context/appContext'
+import { request } from '../../utils/request'
+import { useAppSelector, useAppDispatch } from '../../hooks/hooks'
+import {
+  CLOSE_MODAL,
+  GET_ORDER_FAILED,
+  GET_ORDER_REQUEST,
+  GET_ORDER_SUCCESS,
+} from '../../services/actions/modal'
 
-const OrderDetails = (props) => {
-  const [orderData, setOrderData] = useState(null)
-  const { setError } = useContext(ErrorDataContext)
-  const { closeModal } = useContext(ModalDataContext)
-  const { ingredientsList } = props
+const OrderDetails = () => {
+  const ingredients = useAppSelector(
+    (state) => state.rootReducer.ingredientsMenu.ingredients.data
+  )
+  const orderData = useAppSelector((state) => state.rootReducer.modal.orderData)
 
-  useEffect(() => orderApiRequest(ingredientsList, setOrderData, setError), [])
+  const allIngredientsId = ingredients.reduce((acc, item) => {
+    acc.push(item._id)
+    return acc
+  }, [])
+
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    const requestObj = {
+      method: 'POST',
+      routing: 'orders',
+      data: allIngredientsId,
+      action: {
+        request: GET_ORDER_REQUEST,
+        success: GET_ORDER_SUCCESS,
+        failed: GET_ORDER_FAILED,
+      },
+    }
+    dispatch(request(requestObj))
+  }, [])
 
   return (
     <div className={style.wrapper}>
       {orderData && (
         <>
-          {' '}
           <button className={style.control}>
-            <CloseIcon type={'primary'} onClick={closeModal} />
+            <CloseIcon
+              type={'primary'}
+              onClick={() => dispatch({ type: CLOSE_MODAL })}
+            />
           </button>
           <div className={style.order}>
             <div className={style.main}>
@@ -52,10 +78,6 @@ const OrderDetails = (props) => {
       )}
     </div>
   )
-}
-
-OrderDetails.propTypes = {
-  ingredientsList: PropTypes.arrayOf(PropTypes.string).isRequired,
 }
 
 export default OrderDetails
