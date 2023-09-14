@@ -13,6 +13,12 @@ import {
 } from './services/actions/ingredientsMenu'
 import { useAppDispatch } from './hooks/hooks'
 import { useAppSelector } from './hooks/hooks'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+
+//в burgerconstuctorlist лютая ахинея буду признателен если скажете как упростить
+//почему у меня в конструкторе справа от цены значок рандомных размеров, это ведь готовый элемент я ему стили не задаю
+//при открывании модального окна у меня ошибку выдает, как ее обработать или избавиться
 
 function App() {
   const { downloadedSuccess } = useAppSelector(
@@ -43,10 +49,10 @@ function App() {
       <div className="wrapper">
         <main className="main">
           {downloadedSuccess && (
-            <>
+            <DndProvider backend={HTML5Backend}>
               <BurgerIngredients />
               <BurgerConstructor />
-            </>
+            </DndProvider>
           )}
           {isModalActive && modalContent && <Modal>{modalContent}</Modal>}
         </main>

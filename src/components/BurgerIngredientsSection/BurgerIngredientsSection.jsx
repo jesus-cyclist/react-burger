@@ -6,7 +6,7 @@ import { useAppSelector } from '../../hooks/hooks'
 
 const BurgerIngredientsSection = (props) => {
   const ingredients = useAppSelector(
-    (state) => state.rootReducer.ingredientsMenu.ingredients.data
+    (state) => state.rootReducer.ingredientsMenu.ingredients
   )
 
   const { title } = props

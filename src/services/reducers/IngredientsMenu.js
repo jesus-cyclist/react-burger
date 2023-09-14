@@ -2,13 +2,12 @@ import {
   GET_ITEMS_REQUEST,
   GET_ITEMS_SUCCESS,
   GET_ITEMS_FAILED,
+  REDUCE_COUNT_ITEM,
+  INCREASE_COUNT_ITEM,
 } from '../actions/ingredientsMenu'
 
 const initialState = {
   ingredients: [],
-  totalAmount: 0,
-  filling: [],
-  bread: [],
   ingredientsRequest: false,
   ingredientsFailed: false,
   downloadedSuccess: false,
@@ -22,31 +21,18 @@ export const ingredientsReducer = (state = initialState, action) => {
         ingredientsRequest: true,
         ingredientsFailed: false,
         downloadedSuccess: false,
-        totalAmount: 0,
-        filling: [],
-        bread: [],
       }
     }
     case GET_ITEMS_SUCCESS: {
-      const bread = 'bun'
-
-      const breadId = action.items.data.find((item) => item.type === bread)
-
-      const fillingId = action.items.data.filter((item) => item.type !== bread)
-
-      const totalAmount = action.items.data.reduce(
-        (acc, item) => (acc += item.price),
-        0
-      )
+      const ingredients = action.items.data.map((item) => {
+        return { ...item, count: 0 }
+      })
 
       return {
         ...state,
         ingredientsRequest: false,
-        ingredients: action.items,
+        ingredients: ingredients,
         downloadedSuccess: true,
-        totalAmount: totalAmount,
-        filling: fillingId,
-        bread: breadId,
       }
     }
 
@@ -56,11 +42,9 @@ export const ingredientsReducer = (state = initialState, action) => {
         ingredientsRequest: false,
         ingredientsFailed: true,
         downloadedSuccess: false,
-        totalAmount: 0,
-        filling: [],
-        bread: [],
       }
     }
+
     default: {
       return state
     }

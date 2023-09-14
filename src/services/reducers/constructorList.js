@@ -1,14 +1,15 @@
 import {
   ADD_BUH,
   ADD_FILLING,
-  DELETE_BUH,
   DELETE_FILLING,
 } from '../actions/constructorList'
+import uniqid from 'uniqid'
 
 const initialState = {
-  buh: null,
+  bun: {},
   filling: [],
-  totalAmount: 0,
+  draggableTarget: null,
+  dropTarget: null,
 }
 
 export const constructorReducer = (state = initialState, action) => {
@@ -16,28 +17,24 @@ export const constructorReducer = (state = initialState, action) => {
     case ADD_BUH: {
       return {
         ...state,
-        buh: action.item,
-        totalAmount: (state.totalAmount += action.item.price),
+        bun: action.item,
       }
     }
 
     case ADD_FILLING: {
+      const key = uniqid()
+      const modifiedFilling = { ...action.item, key }
       return {
         ...state,
-        filling: [...state.filling, action.item],
+        filling: [...state.filling, modifiedFilling],
       }
     }
 
-    case DELETE_BUH: {
-      return {
-        ...state,
-        buh: null,
-      }
-    }
     case DELETE_FILLING: {
+      const arr = [...state.filling].filter((item) => item.key !== action.id)
       return {
         ...state,
-        filling: [...state.filling].filter((item, ind) => ind !== action.ind),
+        filling: arr,
       }
     }
     default: {
