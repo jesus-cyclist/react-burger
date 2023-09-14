@@ -15,18 +15,19 @@ import { useAppDispatch } from './hooks/hooks'
 import { useAppSelector } from './hooks/hooks'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
+import { ModalDataContext } from './context/appContext'
 
 //в burgerconstuctorlist лютая ахинея буду признателен если скажете как упростить
 //почему у меня в конструкторе справа от цены значок рандомных размеров, это ведь готовый элемент я ему стили не задаю
-//при открывании модального окна у меня ошибку выдает, как ее обработать или избавиться
+//как мне сделать с модалкой? я ее раньше в состоянии хранил а теперь редукс не дает(
 
 function App() {
+  const [modalContent, setModalContent] = useState(null)
+
   const { downloadedSuccess } = useAppSelector(
     (state) => state.rootReducer.ingredientsMenu
   )
-  const { isModalActive, modalContent } = useAppSelector(
-    (state) => state.rootReducer.modal
-  )
+  const { isModalActive } = useAppSelector((state) => state.rootReducer.modal)
 
   const dispatch = useAppDispatch()
 
@@ -50,8 +51,10 @@ function App() {
         <main className="main">
           {downloadedSuccess && (
             <DndProvider backend={HTML5Backend}>
-              <BurgerIngredients />
-              <BurgerConstructor />
+              <ModalDataContext.Provider value={setModalContent}>
+                <BurgerIngredients />
+                <BurgerConstructor />
+              </ModalDataContext.Provider>
             </DndProvider>
           )}
           {isModalActive && modalContent && <Modal>{modalContent}</Modal>}

@@ -8,7 +8,6 @@ import {
 
 const initialState = {
   isModalActive: false,
-  modalContent: null,
   orderRequest: false,
   orderFailed: false,
   orderData: null,
@@ -20,7 +19,6 @@ export const modalReducer = (state = initialState, action) => {
       return {
         ...state,
         isModalActive: true,
-        modalContent: action.content,
         orderRequest: false,
         orderFailed: false,
         orderData: null,
@@ -30,7 +28,6 @@ export const modalReducer = (state = initialState, action) => {
       return {
         ...state,
         isModalActive: false,
-        modalContent: null,
         orderRequest: false,
         orderFailed: false,
         orderData: null,
@@ -58,7 +55,6 @@ export const modalReducer = (state = initialState, action) => {
       return {
         ...state,
         isModalActive: true,
-        modalContent: null,
         orderRequest: false,
         orderFailed: true,
         orderData: null,

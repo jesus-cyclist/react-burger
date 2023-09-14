@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import BurgerConstructorItem from '../BurgerConstructorItem/BurgerConstructorItem'
 import {
   Button,
@@ -6,10 +6,10 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import style from './BurgerConstructorList.module.css'
 import OrderDetails from '../OrderDetails/OrderDetails'
-import IngredientDetails from '../IngredientDetails/IngredientDetails'
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks'
 import { OPEN_MODAL } from '../../services/actions/modal'
 import update from 'immutability-helper'
+import { ModalDataContext } from '../../context/appContext'
 
 const BurgerConstructorList = () => {
   const [totalAmount, setTotalAmount] = useState(0)
@@ -17,13 +17,13 @@ const BurgerConstructorList = () => {
   const { bun, filling } = useAppSelector(
     (state) => state.rootReducer.constructorList
   )
+  const setModalContent = useContext(ModalDataContext)
 
   const [fill, setFill] = useState()
   useEffect(() => setFill(filling), [filling])
 
   const moveCard = useCallback((dragIndex, hoverIndex) => {
     setFill((prevState) => {
-      console.log(prevState)
       return update(prevState, {
         $splice: [
           [dragIndex, 1],
@@ -57,12 +57,6 @@ const BurgerConstructorList = () => {
               thumbnail={bun.image}
               price={bun.price}
               dragIcon={false}
-              onClick={() =>
-                dispatch({
-                  type: OPEN_MODAL,
-                  content: <IngredientDetails data={bun} />,
-                })
-              }
             />
           )}
 
@@ -80,12 +74,6 @@ const BurgerConstructorList = () => {
                   isLocked={false}
                   item={item}
                   last={ind === arr.length - 1 ? false : true}
-                  onClick={() =>
-                    dispatch({
-                      type: OPEN_MODAL,
-                      content: <IngredientDetails data={item} />,
-                    })
-                  }
                 />
               )
             })}
@@ -99,12 +87,6 @@ const BurgerConstructorList = () => {
               thumbnail={bun.image}
               price={bun.price}
               dragIcon={false}
-              onClick={() =>
-                dispatch({
-                  type: OPEN_MODAL,
-                  content: <IngredientDetails data={bun} />,
-                })
-              }
             />
           )}
 
@@ -117,12 +99,12 @@ const BurgerConstructorList = () => {
               htmlType="submit"
               type="primary"
               size="large"
-              onClick={() =>
+              onClick={() => {
+                setModalContent(<OrderDetails />)
                 dispatch({
                   type: OPEN_MODAL,
-                  content: <OrderDetails />,
                 })
-              }
+              }}
             >
               Оформить заказ
             </Button>

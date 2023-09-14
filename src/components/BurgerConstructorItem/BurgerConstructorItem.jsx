@@ -9,10 +9,6 @@ import { DELETE_FILLING } from '../../services/actions/constructorList'
 import { useAppDispatch } from '../../hooks/hooks'
 import { useDrag, useDrop } from 'react-dnd'
 
-function onDropHandler(id) {
-  console.log(id)
-}
-
 const BurgerConstructorItem = (props) => {
   const {
     id,
@@ -21,7 +17,6 @@ const BurgerConstructorItem = (props) => {
     thumbnail,
     isLocked,
     last,
-    onClick,
     dragIcon,
     item,
     position,
@@ -82,26 +77,6 @@ const BurgerConstructorItem = (props) => {
 
   const opacity = isDragging ? 0 : 1
 
-  // console.log(handlerId, isDragging)
-
-  // const [{ isDrag }, dragRef] = useDrag({
-  //   type: 'filling',
-  //   item: { id, text },
-  //   collect: (monitor) => ({
-  //     isDrag: monitor.isDragging(),
-  //   }),
-  // })
-
-  // const [{ getItem }, dropTarget] = useDrop({
-  //   accept: 'filling',
-  //   drop(id) {
-  //     onDropHandler(id)
-  //   },
-  //   collect: (monitor) => ({
-  //     getItem: monitor.getItem(),
-  //   }),
-  // })
-
   function handleClose() {
     dispatch({
       type: DELETE_FILLING,
@@ -131,7 +106,6 @@ const BurgerConstructorItem = (props) => {
         isLocked={isLocked}
         type={position}
         handleClose={handleClose}
-        onClick={onClick}
       />
     </div>
   )
@@ -154,7 +128,6 @@ BurgerConstructorItem.propTypes = {
   text: PropTypes.string.isRequired,
   thumbnail: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired,
 }
 
 export default BurgerConstructorItem
