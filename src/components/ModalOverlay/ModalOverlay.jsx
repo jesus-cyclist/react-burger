@@ -1,17 +1,15 @@
 import React from 'react'
 import style from './ModalOverlay.module.css'
-import { useAppDispatch } from '../../hooks/hooks'
-import { CLOSE_MODAL } from '../../services/actions/modal'
+import PropTypes from 'prop-types'
 
-const ModalOverlay = () => {
-  const dispatch = useAppDispatch()
+const ModalOverlay = (props) => {
+  const { closeModal } = props
 
-  return (
-    <div
-      className={style.modalOverlay}
-      onClick={() => dispatch({ type: CLOSE_MODAL })}
-    />
-  )
+  return <div className={style.modalOverlay} onClick={() => closeModal()} />
+}
+
+ModalOverlay.propTypes = {
+  closeModal: PropTypes.func.isRequired,
 }
 
 export default ModalOverlay

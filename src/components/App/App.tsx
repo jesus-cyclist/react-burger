@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from 'react'
-import './styles/App.css'
-import './styles/reset.css'
-import AppHeader from './components/AppHeader/AppHeader'
-import BurgerIngredients from './components/BurgerIngredients/BurgerIngredients'
-import BurgerConstructor from './components/BurgerConstructor/BurgerConstructor'
-import { request } from './utils/request'
-import Modal from './components/Modal/Modal'
+import style from './App.module.css'
+import AppHeader from '../AppHeader/AppHeader'
+import BurgerIngredients from '../BurgerIngredients/BurgerIngredients'
+import BurgerConstructor from '../BurgerConstructor/BurgerConstructor'
+import { request } from '../../utils/request'
+import Modal from '../Modal/Modal'
 import {
   GET_ITEMS_REQUEST,
   GET_ITEMS_SUCCESS,
   GET_ITEMS_FAILED,
-} from './services/actions/ingredientsMenu'
-import { useAppDispatch } from './hooks/hooks'
-import { useAppSelector } from './hooks/hooks'
+} from '../../services/actions/ingredientsMenu'
+import { useAppDispatch } from '../../hooks/hooks'
+import { useAppSelector } from '../../hooks/hooks'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
-import { ModalDataContext } from './context/appContext'
+import { ModalDataContext } from '../../context/appContext'
 
 //в burgerconstuctorlist лютая ахинея буду признателен если скажете как упростить
 //почему у меня в конструкторе справа от цены значок рандомных размеров, это ведь готовый элемент я ему стили не задаю
@@ -45,10 +44,10 @@ function App() {
   }, [])
 
   return (
-    <div className="App">
+    <div className={style.App}>
       <AppHeader />
-      <div className="wrapper">
-        <main className="main">
+      <div className={style.wrapper}>
+        <main className={style.main}>
           {downloadedSuccess && (
             <DndProvider backend={HTML5Backend}>
               <ModalDataContext.Provider value={setModalContent}>

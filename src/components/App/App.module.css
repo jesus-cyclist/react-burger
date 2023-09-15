@@ -2,21 +2,21 @@
   font-family: 'JetBrainsMono';
   font-style: normal;
   font-weight: 700;
-  src: url('../fonts/JetBrainsMono-Bold.woff2') format('woff');
+  src: url('../../fonts/JetBrainsMono-Bold.woff2') format('woff');
 }
 
 @font-face {
   font-family: 'JetBrainsMono';
   font-style: normal;
   font-weight: 400;
-  src: url('../fonts/JetBrainsMono-Regular.woff2') format('woff');
+  src: url('../../fonts/JetBrainsMono-Regular.woff2') format('woff');
 }
 
 @font-face {
   font-family: 'Iceland';
   font-style: normal;
   font-weight: 400;
-  src: url('../fonts/Iceland-Regular.ttf') format('ttf');
+  src: url('../../fonts/Iceland-Regular.ttf') format('ttf');
 }
 
 .App {

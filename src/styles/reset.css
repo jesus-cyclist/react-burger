@@ -54,8 +54,7 @@ img {
   vertical-align: top;
 }
 
-img,
-svg {
+img {
   max-width: 100%;
   height: auto;
 }

@@ -27,7 +27,13 @@ const OrderDetails = () => {
     const requestObj = {
       method: 'POST',
       routing: 'orders',
-      data: allIngredientsId,
+      data: {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ingredients: allIngredientsId }),
+      },
       action: {
         request: GET_ORDER_REQUEST,
         success: GET_ORDER_SUCCESS,
@@ -39,29 +45,27 @@ const OrderDetails = () => {
 
   return (
     orderData && (
-      <>
-        <div className={style.order}>
-          <div className={style.main}>
-            <div className={style.orderNumber}>
-              <p className="text text_type_digits-large">
-                {orderData.order.number}
-              </p>
-            </div>
-            <span className={style.orderNumberText}>идентификатор заказа</span>
-            <div className={style.logoConfirm}>
-              <div className={style.logo}>
-                <CheckMarkIcon type="primary" />
-              </div>
-            </div>
-            <span className={style.startedCookingText}>
-              Ваш заказ начали готовить
-            </span>
-            <span className={style.waitToBeReadyText}>
-              Дождитесь готовности на орбитальной станции
-            </span>
+      <div className={style.order}>
+        <div className={style.main}>
+          <div className={style.orderNumber}>
+            <p className="text text_type_digits-large">
+              {orderData.order.number}
+            </p>
           </div>
+          <span className={style.orderNumberText}>идентификатор заказа</span>
+          <div className={style.logoConfirm}>
+            <div className={style.logo}>
+              <CheckMarkIcon type="primary" />
+            </div>
+          </div>
+          <span className={style.startedCookingText}>
+            Ваш заказ начали готовить
+          </span>
+          <span className={style.waitToBeReadyText}>
+            Дождитесь готовности на орбитальной станции
+          </span>
         </div>
-      </>
+      </div>
     )
   )
 }

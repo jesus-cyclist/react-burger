@@ -1,6 +1,12 @@
 const path = 'https://norma.nomoreparties.space/api/'
 
-export const request = ({ routing, action, method = 'GET', data = null }) => {
+const checkResponse = (res) =>
+  res.ok ? res.json() : Promise.reject(`Error ${res.status}`)
+
+const checkSuccess = (res) =>
+  res && res.success ? res : Promise.reject(`Answer on success ${res}`)
+
+export const request = ({ routing, action, data = null }) => {
   return function (dispatch) {
     const { request, success, failed } = action
 
@@ -8,22 +14,11 @@ export const request = ({ routing, action, method = 'GET', data = null }) => {
       type: request,
     })
 
-    const requestOptions = {
-      method: method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body:
-        method === 'POST' && data
-          ? JSON.stringify({ ingredients: data })
-          : null,
-    }
     const url = `${path}${routing}`
 
-    fetch(url, requestOptions)
-      .then((response) =>
-        response.ok ? response.json() : Promise.reject(response)
-      )
+    fetch(url, data)
+      .then(checkResponse)
+      .then(checkSuccess)
       .then((response) =>
         dispatch({
           type: success,

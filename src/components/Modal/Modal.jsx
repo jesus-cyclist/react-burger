@@ -13,14 +13,18 @@ const Modal = (props) => {
   const { children } = props
   const dispatch = useAppDispatch()
 
-  function escapeHandler(event) {
-    event.key === 'Escape' && dispatch({ type: CLOSE_MODAL })
+  function closeModal() {
+    dispatch({ type: CLOSE_MODAL })
   }
 
   useEffect(() => {
-    document.addEventListener('keyup', (e) => escapeHandler(e))
+    function escapeHandler(event) {
+      event.key === 'Escape' && closeModal()
+    }
+
+    document.addEventListener('keyup', escapeHandler)
     return () => {
-      document.removeEventListener('keyup', (e) => escapeHandler(e))
+      document.removeEventListener('keyup', escapeHandler)
     }
   }, [])
 
@@ -28,14 +32,11 @@ const Modal = (props) => {
     <div className={style.wrapper}>
       <div className={style.modal}>
         <button className={style.modalCloseButton}>
-          <CloseIcon
-            type={'primary'}
-            onClick={() => dispatch({ type: CLOSE_MODAL })}
-          />
+          <CloseIcon type={'primary'} onClick={closeModal} />
         </button>
         {children}
       </div>
-      <ModalOverlay />
+      <ModalOverlay closeModal={closeModal} />
     </div>,
     reactModal
   )
