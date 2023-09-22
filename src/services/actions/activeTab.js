@@ -1,0 +1,4 @@
+export const MAKE_BUN_ACTIVE = 'MAKE_BUN_ACTIVE'
+export const MAKE_SAUCE_ACTIVE = 'MAKE_SAUCE_ACTIVE'
+export const MAKE_MAIN_ACTIVE = 'MAKE_MAIN_ACTIVE'
+export const SCROLL = 'SCROLL'

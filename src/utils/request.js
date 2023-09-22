@@ -1,9 +1,34 @@
-export const request = (setState, setError) => {
-  const url = 'https://norma.nomoreparties.space/api/ingredients'
-  fetch(url)
-    .then((response) =>
-      response.ok ? response.json() : Promise.reject(response)
-    )
-    .then((response) => setState(response.data))
-    .catch((error) => setError(error))
+const path = 'https://norma.nomoreparties.space/api/'
+
+const checkResponse = (res) =>
+  res.ok ? res.json() : Promise.reject(`Error ${res.status}`)
+
+const checkSuccess = (res) =>
+  res && res.success ? res : Promise.reject(`Answer on success ${res}`)
+
+export const request = ({ routing, action, data = null }) => {
+  return function (dispatch) {
+    const { request, success, failed } = action
+
+    dispatch({
+      type: request,
+    })
+
+    const url = `${path}${routing}`
+
+    fetch(url, data)
+      .then(checkResponse)
+      .then(checkSuccess)
+      .then((response) =>
+        dispatch({
+          type: success,
+          items: response,
+        })
+      )
+      .catch((error) =>
+        dispatch({
+          type: failed,
+        })
+      )
+  }
 }
