@@ -18,13 +18,13 @@ export const constructorReducer = (state = initialState, action) => {
     case ADD_BUH: {
       return {
         ...state,
-        bun: action.item,
+        bun: action.payload,
       }
     }
 
     case ADD_FILLING: {
       const key = uniqid()
-      const modifiedFilling = { ...action.item, key }
+      const modifiedFilling = { ...action.payload, key }
       return {
         ...state,
         filling: [...state.filling, modifiedFilling],

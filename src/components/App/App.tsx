@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import HomePage from '../../pages/HomePage/HomePage'
 import Login from '../../pages/Login/Login'
 import Register from '../../pages/Register/Register'
@@ -8,6 +8,7 @@ import ResetPassword from '../../pages/ResetPassword/ResetPassword'
 import Profile from '../../pages/Profile/Profile'
 import AppHeader from '../AppHeader/AppHeader'
 import styles from './App.module.css'
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute'
 
 function App() {
   return (
@@ -20,7 +21,10 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route
+            path="/profile"
+            element={<ProtectedRoute element={<Profile />} />}
+          />
         </Routes>
       </main>
     </>

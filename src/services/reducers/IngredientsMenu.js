@@ -24,7 +24,7 @@ export const ingredientsReducer = (state = initialState, action) => {
       }
     }
     case GET_ITEMS_SUCCESS: {
-      const ingredients = action.items.data.map((item) => {
+      const ingredients = action.payload.data.map((item) => {
         return { ...item, count: 0 }
       })
 

@@ -4,15 +4,17 @@ import {
   Button,
   Input,
 } from '@ya.praktikum/react-developer-burger-ui-components'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import { showPassword } from '../../utils/passwordIconClick'
 import {
   GET_REGISTER_USER_FAILED,
   GET_REGISTER_USER_REQUEST,
   GET_REGISTER_USER_SUCCESS,
-} from '../../services/actions/profileData'
+} from '../../services/actions/userData'
 import { useDispatch } from 'react-redux'
 import { request } from '../../utils/request'
+import { useAppSelector } from '../../hooks/hooks'
+import { homePagePath } from '../../utils/routerPath'
 
 const Register = () => {
   const [registerData, setRegisterData] = useState({
@@ -23,6 +25,9 @@ const Register = () => {
   })
 
   const dispatch = useDispatch()
+  const { isAuthenticated } = useAppSelector(
+    (state) => state.rootReducer.profileData
+  )
 
   const registerButtonClickHandler = () => {
     const requestObj = {
@@ -46,6 +51,8 @@ const Register = () => {
     }
     dispatch(request(requestObj))
   }
+
+  if (isAuthenticated) return <Navigate to={homePagePath} replace />
 
   const onIconClick = () => showPassword(registerData, setRegisterData)
 

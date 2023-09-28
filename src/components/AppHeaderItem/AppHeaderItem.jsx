@@ -12,16 +12,14 @@ import {
 import { NavLink } from 'react-router-dom'
 import styles from './AppHeaderItem.module.css'
 import { useAppSelector } from '../../hooks/hooks'
-import { loginPath, homePagePath, profilePath } from '../../utils/routerPath'
+import { homePagePath, profilePath } from '../../utils/routerPath'
 
 const AppHeaderItem = (props) => {
   const { tabValue, activeTab } = props
 
-  const { user } = useAppSelector((state) => state.rootReducer.profileData)
-
-  const tabRouter = (isAuthenticated, route) => {
-    return isAuthenticated ? `${route}` : loginPath
-  }
+  const { user, isAuthenticated } = useAppSelector(
+    (state) => state.rootReducer.profileData
+  )
 
   const tab = (tabType) => {
     switch (tabType) {
@@ -36,9 +34,7 @@ const AppHeaderItem = (props) => {
                   : 'secondary'
               }
             />
-            <NavLink to={tabRouter(user, homePagePath)}>
-              {'Конструктор'}
-            </NavLink>
+            <NavLink to={homePagePath}>{'Конструктор'}</NavLink>
           </li>
         )
       }
@@ -50,9 +46,7 @@ const AppHeaderItem = (props) => {
                 activeTab === SET_ORDERS_LIST_ACTIVE ? 'primary' : 'secondary'
               }
             />
-            <NavLink to={tabRouter(user, homePagePath)}>
-              {'Лента заказов'}
-            </NavLink>
+            <NavLink to={homePagePath}>{'Лента заказов'}</NavLink>
           </li>
         )
       }
@@ -62,9 +56,12 @@ const AppHeaderItem = (props) => {
             <ProfileIcon
               type={activeTab === SET_PROFILE_ACTIVE ? 'primary' : 'secondary'}
             />
-            <NavLink to={tabRouter(user, profilePath)}>
-              {'Личный кабинет'}
-            </NavLink>
+            <NavLink to={profilePath}>{'Личный кабинет'}</NavLink>
+            {isAuthenticated ? (
+              <span>Вы авторизированы</span>
+            ) : (
+              <span>Вы вышли</span>
+            )}
           </div>
         )
       }

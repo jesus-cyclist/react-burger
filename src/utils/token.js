@@ -1,1 +1,2 @@
-export const refreshCookie = 'refreshCookie'
+export const refreshToken = 'refreshToken'
+export const accessToken = 'accessToken'

@@ -4,15 +4,17 @@ import {
   Button,
   Input,
 } from '@ya.praktikum/react-developer-burger-ui-components'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import { showPassword } from '../../utils/passwordIconClick'
 import {
   GET_RESET_PASSWORD_FAILED,
   GET_RESET_PASSWORD_REQUEST,
   GET_RESET_PASSWORD_SUCCESS,
-} from '../../services/actions/profileData'
+} from '../../services/actions/userData'
 import { useDispatch } from 'react-redux'
 import { request } from '../../utils/request'
+import { useAppSelector } from '../../hooks/hooks'
+import { forgotPasswordPath } from '../../utils/routerPath'
 
 function validateInput(arrayOfValue) {
   return arrayOfValue.find((item) => (item.length === 0 ? false : true))
@@ -26,6 +28,9 @@ const ResetPassword = () => {
   })
 
   const dispatch = useDispatch()
+  const { passwordForgotSuccess } = useAppSelector(
+    (state) => state.rootReducer.profileData
+  )
 
   const onIconClick = () => showPassword(resetData, setResetData)
 
@@ -52,6 +57,8 @@ const ResetPassword = () => {
     validateInput([resetData.password, resetData.confirmationCode]) &&
       dispatch(request(requestObj))
   }
+
+  !passwordForgotSuccess && <Navigate to={forgotPasswordPath} replace />
 
   return (
     <div className={styles.wrapper}>

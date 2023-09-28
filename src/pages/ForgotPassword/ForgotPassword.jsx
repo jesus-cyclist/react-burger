@@ -4,14 +4,16 @@ import {
   Button,
   Input,
 } from '@ya.praktikum/react-developer-burger-ui-components'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import { request } from '../../utils/request'
 import {
   GET_FORGOT_PASSWORD_FAILED,
   GET_FORGOT_PASSWORD_REQUEST,
   GET_FORGOT_PASSWORD_SUCCESS,
-} from '../../services/actions/profileData'
+} from '../../services/actions/userData'
 import { useDispatch } from 'react-redux'
+import { useAppSelector } from '../../hooks/hooks'
+import { homePagePath } from '../../utils/routerPath'
 
 function validateEmail(mail) {
   return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)
@@ -22,6 +24,9 @@ function validateEmail(mail) {
 const ForgotPassword = () => {
   const [emailValue, setEmailValue] = useState('mama@mail.ru')
   const dispatch = useDispatch()
+  const { isAuthenticated } = useAppSelector(
+    (state) => state.rootReducer.profileData
+  )
 
   const clickHadler = () => {
     const requestObj = {
@@ -42,6 +47,8 @@ const ForgotPassword = () => {
 
     validateEmail(emailValue) && dispatch(request(requestObj))
   }
+
+  if (isAuthenticated) return <Navigate to={homePagePath} replace />
 
   return (
     <div className={styles.wrapper}>

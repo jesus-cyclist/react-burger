@@ -8,19 +8,30 @@ import {
   GET_USER_DATA_FAILED,
   GET_USER_DATA_REQUEST,
   GET_USER_DATA_SUCCESS,
-} from '../../services/actions/profileData'
+} from '../../services/actions/userData'
 import Cookies from 'js-cookie'
-import { refreshCookie } from '../../utils/token'
+import { accessToken } from '../../utils/token'
 
 const ProfileData = () => {
-  const { login, password, name } = useAppSelector(
-    (state) => state.rootReducer.profileData
+  const nameRef = useRef(null)
+  const loginRef = useRef(null)
+  const passwordRef = useRef(null)
+  const [currentProfileData, setCurrentProfileData] = useState({
+    login: '',
+    password: '',
+    name: '',
+  })
+
+  const [editInput, setEditInput] = useState(null)
+
+  const { response } = useAppSelector(
+    (state) => state.rootReducer.profileData.userData
   )
 
   const dispatch = useDispatch()
 
   useEffect(() => {
-    const token = Cookies.get(refreshCookie)
+    const token = Cookies.get(accessToken)
     const requestObj = {
       routing: `auth/user`,
       action: {
@@ -36,20 +47,17 @@ const ProfileData = () => {
         },
       },
     }
-    console.log(requestObj)
     dispatch(request(requestObj))
   }, [])
 
-  const nameRef = useRef(null)
-  const loginRef = useRef(null)
-  const passwordRef = useRef(null)
-  const [currentProfileData, setCurrentProfileData] = useState({
-    login: '',
-    password: '',
-    name: '',
-  })
-
-  const [editInput, setEditInput] = useState(null)
+  useEffect(() => {
+    response &&
+      setCurrentProfileData({
+        ...currentProfileData,
+        login: response.email,
+        name: response.name,
+      })
+  }, [response])
 
   function onIconClick(inputType, ref) {
     setEditInput(inputType)

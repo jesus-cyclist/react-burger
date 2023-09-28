@@ -10,15 +10,15 @@ import {
   GET_LOGIN_USER_FAILED,
   GET_LOGIN_USER_REQUEST,
   GET_LOGIN_USER_SUCCESS,
-} from '../../services/actions/profileData'
+} from '../../services/actions/userData'
 import { useDispatch } from 'react-redux'
 import { request } from '../../utils/request'
-import { useAppSelector } from '../../hooks/hooks'
 import {
   homePagePath,
   registerPath,
   forgotPasswordPath,
 } from '../../utils/routerPath'
+import { useAppSelector } from '../../hooks/hooks'
 
 const Login = () => {
   const [loginData, setLoginData] = useState({
@@ -27,9 +27,10 @@ const Login = () => {
     passwordType: 'password',
   })
 
-  const { user } = useAppSelector((state) => state.rootReducer.profileData)
-
   const dispatch = useDispatch()
+  const { isAuthenticated } = useAppSelector(
+    (state) => state.rootReducer.profileData
+  )
 
   const loginButtonClickHandler = () => {
     const requestObj = {
@@ -53,11 +54,9 @@ const Login = () => {
     dispatch(request(requestObj))
   }
 
-  const onIconClick = () => showPassword(loginData, setLoginData)
+  if (isAuthenticated) return <Navigate to={homePagePath} replace />
 
-  if (user) {
-    return <Navigate to={homePagePath} replace />
-  }
+  const onIconClick = () => showPassword(loginData, setLoginData)
 
   return (
     <div className={styles.wrapper}>

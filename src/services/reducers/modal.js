@@ -51,7 +51,7 @@ export const modalReducer = (state = initialState, action) => {
         isModalActive: true,
         orderRequest: false,
         orderFailed: false,
-        orderData: action.items,
+        orderData: action.payload,
       }
     }
     case GET_ORDER_FAILED: {

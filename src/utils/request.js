@@ -22,7 +22,7 @@ export const request = ({ routing, action, data = null }) => {
       .then((response) =>
         dispatch({
           type: success,
-          items: response,
+          payload: response,
         })
       )
       .catch((error) =>

@@ -5,7 +5,7 @@ import {
   SET_ORDERS_LIST_ACTIVE,
   SET_PROFILE_DATA_ACTIVE,
 } from '../../utils/profileNav'
-import { LOGOUT_USER } from '../../services/actions/profileData'
+import { LOGOUT_USER } from '../../services/actions/userData'
 import ProfileHint from '../ProfileHint/ProfileHint'
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
 import { Navigate } from 'react-router-dom'
