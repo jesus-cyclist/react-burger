@@ -25,7 +25,6 @@ const OrderDetails = () => {
 
   useEffect(() => {
     const requestObj = {
-      method: 'POST',
       routing: 'orders',
       data: {
         method: 'POST',

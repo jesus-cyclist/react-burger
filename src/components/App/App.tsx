@@ -1,65 +1,29 @@
-import React, { useEffect, useState } from 'react'
-import style from './App.module.css'
+import React from 'react'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import HomePage from '../../pages/HomePage/HomePage'
+import Login from '../../pages/Login/Login'
+import Register from '../../pages/Register/Register'
+import ForgotPassword from '../../pages/ForgotPassword/ForgotPassword'
+import ResetPassword from '../../pages/ResetPassword/ResetPassword'
+import Profile from '../../pages/Profile/Profile'
 import AppHeader from '../AppHeader/AppHeader'
-import BurgerIngredients from '../BurgerIngredients/BurgerIngredients'
-import BurgerConstructor from '../BurgerConstructor/BurgerConstructor'
-import { request } from '../../utils/request'
-import Modal from '../Modal/Modal'
-import {
-  GET_ITEMS_REQUEST,
-  GET_ITEMS_SUCCESS,
-  GET_ITEMS_FAILED,
-} from '../../services/actions/ingredientsMenu'
-import { useAppDispatch } from '../../hooks/hooks'
-import { useAppSelector } from '../../hooks/hooks'
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
-import { ModalDataContext } from '../../context/appContext'
-
-//в burgerconstuctorlist лютая ахинея буду признателен если скажете как упростить
-//почему у меня в конструкторе справа от цены значок рандомных размеров, это ведь готовый элемент я ему стили не задаю
-//как мне сделать с модалкой? я ее раньше в состоянии хранил а теперь редукс не дает(
+import styles from './App.module.css'
 
 function App() {
-  const [modalContent, setModalContent] = useState(null)
-
-  const { downloadedSuccess } = useAppSelector(
-    (state) => state.rootReducer.ingredientsMenu
-  )
-  const { isModalActive } = useAppSelector((state) => state.rootReducer.modal)
-
-  const dispatch = useAppDispatch()
-
-  useEffect(() => {
-    const requestObj = {
-      routing: 'ingredients',
-      action: {
-        request: GET_ITEMS_REQUEST,
-        success: GET_ITEMS_SUCCESS,
-        failed: GET_ITEMS_FAILED,
-      },
-    }
-
-    dispatch(request(requestObj))
-  }, [])
-
   return (
-    <div className={style.App}>
+    <>
       <AppHeader />
-      <div className={style.wrapper}>
-        <main className={style.main}>
-          {downloadedSuccess && (
-            <DndProvider backend={HTML5Backend}>
-              <ModalDataContext.Provider value={setModalContent}>
-                <BurgerIngredients />
-                <BurgerConstructor />
-              </ModalDataContext.Provider>
-            </DndProvider>
-          )}
-          {isModalActive && modalContent && <Modal>{modalContent}</Modal>}
-        </main>
-      </div>
-    </div>
+      <main className={styles.main}>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/profile" element={<Profile />} />
+        </Routes>
+      </main>
+    </>
   )
 }
 

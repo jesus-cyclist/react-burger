@@ -1,23 +1,21 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import style from './BurgerIngredientsItem.module.css'
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import PropTypes from 'prop-types'
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
 import { OPEN_MODAL } from '../../services/actions/modal'
-import IngredientDetails from '../IngredientDetails/IngredientDetails'
 import { useDrag } from 'react-dnd'
 import { Counter } from '@ya.praktikum/react-developer-burger-ui-components'
-import { ModalDataContext } from '../../context/appContext'
 import { ingredientPropType } from '../../utils/prop-types'
 
 const BurgerIngredientsItem = (props) => {
   const [count, setCount] = useState(0)
-  const { item } = props
+  const { item, setModalIngredient } = props
   const { bun, filling } = useAppSelector(
     (state) => state.rootReducer.constructorList
   )
+
   const dispatch = useAppDispatch()
-  const setModalContent = useContext(ModalDataContext)
 
   useEffect(() => {
     const bunCount = bun.name === item.name ? 2 : 0
@@ -38,8 +36,8 @@ const BurgerIngredientsItem = (props) => {
     <div
       className={style.ingredient}
       onClick={() => {
-        dispatch({ type: OPEN_MODAL })
-        setModalContent(<IngredientDetails data={item} />)
+        setModalIngredient(item)
+        dispatch({ type: OPEN_MODAL, modalType: 'ingredient' })
       }}
       ref={dragRef}
     >

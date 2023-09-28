@@ -1,0 +1,47 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  font-family: 'JetBrainsMono', Arial, sans-serif;
+  padding-top: 180px;
+}
+
+.loginContainer {
+  text-align: center;
+}
+
+.title,
+.emailWrapper,
+.passwordWrapper {
+  margin-bottom: 24px;
+}
+
+.buttonWrapper {
+  margin-bottom: 80px;
+}
+
+.registrationBlock {
+  margin-bottom: 16px;
+}
+
+.title {
+  line-height: 30px;
+  font-size: 24px;
+}
+
+.forgotPasswordBlock,
+.registrationBlock {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  line-height: 24px;
+  font-size: 16px;
+}
+
+.link {
+  color: #4c4cff;
+}
+
+.linkHint {
+  color: #8585ad;
+}

@@ -9,7 +9,8 @@ import OrderDetails from '../OrderDetails/OrderDetails'
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks'
 import { OPEN_MODAL } from '../../services/actions/modal'
 import update from 'immutability-helper'
-import { ModalDataContext } from '../../context/appContext'
+import Modal from '../Modal/Modal'
+import { CLEAR_CONSTRUCTOR } from '../../services/actions/constructorList'
 
 const BurgerConstructorList = () => {
   const [totalAmount, setTotalAmount] = useState(0)
@@ -17,7 +18,9 @@ const BurgerConstructorList = () => {
   const { bun, filling } = useAppSelector(
     (state) => state.rootReducer.constructorList
   )
-  const setModalContent = useContext(ModalDataContext)
+  const { isModalActive, modalType } = useAppSelector(
+    (state) => state.rootReducer.modal
+  )
 
   const [fill, setFill] = useState()
   useEffect(() => setFill(filling), [filling])
@@ -33,8 +36,6 @@ const BurgerConstructorList = () => {
     })
   }, [])
 
-  //тут лютая ахинея но я не понимаю как упростить
-
   useEffect(() => {
     const bunCost = bun.price ? bun.price * 2 : 0
     const fillingCost =
@@ -43,6 +44,10 @@ const BurgerConstructorList = () => {
         : 0
     setTotalAmount(bunCost + fillingCost)
   }, [bun, filling])
+
+  function clearCounstructorIngredients() {
+    dispatch({ type: CLEAR_CONSTRUCTOR })
+  }
 
   return (
     <div className={style.list}>
@@ -100,15 +105,20 @@ const BurgerConstructorList = () => {
               type="primary"
               size="large"
               onClick={() => {
-                setModalContent(<OrderDetails />)
                 dispatch({
                   type: OPEN_MODAL,
+                  modalType: 'order',
                 })
               }}
             >
               Оформить заказ
             </Button>
           </div>
+          {isModalActive && modalType === 'order' && (
+            <Modal clearCounstructorIngredients={clearCounstructorIngredients}>
+              <OrderDetails />
+            </Modal>
+          )}
         </>
       )}
     </div>

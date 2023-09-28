@@ -1,4 +1,33 @@
-.title {
-  margin-left: 8px;
+.tab {
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  z-index: 10;
+  gap: 8px;
+}
+
+.constructor {
+  padding: 16px 20px 16px 0;
+  margin-right: 8px;
+}
+
+.account {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 0 16px 20px;
+}
+
+.tab a {
   color: #8585ad;
 }
+
+/* .link {
+  color: #8585ad;
+}
+
+.linkActive {
+  color: #f2f2f3;
+} */

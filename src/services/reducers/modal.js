@@ -11,6 +11,7 @@ const initialState = {
   orderRequest: false,
   orderFailed: false,
   orderData: null,
+  modalType: null,
 }
 
 export const modalReducer = (state = initialState, action) => {
@@ -22,6 +23,7 @@ export const modalReducer = (state = initialState, action) => {
         orderRequest: false,
         orderFailed: false,
         orderData: null,
+        modalType: action.modalType,
       }
     }
     case CLOSE_MODAL: {
@@ -31,6 +33,7 @@ export const modalReducer = (state = initialState, action) => {
         orderRequest: false,
         orderFailed: false,
         orderData: null,
+        modalType: null,
       }
     }
     case GET_ORDER_REQUEST: {
