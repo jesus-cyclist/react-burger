@@ -4,7 +4,7 @@ import {
   Button,
   Input,
 } from '@ya.praktikum/react-developer-burger-ui-components'
-import { Link, Navigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { request } from '../../utils/request'
 import {
   GET_FORGOT_PASSWORD_FAILED,
@@ -12,8 +12,7 @@ import {
   GET_FORGOT_PASSWORD_SUCCESS,
 } from '../../services/actions/userData'
 import { useDispatch } from 'react-redux'
-import { useAppSelector } from '../../hooks/hooks'
-import { homePagePath } from '../../utils/routerPath'
+import { resetPasswordPath, loginPath } from '../../utils/routerPath'
 
 function validateEmail(mail) {
   return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)
@@ -24,9 +23,7 @@ function validateEmail(mail) {
 const ForgotPassword = () => {
   const [emailValue, setEmailValue] = useState('mama@mail.ru')
   const dispatch = useDispatch()
-  const { isAuthenticated } = useAppSelector(
-    (state) => state.rootReducer.profileData
-  )
+  const navigate = useNavigate()
 
   const clickHadler = () => {
     const requestObj = {
@@ -46,9 +43,8 @@ const ForgotPassword = () => {
     }
 
     validateEmail(emailValue) && dispatch(request(requestObj))
+    navigate(resetPasswordPath, { state: { from: 'fromForgotPassword' } })
   }
-
-  if (isAuthenticated) return <Navigate to={homePagePath} replace />
 
   return (
     <div className={styles.wrapper}>
@@ -76,7 +72,7 @@ const ForgotPassword = () => {
 
         <div className={styles.loginBlock}>
           <span className={styles.linkHint}>Вспомнили пароль?</span>
-          <Link to={'/login'} className={styles.link}>
+          <Link to={loginPath} className={styles.link}>
             Войти
           </Link>
         </div>

@@ -3,19 +3,18 @@ import style from './Modal.module.css'
 import PropTypes from 'prop-types'
 import ModalOverlay from '../ModalOverlay/ModalOverlay'
 import { createPortal } from 'react-dom'
-import { useAppDispatch } from '../../hooks/hooks'
-import { CLOSE_MODAL } from '../../services/actions/modal'
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import { useNavigate } from 'react-router-dom'
+import { homePagePath } from '../../utils/routerPath'
 
 const reactModal = document.querySelector('#react-modals')
 
 const Modal = (props) => {
-  const { children, clearCounstructorIngredients } = props
-  const dispatch = useAppDispatch()
+  const { children } = props
+  const navigate = useNavigate()
 
   function closeModal() {
-    dispatch({ type: CLOSE_MODAL })
-    clearCounstructorIngredients()
+    navigate(homePagePath)
   }
 
   useEffect(() => {
@@ -49,7 +48,6 @@ Modal.defaultProps = {
 
 Modal.propTypes = {
   children: PropTypes.element.isRequired,
-  clearCounstructorIngredients: PropTypes.func.isRequired,
 }
 
 export default Modal

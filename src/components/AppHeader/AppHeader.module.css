@@ -32,3 +32,28 @@
   justify-content: center;
   align-items: center;
 }
+
+.tab {
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  z-index: 10;
+  gap: 8px;
+}
+
+.tab:nth-child(1) {
+  padding: 16px 20px 16px 0;
+}
+/* 
+.tab a {
+  color: #8585ad;
+} */
+
+.link {
+  color: #8585ad;
+}
+
+.linkActive {
+  color: #f2f2f3;
+}

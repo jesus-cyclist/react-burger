@@ -13,8 +13,6 @@ import {
 } from '../../services/actions/userData'
 import { useDispatch } from 'react-redux'
 import { request } from '../../utils/request'
-import { useAppSelector } from '../../hooks/hooks'
-import { homePagePath } from '../../utils/routerPath'
 
 const Register = () => {
   const [registerData, setRegisterData] = useState({
@@ -25,9 +23,6 @@ const Register = () => {
   })
 
   const dispatch = useDispatch()
-  const { isAuthenticated } = useAppSelector(
-    (state) => state.rootReducer.profileData
-  )
 
   const registerButtonClickHandler = () => {
     const requestObj = {
@@ -51,8 +46,6 @@ const Register = () => {
     }
     dispatch(request(requestObj))
   }
-
-  if (isAuthenticated) return <Navigate to={homePagePath} replace />
 
   const onIconClick = () => showPassword(registerData, setRegisterData)
 

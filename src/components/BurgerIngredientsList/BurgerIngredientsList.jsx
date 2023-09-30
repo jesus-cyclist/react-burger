@@ -1,10 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import style from './BurgerIngredientsList.module.css'
 import BurgerIngredientsSection from '../BurgerIngredientsSection/BurgerIngredientsSection'
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
+import { useAppDispatch } from '../../hooks/hooks'
 import { SCROLL } from '../../services/actions/activeTab'
-import Modal from '../Modal/Modal'
-import IngredientDetails from '../IngredientDetails/IngredientDetails'
 
 function scrollHandler() {
   const bun = document.getElementById('bun')
@@ -25,10 +23,6 @@ function scrollHandler() {
 }
 
 const BurgerIngredientsList = () => {
-  const [modalIngredient, setModalIngredient] = useState(null)
-  const { isModalActive, modalType } = useAppSelector(
-    (state) => state.rootReducer.modal
-  )
   const dispatch = useAppDispatch()
   const title = ['Булки', 'Соусы', 'Начинки']
 
@@ -38,17 +32,8 @@ const BurgerIngredientsList = () => {
       onScroll={(e) => dispatch({ type: SCROLL, distance: scrollHandler() })}
     >
       {title.map((item) => (
-        <BurgerIngredientsSection
-          key={item}
-          title={item}
-          setModalIngredient={setModalIngredient}
-        />
+        <BurgerIngredientsSection key={item} title={item} />
       ))}
-      {isModalActive && modalType === 'ingredient' && (
-        <Modal>
-          <IngredientDetails data={modalIngredient} />
-        </Modal>
-      )}
     </ul>
   )
 }

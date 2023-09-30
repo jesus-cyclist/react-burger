@@ -64,6 +64,12 @@ const initialState = {
     success: false,
     response: '',
   },
+  updateUserData: {
+    request: false,
+    failed: false,
+    success: false,
+    response: '',
+  },
 }
 
 export const userDataReducer = (state = initialState, action) => {
@@ -302,6 +308,40 @@ export const userDataReducer = (state = initialState, action) => {
           response: action.payload,
         },
         isAuthenticated: true,
+      }
+    }
+    case UPDATE_USER_DATA_REQUEST: {
+      return {
+        ...state,
+        updateUserData: {
+          ...state.updateUserData,
+          request: true,
+          failed: false,
+          success: false,
+          response: '',
+        },
+      }
+    }
+
+    case UPDATE_USER_DATA_FAILED: {
+      return {
+        ...state,
+        updateUserData: {
+          ...state.updateUserData,
+          request: false,
+          failed: true,
+        },
+      }
+    }
+    case UPDATE_USER_DATA_SUCCESS: {
+      return {
+        ...state,
+        updateUserData: {
+          ...state.updateUserData,
+          request: false,
+          success: true,
+          response: action.payload.user,
+        },
       }
     }
 

@@ -9,7 +9,7 @@ const BurgerIngredientsSection = (props) => {
     (state) => state.rootReducer.ingredientsMenu.ingredients
   )
 
-  const { title, setModalIngredient } = props
+  const { title } = props
 
   const list = { Булки: 'bun', Соусы: 'sauce', Начинки: 'main' }
   const sortedData = useMemo(
@@ -22,11 +22,7 @@ const BurgerIngredientsSection = (props) => {
       <h2 className={style.title}>{title}</h2>
       <div className={style.list}>
         {sortedData.map((item) => (
-          <BurgerIngredientsItem
-            key={item._id}
-            item={item}
-            setModalIngredient={setModalIngredient}
-          />
+          <BurgerIngredientsItem key={item._id} item={item} />
         ))}
       </div>
     </li>

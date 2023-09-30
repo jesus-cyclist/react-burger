@@ -13,11 +13,7 @@ import {
 } from '../../services/actions/userData'
 import { useDispatch } from 'react-redux'
 import { request } from '../../utils/request'
-import {
-  homePagePath,
-  registerPath,
-  forgotPasswordPath,
-} from '../../utils/routerPath'
+import { registerPath, forgotPasswordPath } from '../../utils/routerPath'
 import { useAppSelector } from '../../hooks/hooks'
 
 const Login = () => {
@@ -28,9 +24,6 @@ const Login = () => {
   })
 
   const dispatch = useDispatch()
-  const { isAuthenticated } = useAppSelector(
-    (state) => state.rootReducer.profileData
-  )
 
   const loginButtonClickHandler = () => {
     const requestObj = {
@@ -53,8 +46,6 @@ const Login = () => {
     }
     dispatch(request(requestObj))
   }
-
-  if (isAuthenticated) return <Navigate to={homePagePath} replace />
 
   const onIconClick = () => showPassword(loginData, setLoginData)
 

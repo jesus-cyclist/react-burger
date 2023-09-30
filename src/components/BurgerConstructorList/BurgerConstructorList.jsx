@@ -5,22 +5,22 @@ import {
   CurrencyIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import style from './BurgerConstructorList.module.css'
-import OrderDetails from '../OrderDetails/OrderDetails'
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks'
-import { OPEN_MODAL } from '../../services/actions/modal'
 import update from 'immutability-helper'
-import Modal from '../Modal/Modal'
-import { CLEAR_CONSTRUCTOR } from '../../services/actions/constructorList'
+import { NavLink, useLocation } from 'react-router-dom'
+import { loginPath, orderPath } from '../../utils/routerPath'
 
 const BurgerConstructorList = () => {
   const [totalAmount, setTotalAmount] = useState(0)
+  const { isAuthenticated } = useAppSelector(
+    (state) => state.rootReducer.profileData
+  )
   const dispatch = useAppDispatch()
   const { bun, filling } = useAppSelector(
     (state) => state.rootReducer.constructorList
   )
-  const { isModalActive, modalType } = useAppSelector(
-    (state) => state.rootReducer.modal
-  )
+
+  const location = useLocation()
 
   const [fill, setFill] = useState()
   useEffect(() => setFill(filling), [filling])
@@ -44,10 +44,6 @@ const BurgerConstructorList = () => {
         : 0
     setTotalAmount(bunCost + fillingCost)
   }, [bun, filling])
-
-  function clearCounstructorIngredients() {
-    dispatch({ type: CLEAR_CONSTRUCTOR })
-  }
 
   return (
     <div className={style.list}>
@@ -100,25 +96,15 @@ const BurgerConstructorList = () => {
               <span className={style.totalCost}>{totalAmount}</span>
               <CurrencyIcon type="primary" />
             </div>
-            <Button
-              htmlType="submit"
-              type="primary"
-              size="large"
-              onClick={() => {
-                dispatch({
-                  type: OPEN_MODAL,
-                  modalType: 'order',
-                })
-              }}
+            <NavLink
+              to={isAuthenticated ? orderPath : loginPath}
+              state={isAuthenticated && { orderLocation: location }}
             >
-              Оформить заказ
-            </Button>
+              <Button htmlType="submit" type="primary" size="large">
+                Оформить заказ
+              </Button>
+            </NavLink>
           </div>
-          {isModalActive && modalType === 'order' && (
-            <Modal clearCounstructorIngredients={clearCounstructorIngredients}>
-              <OrderDetails />
-            </Modal>
-          )}
         </>
       )}
     </div>

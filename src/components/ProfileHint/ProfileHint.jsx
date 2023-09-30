@@ -1,9 +1,5 @@
 import React from 'react'
-import {
-  SET_EXIT_PROFILE_ACTIVE,
-  SET_PROFILE_DATA_ACTIVE,
-  SET_ORDERS_LIST_ACTIVE,
-} from '../../utils/profileNav'
+import PropTypes from 'prop-types'
 import styles from './ProfileHint.module.css'
 
 const ProfileHint = (props) => {
@@ -17,6 +13,10 @@ const ProfileHint = (props) => {
   }
 
   return <span className={styles.hint}>{hint[activeTab]}</span>
+}
+
+ProfileHint.propTypes = {
+  activeTab: PropTypes.string.isRequired,
 }
 
 export default ProfileHint

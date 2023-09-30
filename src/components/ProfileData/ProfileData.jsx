@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
 import styles from './ProfileData.module.css'
-import { Input } from '@ya.praktikum/react-developer-burger-ui-components'
+import {
+  Button,
+  Input,
+} from '@ya.praktikum/react-developer-burger-ui-components'
 import { useAppSelector } from '../../hooks/hooks'
 import { useDispatch } from 'react-redux'
 import { request } from '../../utils/request'
@@ -8,6 +11,9 @@ import {
   GET_USER_DATA_FAILED,
   GET_USER_DATA_REQUEST,
   GET_USER_DATA_SUCCESS,
+  UPDATE_USER_DATA_FAILED,
+  UPDATE_USER_DATA_REQUEST,
+  UPDATE_USER_DATA_SUCCESS,
 } from '../../services/actions/userData'
 import Cookies from 'js-cookie'
 import { accessToken } from '../../utils/token'
@@ -59,11 +65,6 @@ const ProfileData = () => {
       })
   }, [response])
 
-  function onIconClick(inputType, ref) {
-    setEditInput(inputType)
-    setTimeout(() => ref.current.focus(), 0)
-  }
-
   useEffect(() => {
     function escapeHandler(event) {
       setEditInput(null)
@@ -75,8 +76,43 @@ const ProfileData = () => {
     }
   }, [])
 
+  function onIconClick(inputType, ref) {
+    setEditInput(inputType)
+    setTimeout(() => ref.current.focus(), 0)
+  }
+
+  const saveNewUserDataClickHandler = () => {
+    if (
+      response.name !== currentProfileData.name ||
+      response.email !== currentProfileData.login
+    ) {
+      const token = Cookies.get(accessToken)
+      const requestObj = {
+        routing: `auth/user`,
+        action: {
+          failed: UPDATE_USER_DATA_FAILED,
+          request: UPDATE_USER_DATA_REQUEST,
+          success: UPDATE_USER_DATA_SUCCESS,
+        },
+        data: {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+          },
+          body: JSON.stringify({
+            email: currentProfileData.login,
+            name: currentProfileData.name,
+          }),
+        },
+      }
+      dispatch(request(requestObj))
+    }
+    alert('ничего не поменял')
+  }
+
   return (
-    <main className="">
+    <main className={styles.main}>
       <div className={styles.nameWrapper}>
         <Input
           ref={nameRef}
@@ -128,6 +164,14 @@ const ProfileData = () => {
           disabled={editInput === 'password' ? false : true}
         />
       </div>
+      <Button
+        htmlType="submit"
+        type="primary"
+        size="large"
+        onClick={saveNewUserDataClickHandler}
+      >
+        Сохранить
+      </Button>
     </main>
   )
 }

@@ -1,15 +1,22 @@
 import React from 'react'
 import { Navigate } from 'react-router-dom'
 import { useAppSelector } from '../../hooks/hooks'
-import { loginPath } from '../../utils/routerPath'
+import { homePagePath, loginPath } from '../../utils/routerPath'
 
-const ProtectedRoute = (props) => {
-  const { element } = props
+const ProtectedRoute = ({ onlyAuth = false, component }) => {
   const { isAuthenticated } = useAppSelector(
     (state) => state.rootReducer.profileData
   )
 
-  return isAuthenticated ? element : <Navigate to={loginPath} replace />
+  if (!onlyAuth && isAuthenticated) {
+    return <Navigate to={homePagePath} replace />
+  }
+
+  if (onlyAuth && !isAuthenticated) {
+    return <Navigate to={loginPath} replace />
+  }
+
+  return component
 }
 
 export default ProtectedRoute

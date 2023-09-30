@@ -1,62 +1,99 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Logo } from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './AppHeader.module.css'
 import {
-  SET_PROFILE_ACTIVE,
-  SET_CONSTUCTOR_TAB_ACTIVE,
-  SET_ORDERS_LIST_ACTIVE,
+  PROFILE_TAB,
+  CONSTRUCTOR_TAB,
+  ORDERS_LIST_TAB,
 } from '../../utils/menuNav'
-import AppHeaderItem from '../AppHeaderItem/AppHeaderItem'
-import { NavLink } from 'react-router-dom'
-import { homePagePath } from '../../utils/routerPath'
-import Cookies from 'js-cookie' //я не могу расположить данный модуль в App мне выдает ошибку/ в чем проблема?
-import { useAppDispatch } from '../../hooks/hooks'
-import { refreshToken } from '../../utils/token'
-import { request } from '../../utils/request'
+import { NavLink, useLocation } from 'react-router-dom'
+import { homePagePath, profilePath, ordersList } from '../../utils/routerPath'
 import {
-  CHECK_REFRESH_TOKEN_FAILED,
-  CHECK_REFRESH_TOKEN_REQUEST,
-  CHECK_REFRESH_TOKEN_SUCCESS,
-} from '../../services/actions/userData'
+  BurgerIcon,
+  ListIcon,
+  ProfileIcon,
+} from '@ya.praktikum/react-developer-burger-ui-components'
+import { useAppSelector } from '../../hooks/hooks'
 
 const AppHeader = () => {
-  const dispatch = useAppDispatch()
-  // useEffect(() => {
-  //   if (Cookies.get(refreshToken)) {
-  //     const requestObj = {
-  //       routing: `auth/token`,
-  //       action: {
-  //         failed: CHECK_REFRESH_TOKEN_FAILED,
-  //         request: CHECK_REFRESH_TOKEN_REQUEST,
-  //         success: CHECK_REFRESH_TOKEN_SUCCESS,
-  //       },
-  //       data: {
-  //         method: 'POST',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //         },
-  //         body: JSON.stringify({
-  //           token: Cookies.get(refreshToken),
-  //         }),
-  //       },
-  //     }
+  const [activeTab, setActiveTab] = useState(null)
 
-  //     dispatch(request(requestObj))
-  //   }
-  // }, [])
+  const { isAuthenticated } = useAppSelector(
+    (state) => state.rootReducer.profileData
+  )
+
+  const location = useLocation()
+
+  useEffect(() => {
+    switch (location.pathname) {
+      case homePagePath:
+        setActiveTab(CONSTRUCTOR_TAB)
+        break
+      case ordersList:
+        setActiveTab(ORDERS_LIST_TAB)
+        break
+      case profilePath:
+        setActiveTab(PROFILE_TAB)
+        break
+      default:
+        break
+    }
+  }, [location])
+
+  function isActive(tab) {
+    return activeTab === tab ? 'primary' : 'secondary'
+  }
 
   return (
     <header className={styles.header}>
       <div className={styles.wrapper}>
         <nav className={styles.navigation}>
           <ul className={styles.menu}>
-            <AppHeaderItem tabValue={SET_CONSTUCTOR_TAB_ACTIVE} />
-            <AppHeaderItem tabValue={SET_ORDERS_LIST_ACTIVE} />
+            <li className={styles.tab}>
+              <BurgerIcon type={isActive(CONSTRUCTOR_TAB)} />
+              <NavLink
+                className={({ isActive }) =>
+                  isActive ? styles.linkActive : styles.link
+                }
+                to={homePagePath}
+              >
+                {'Конструктор'}
+              </NavLink>
+            </li>
+
+            <li className={styles.tab}>
+              <ListIcon type={isActive(ORDERS_LIST_TAB)} />
+              <NavLink
+                className={({ isActive }) =>
+                  isActive ? styles.linkActive : styles.link
+                }
+                to={ordersList}
+              >
+                {'Лента заказов'}
+              </NavLink>
+            </li>
           </ul>
+
           <NavLink to={homePagePath} className={styles.logo}>
             <Logo />
           </NavLink>
-          <AppHeaderItem tabValue={SET_PROFILE_ACTIVE} />
+
+          <div className={styles.tab}>
+            <ProfileIcon type={isActive(PROFILE_TAB)} />
+            <NavLink
+              className={({ isActive }) =>
+                isActive ? styles.linkActive : styles.link
+              }
+              to={profilePath}
+            >
+              {'Личный кабинет'}
+            </NavLink>
+            {isAuthenticated ? (
+              <span>Вы авторизированы</span>
+            ) : (
+              <span>Вы вышли</span>
+            )}
+          </div>
         </nav>
       </div>
     </header>
