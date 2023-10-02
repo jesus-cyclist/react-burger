@@ -5,26 +5,28 @@ import {
   Input,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Link, Navigate, useLocation } from 'react-router-dom'
-import { showPassword } from '../../utils/passwordIconClick'
-import {
-  GET_RESET_PASSWORD_FAILED,
-  GET_RESET_PASSWORD_REQUEST,
-  GET_RESET_PASSWORD_SUCCESS,
-} from '../../services/actions/userData'
 import { useDispatch } from 'react-redux'
-import { request } from '../../utils/request'
 import { forgotPasswordPath } from '../../utils/routerPath'
+import { useForm } from '../../hooks/useForm'
+import {
+  PASSWORD,
+  CONFIRMATION_CODE,
+} from '../../constants/inputType/inputType'
+import { fetchResetPassword } from '../../services/reducers/user'
 
 function validateInput(arrayOfValue) {
-  return arrayOfValue.find((item) => (item.length === 0 ? false : true))
+  const nonValidate = arrayOfValue.filter((item) => item.length === 0)
+  return nonValidate.length ? false : true
 }
 
 const ResetPassword = () => {
-  const [resetData, setResetData] = useState({
-    password: '',
-    passwordType: 'password',
-    confirmationCode: '',
+  const { values, handleChange, setValues } = useForm({
+    [PASSWORD]: 'qwerty',
+    [CONFIRMATION_CODE]: '123345',
   })
+
+  const [passwordType, setPasswordType] = useState(PASSWORD)
+
   const location = useLocation()
 
   const dispatch = useDispatch()
@@ -33,72 +35,59 @@ const ResetPassword = () => {
     return <Navigate to={forgotPasswordPath} />
   }
 
-  const onIconClick = () => showPassword(resetData, setResetData)
-
-  const clickHadler = () => {
-    const requestObj = {
-      routing: 'password-reset',
-      action: {
-        failed: GET_RESET_PASSWORD_FAILED,
-        request: GET_RESET_PASSWORD_REQUEST,
-        success: GET_RESET_PASSWORD_SUCCESS,
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
       },
-      data: {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          password: resetData.password,
-          token: resetData.confirmationCode,
-        }),
-      },
+      body: JSON.stringify({
+        password: values[PASSWORD],
+        token: values[CONFIRMATION_CODE],
+      }),
     }
 
-    validateInput([resetData.password, resetData.confirmationCode]) &&
-      dispatch(request(requestObj))
+    validateInput([values[PASSWORD], values[CONFIRMATION_CODE]]) &&
+      dispatch(fetchResetPassword(requestOptions))
   }
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.loginContainer}>
-        <h2 className={styles.title}>Вход</h2>
-        <div className={styles.passwordWrapper}>
-          <Input
-            value={resetData.password}
-            onChange={(e) =>
-              setResetData({ ...resetData, password: e.target.value })
-            }
-            placeholder={'Введите новый пароль'}
-            type={resetData.passwordType}
-            icon={
-              resetData.passwordType === 'password' ? 'ShowIcon' : 'HideIcon'
-            }
-            onIconClick={onIconClick}
-          />
-        </div>
-        <div className={styles.confirmationCodeWrapper}>
-          <Input
-            value={resetData.confirmationCode}
-            onChange={(e) =>
-              setResetData({ ...resetData, confirmationCode: e.target.value })
-            }
-            placeholder={'Введите код из письма'}
-            type={'text'}
-          />
-        </div>
+        <form onSubmit={handleSubmit}>
+          <h2 className={styles.title}>Вход</h2>
+          <div className={styles.passwordWrapper}>
+            <Input
+              value={values[PASSWORD]}
+              onChange={handleChange}
+              placeholder={'Введите новый пароль'}
+              type={passwordType}
+              icon={passwordType === PASSWORD ? 'ShowIcon' : 'HideIcon'}
+              onIconClick={() =>
+                passwordType === PASSWORD
+                  ? setPasswordType('text')
+                  : setPasswordType(PASSWORD)
+              }
+              name={PASSWORD}
+            />
+          </div>
+          <div className={styles.confirmationCodeWrapper}>
+            <Input
+              value={values[CONFIRMATION_CODE]}
+              onChange={handleChange}
+              placeholder={'Введите код из письма'}
+              type={'text'}
+              name={CONFIRMATION_CODE}
+            />
+          </div>
 
-        <div className={styles.buttonWrapper}>
-          <Button
-            htmlType="button"
-            type="primary"
-            size="medium"
-            onClick={clickHadler}
-          >
-            Восстановить
-          </Button>
-        </div>
-
+          <div className={styles.buttonWrapper}>
+            <Button htmlType="submit" type="primary" size="medium">
+              Восстановить
+            </Button>
+          </div>
+        </form>
         <div className={styles.loginBlock}>
           <span className={styles.linkHint}>Вспомнили пароль?</span>
           <Link to={'/login'} className={styles.link}>

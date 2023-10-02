@@ -12,9 +12,7 @@ import { loginPath, orderPath } from '../../utils/routerPath'
 
 const BurgerConstructorList = () => {
   const [totalAmount, setTotalAmount] = useState(0)
-  const { isAuthenticated } = useAppSelector(
-    (state) => state.rootReducer.profileData
-  )
+  const { isAuthenticated } = useAppSelector((state) => state.rootReducer.user)
   const dispatch = useAppDispatch()
   const { bun, filling } = useAppSelector(
     (state) => state.rootReducer.constructorList

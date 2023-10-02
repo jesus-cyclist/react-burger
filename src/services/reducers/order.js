@@ -1,46 +1,35 @@
-import {
-  GET_ORDER_FAILED,
-  GET_ORDER_REQUEST,
-  GET_ORDER_SUCCESS,
-} from '../actions/order'
+import { createSlice } from '@reduxjs/toolkit'
+import { createAsyncAction } from '../../utils/request'
 
-const initialState = {
-  request: false,
-  failed: false,
-  success: false,
-  response: null,
-}
+export const fetchOrderData = createAsyncAction({
+  prefix: 'order',
+  route: 'orders',
+})
 
-export const orderReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case GET_ORDER_REQUEST: {
-      return {
-        ...state,
-        request: true,
-        failed: false,
-        success: false,
-        response: null,
-      }
-    }
-    case GET_ORDER_SUCCESS: {
-      return {
-        ...state,
-        request: false,
-        success: true,
-        response: action.payload,
-      }
-    }
+const orderSlice = createSlice({
+  name: 'order',
+  initialState: {
+    data: null,
+    loading: false,
+    error: false,
+  },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchOrderData.pending, (state) => {
+        state.loading = true
+        state.data = null
+        state.loading = false
+      })
+      .addCase(fetchOrderData.fulfilled, (state, action) => {
+        state.loading = false
+        state.data = action.payload
+      })
+      .addCase(fetchOrderData.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.error.message
+      })
+  },
+})
 
-    case GET_ORDER_FAILED: {
-      return {
-        ...state,
-        request: false,
-        failed: true,
-      }
-    }
-
-    default: {
-      return state
-    }
-  }
-}
+export default orderSlice.reducer

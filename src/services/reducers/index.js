@@ -1,14 +1,14 @@
 import { combineReducers } from 'redux'
-import { ingredientsReducer } from './IngredientsMenu'
+import ingredientsReducer from './ingredients'
 import { constructorReducer } from './constructorList'
 import { activeTabReducer } from './activeTab'
-import { userDataReducer } from './userData'
-import { orderReducer } from './order'
+import userReduser from './user'
+import orderReducer from './order'
 
 export const rootReducer = combineReducers({
-  ingredientsMenu: ingredientsReducer,
+  ingredients: ingredientsReducer,
   constructorList: constructorReducer,
   activeTab: activeTabReducer,
-  profileData: userDataReducer,
+  user: userReduser,
   order: orderReducer,
 })

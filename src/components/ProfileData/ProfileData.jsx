@@ -6,62 +6,52 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useAppSelector } from '../../hooks/hooks'
 import { useDispatch } from 'react-redux'
-import { request } from '../../utils/request'
-import {
-  GET_USER_DATA_FAILED,
-  GET_USER_DATA_REQUEST,
-  GET_USER_DATA_SUCCESS,
-  UPDATE_USER_DATA_FAILED,
-  UPDATE_USER_DATA_REQUEST,
-  UPDATE_USER_DATA_SUCCESS,
-} from '../../services/actions/userData'
 import Cookies from 'js-cookie'
 import { accessToken } from '../../utils/token'
+import { useForm } from '../../hooks/useForm'
+import { EMAIL, PASSWORD, NAME } from '../../constants/inputType/inputType'
+import {
+  fetchUserData,
+  fetchUpdateUserData,
+} from '../../services/reducers/user'
 
 const ProfileData = () => {
+  const { values, handleChange, setValues } = useForm({
+    [EMAIL]: '',
+    [PASSWORD]: '',
+    [NAME]: '',
+  })
+
   const nameRef = useRef(null)
   const loginRef = useRef(null)
   const passwordRef = useRef(null)
-  const [currentProfileData, setCurrentProfileData] = useState({
-    login: '',
-    password: '',
-    name: '',
-  })
 
   const [editInput, setEditInput] = useState(null)
 
-  const { response } = useAppSelector(
-    (state) => state.rootReducer.profileData.userData
+  const response = useAppSelector(
+    (state) => state.rootReducer.user.userData.data
   )
 
   const dispatch = useDispatch()
 
   useEffect(() => {
     const token = Cookies.get(accessToken)
-    const requestObj = {
-      routing: `auth/user`,
-      action: {
-        failed: GET_USER_DATA_FAILED,
-        request: GET_USER_DATA_REQUEST,
-        success: GET_USER_DATA_SUCCESS,
-      },
-      data: {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token,
-        },
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
       },
     }
-    dispatch(request(requestObj))
+    dispatch(fetchUserData(requestOptions))
   }, [])
 
   useEffect(() => {
     response &&
-      setCurrentProfileData({
-        ...currentProfileData,
-        login: response.email,
-        name: response.name,
+      setValues({
+        ...values,
+        [EMAIL]: response.email,
+        [NAME]: response.name,
       })
   }, [response])
 
@@ -81,97 +71,73 @@ const ProfileData = () => {
     setTimeout(() => ref.current.focus(), 0)
   }
 
-  const saveNewUserDataClickHandler = () => {
-    if (
-      response.name !== currentProfileData.name ||
-      response.email !== currentProfileData.login
-    ) {
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (response.name !== values[NAME] || response.email !== values[EMAIL]) {
       const token = Cookies.get(accessToken)
-      const requestObj = {
-        routing: `auth/user`,
-        action: {
-          failed: UPDATE_USER_DATA_FAILED,
-          request: UPDATE_USER_DATA_REQUEST,
-          success: UPDATE_USER_DATA_SUCCESS,
+      const requestOptions = {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token,
         },
-        data: {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + token,
-          },
-          body: JSON.stringify({
-            email: currentProfileData.login,
-            name: currentProfileData.name,
-          }),
-        },
+        body: JSON.stringify({
+          email: values[EMAIL],
+          name: values[NAME],
+        }),
       }
-      dispatch(request(requestObj))
+      dispatch(fetchUpdateUserData(requestOptions))
+    } else {
+      alert('ничего не поменял')
     }
-    alert('ничего не поменял')
   }
 
   return (
     <main className={styles.main}>
-      <div className={styles.nameWrapper}>
-        <Input
-          ref={nameRef}
-          value={currentProfileData.name}
-          onChange={(e) =>
-            setCurrentProfileData({
-              ...currentProfileData,
-              name: e.target.value,
-            })
-          }
-          onIconClick={(e) => onIconClick('name', nameRef)}
-          placeholder={'Имя'}
-          type={'text'}
-          icon={'EditIcon'}
-          disabled={editInput === 'name' ? false : true}
-        />
-      </div>
-      <div className={styles.loginWrapper}>
-        <Input
-          ref={loginRef}
-          value={currentProfileData.login}
-          onChange={(e) =>
-            setCurrentProfileData({
-              ...currentProfileData,
-              login: e.target.value,
-            })
-          }
-          onIconClick={() => onIconClick('login', loginRef)}
-          placeholder={'Логин'}
-          type={'text'}
-          icon={'EditIcon'}
-          disabled={editInput === 'login' ? false : true}
-        />
-      </div>
-      <div className={styles.passwordWrapper}>
-        <Input
-          ref={passwordRef}
-          value={currentProfileData.password}
-          onChange={(e) =>
-            setCurrentProfileData({
-              ...currentProfileData,
-              password: e.target.value,
-            })
-          }
-          onIconClick={() => onIconClick('password', passwordRef)}
-          placeholder={'Пароль'}
-          type={editInput === 'password' ? 'text' : 'password'}
-          icon={'EditIcon'}
-          disabled={editInput === 'password' ? false : true}
-        />
-      </div>
-      <Button
-        htmlType="submit"
-        type="primary"
-        size="large"
-        onClick={saveNewUserDataClickHandler}
-      >
-        Сохранить
-      </Button>
+      <form onSubmit={handleSubmit}>
+        <div className={styles.nameWrapper}>
+          <Input
+            ref={nameRef}
+            value={values[NAME]}
+            onChange={handleChange}
+            onIconClick={(e) => onIconClick('name', nameRef)}
+            placeholder={'Имя'}
+            type={'text'}
+            icon={'EditIcon'}
+            disabled={editInput === 'name' ? false : true}
+            name={NAME}
+          />
+        </div>
+        <div className={styles.loginWrapper}>
+          <Input
+            ref={loginRef}
+            value={values[EMAIL]}
+            onChange={handleChange}
+            onIconClick={() => onIconClick('login', loginRef)}
+            placeholder={'Логин'}
+            type={'text'}
+            icon={'EditIcon'}
+            disabled={editInput === 'login' ? false : true}
+            name={EMAIL}
+          />
+        </div>
+        <div className={styles.passwordWrapper}>
+          <Input
+            ref={passwordRef}
+            value={values[PASSWORD]}
+            onChange={handleChange}
+            onIconClick={() => onIconClick('password', passwordRef)}
+            placeholder={'Пароль'}
+            type={editInput === 'password' ? 'text' : 'password'}
+            icon={'EditIcon'}
+            disabled={editInput === 'password' ? false : true}
+            name={PASSWORD}
+          />
+        </div>
+        <Button htmlType="submit" type="primary" size="large">
+          Сохранить
+        </Button>
+      </form>
     </main>
   )
 }

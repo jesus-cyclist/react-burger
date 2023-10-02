@@ -12,12 +12,7 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute'
 import Cookies from 'js-cookie'
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
 import { refreshToken } from '../../utils/token'
-import { request } from '../../utils/request'
-import {
-  CHECK_REFRESH_TOKEN_FAILED,
-  CHECK_REFRESH_TOKEN_REQUEST,
-  CHECK_REFRESH_TOKEN_SUCCESS,
-} from '../../services/actions/userData'
+
 import IngredientDetails from '../IngredientDetails/IngredientDetails'
 import {
   homePagePath,
@@ -32,52 +27,30 @@ import {
 } from '../../utils/routerPath'
 import Modal from '../Modal/Modal'
 import OrderDetails from '../OrderDetails/OrderDetails'
-import {
-  GET_ITEMS_REQUEST,
-  GET_ITEMS_SUCCESS,
-  GET_ITEMS_FAILED,
-} from '../../services/actions/ingredientsMenu'
+import { fetchIngredientsData } from '../../services/reducers/ingredients'
+import { fetchCheckRefreshToken } from '../../services/reducers/user'
 
 function App() {
   const dispatch = useAppDispatch()
   const location = useLocation()
   const state = location.state
-  const { isAuthenticated } = useAppSelector(
-    (state) => state.rootReducer.profileData
-  )
+  const { isAuthenticated } = useAppSelector((state) => state.rootReducer.user)
 
   useEffect(() => {
-    const requestObj = {
-      routing: 'ingredients',
-      action: {
-        request: GET_ITEMS_REQUEST,
-        success: GET_ITEMS_SUCCESS,
-        failed: GET_ITEMS_FAILED,
-      },
-    }
-
-    dispatch(request(requestObj))
+    dispatch(fetchIngredientsData())
 
     if (Cookies.get(refreshToken) && !isAuthenticated) {
-      const requestObj = {
-        routing: `auth/token`,
-        action: {
-          failed: CHECK_REFRESH_TOKEN_FAILED,
-          request: CHECK_REFRESH_TOKEN_REQUEST,
-          success: CHECK_REFRESH_TOKEN_SUCCESS,
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-        data: {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            token: Cookies.get(refreshToken),
-          }),
-        },
+        body: JSON.stringify({
+          token: Cookies.get(refreshToken),
+        }),
       }
 
-      dispatch(request(requestObj))
+      dispatch(fetchCheckRefreshToken(requestOptions))
     }
   }, [])
 

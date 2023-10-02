@@ -1,20 +1,17 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import BurgerIngredients from '../../components/BurgerIngredients/BurgerIngredients'
 import BurgerConstructor from '../../components/BurgerConstructor/BurgerConstructor'
-import { useAppDispatch } from '../../hooks/hooks'
 import { useAppSelector } from '../../hooks/hooks'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import styles from './Home.module.css'
 
 function HomePage() {
-  const { downloadedSuccess } = useAppSelector(
-    (state) => state.rootReducer.ingredientsMenu
-  )
+  const data = useAppSelector((state) => state.rootReducer.ingredients.data)
 
   return (
     <div className={styles.wrapper}>
-      {downloadedSuccess && (
+      {data && (
         <DndProvider backend={HTML5Backend}>
           <BurgerIngredients />
           <BurgerConstructor />

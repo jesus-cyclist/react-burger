@@ -4,103 +4,91 @@ import {
   Button,
   Input,
 } from '@ya.praktikum/react-developer-burger-ui-components'
-import { Link, Navigate } from 'react-router-dom'
-import { showPassword } from '../../utils/passwordIconClick'
-import {
-  GET_REGISTER_USER_FAILED,
-  GET_REGISTER_USER_REQUEST,
-  GET_REGISTER_USER_SUCCESS,
-} from '../../services/actions/userData'
+import { Link, useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { request } from '../../utils/request'
+import { useForm } from '../../hooks/useForm'
+import { EMAIL, PASSWORD, NAME } from '../../constants/inputType/inputType'
+import { fetchRegister } from '../../services/reducers/user'
 
 const Register = () => {
-  const [registerData, setRegisterData] = useState({
-    name: 'Semen',
-    password: 'qwerty',
-    passwordType: 'password',
-    email: 'semen@mail.ru',
+  const { values, handleChange, setValues } = useForm({
+    [EMAIL]: 'semen@mail.ru',
+    [PASSWORD]: 'qwerty',
+    [NAME]: 'Semen',
   })
+  const location = useLocation()
+  const [passwordType, setPasswordType] = useState(PASSWORD)
 
   const dispatch = useDispatch()
 
-  const registerButtonClickHandler = () => {
-    const requestObj = {
-      routing: 'auth/register',
-      action: {
-        failed: GET_REGISTER_USER_FAILED,
-        request: GET_REGISTER_USER_REQUEST,
-        success: GET_REGISTER_USER_SUCCESS,
+  const handleSumbit = (e) => {
+    e.preventDefault()
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
       },
-      data: {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: registerData.email,
-          password: registerData.password,
-          name: registerData.name,
-        }),
-      },
+      body: JSON.stringify({
+        email: values[EMAIL],
+        password: values[PASSWORD],
+        name: values[NAME],
+      }),
     }
-    dispatch(request(requestObj))
-  }
 
-  const onIconClick = () => showPassword(registerData, setRegisterData)
+    dispatch(fetchRegister(requestOptions))
+  }
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.loginContainer}>
-        <h2 className={styles.title}>Регистрация</h2>
-        <div className={styles.nameWrapper}>
-          <Input
-            value={registerData.name}
-            onChange={(e) =>
-              setRegisterData({ ...registerData, name: e.target.value })
-            }
-            placeholder={'Имя'}
-            type={'text'}
-          />
-        </div>
-        <div className={styles.emailWrapper}>
-          <Input
-            value={registerData.email}
-            onChange={(e) =>
-              setRegisterData({ ...registerData, email: e.target.value })
-            }
-            placeholder={'E-mail'}
-            type={'email'}
-          />
-        </div>
-        <div className={styles.passwordWrapper}>
-          <Input
-            value={registerData.password}
-            onChange={(e) =>
-              setRegisterData({ ...registerData, password: e.target.value })
-            }
-            placeholder={'Пароль'}
-            type={registerData.passwordType}
-            icon={
-              registerData.passwordType === 'password' ? 'ShowIcon' : 'HideIcon'
-            }
-            onIconClick={onIconClick}
-          />
-        </div>
-        <div className={styles.buttonWrapper}>
-          <Button
-            htmlType="button"
-            type="primary"
-            size="medium"
-            onClick={registerButtonClickHandler}
-          >
-            Нажми на меня
-          </Button>
-        </div>
-
+        <form onSubmit={handleSumbit}>
+          <h2 className={styles.title}>Регистрация</h2>
+          <div className={styles.nameWrapper}>
+            <Input
+              value={values[NAME]}
+              onChange={handleChange}
+              placeholder={'Имя'}
+              type={'text'}
+              name={NAME}
+            />
+          </div>
+          <div className={styles.emailWrapper}>
+            <Input
+              value={values[EMAIL]}
+              onChange={handleChange}
+              placeholder={'E-mail'}
+              type={'email'}
+              name={EMAIL}
+            />
+          </div>
+          <div className={styles.passwordWrapper}>
+            <Input
+              value={values[PASSWORD]}
+              onChange={handleChange}
+              placeholder={'Пароль'}
+              type={passwordType}
+              icon={passwordType === PASSWORD ? 'ShowIcon' : 'HideIcon'}
+              onIconClick={() =>
+                passwordType === PASSWORD
+                  ? setPasswordType('text')
+                  : setPasswordType(PASSWORD)
+              }
+              name={PASSWORD}
+            />
+          </div>
+          <div className={styles.buttonWrapper}>
+            <Button htmlType="submit" type="primary" size="medium">
+              Нажми на меня
+            </Button>
+          </div>
+        </form>
         <div className={styles.loginBlock}>
           <span className={styles.linkHint}>Уже зарегистрированы?</span>
-          <Link to={'/login'} className={styles.link}>
+          <Link
+            to={'/login'}
+            className={styles.link}
+            state={{ from: location }}
+          >
             Войти
           </Link>
         </div>

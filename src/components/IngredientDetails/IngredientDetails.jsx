@@ -6,14 +6,14 @@ import { ThreeDots } from 'react-loader-spinner'
 
 const IngredientDetails = () => {
   const params = useParams()
-  const { ingredients } = useAppSelector(
-    (state) => state.rootReducer.ingredientsMenu
+  const ingredients = useAppSelector(
+    (state) => state.rootReducer.ingredients.data
   )
   const location = useLocation()
   const [ingredient, setIngredient] = useState(null)
 
   useEffect(() => {
-    if (params?.id) {
+    if (params?.id && ingredients) {
       const requiredId = params.id.slice(1)
       const requiredIngredient = ingredients.find(
         (item) => item._id === requiredId

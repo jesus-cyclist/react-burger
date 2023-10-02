@@ -1,19 +1,19 @@
 import React from 'react'
-import { Navigate } from 'react-router-dom'
+import { Navigate, useLocation } from 'react-router-dom'
 import { useAppSelector } from '../../hooks/hooks'
-import { homePagePath, loginPath } from '../../utils/routerPath'
+import { loginPath } from '../../utils/routerPath'
 
 const ProtectedRoute = ({ onlyAuth = false, component }) => {
-  const { isAuthenticated } = useAppSelector(
-    (state) => state.rootReducer.profileData
-  )
+  const { isAuthenticated } = useAppSelector((state) => state.rootReducer.user)
+  const location = useLocation()
+  const from = location.state?.from || '/'
 
   if (!onlyAuth && isAuthenticated) {
-    return <Navigate to={homePagePath} replace />
+    return <Navigate to={from} replace />
   }
 
   if (onlyAuth && !isAuthenticated) {
-    return <Navigate to={loginPath} replace />
+    return <Navigate to={loginPath} state={{ from: location }} replace />
   }
 
   return component

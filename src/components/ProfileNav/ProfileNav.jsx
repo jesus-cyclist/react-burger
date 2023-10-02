@@ -10,19 +10,18 @@ import ProfileHint from '../ProfileHint/ProfileHint'
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
 import { Navigate } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import { logout } from '../../services/reducers/user'
 
 const ProfileNav = (props) => {
   const { activeTab, onClickHandler } = props
   const dispatch = useAppDispatch()
-  const { isAuthenticated } = useAppSelector(
-    (state) => state.rootReducer.profileData
-  )
+  const { isAuthenticated } = useAppSelector((state) => state.rootReducer.user)
 
   const isTabActive = (linkValue) =>
     activeTab === linkValue ? `${styles.navlinkActive}` : `${styles.navlink}`
 
   const logoutClickHandler = () => {
-    dispatch({ type: LOGOUT_USER })
+    dispatch(logout())
   }
 
   if (!isAuthenticated) {
@@ -53,7 +52,6 @@ const ProfileNav = (props) => {
           </li>
           <li className={styles.navItem}>
             <button className={styles.exitButton} onClick={logoutClickHandler}>
-              {' '}
               Выход
             </button>
           </li>

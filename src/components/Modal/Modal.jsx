@@ -5,7 +5,6 @@ import ModalOverlay from '../ModalOverlay/ModalOverlay'
 import { createPortal } from 'react-dom'
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useNavigate } from 'react-router-dom'
-import { homePagePath } from '../../utils/routerPath'
 
 const reactModal = document.querySelector('#react-modals')
 
@@ -14,7 +13,7 @@ const Modal = (props) => {
   const navigate = useNavigate()
 
   function closeModal() {
-    navigate(homePagePath)
+    navigate(-1)
   }
 
   useEffect(() => {

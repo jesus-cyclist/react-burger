@@ -1,3 +1,5 @@
+import { createAsyncThunk } from '@reduxjs/toolkit'
+
 const path = 'https://norma.nomoreparties.space/api/'
 
 const checkResponse = (res) =>
@@ -6,29 +8,13 @@ const checkResponse = (res) =>
 const checkSuccess = (res) =>
   res && res.success ? res : Promise.reject(`Answer on success ${res}`)
 
-export const request = ({ routing, action, data = null }) => {
-  return function (dispatch) {
-    const { request, success, failed } = action
+export const createAsyncAction = ({ prefix, route }) => {
+  return createAsyncThunk(`${prefix}`, async (requestOptions = null) => {
+    const url = `${path}${route}`
 
-    dispatch({
-      type: request,
-    })
-
-    const url = `${path}${routing}`
-
-    fetch(url, data)
+    return fetch(url, requestOptions)
       .then(checkResponse)
       .then(checkSuccess)
-      .then((response) =>
-        dispatch({
-          type: success,
-          payload: response,
-        })
-      )
-      .catch((error) =>
-        dispatch({
-          type: failed,
-        })
-      )
-  }
+      .catch((error) => console.log(error))
+  })
 }

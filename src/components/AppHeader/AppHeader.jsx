@@ -18,9 +18,7 @@ import { useAppSelector } from '../../hooks/hooks'
 const AppHeader = () => {
   const [activeTab, setActiveTab] = useState(null)
 
-  const { isAuthenticated } = useAppSelector(
-    (state) => state.rootReducer.profileData
-  )
+  const { isAuthenticated } = useAppSelector((state) => state.rootReducer.user)
 
   const location = useLocation()
 

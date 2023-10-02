@@ -1,18 +1,15 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styles from './ForgotPassword.module.css'
 import {
   Button,
   Input,
 } from '@ya.praktikum/react-developer-burger-ui-components'
-import { Link, useNavigate } from 'react-router-dom'
-import { request } from '../../utils/request'
-import {
-  GET_FORGOT_PASSWORD_FAILED,
-  GET_FORGOT_PASSWORD_REQUEST,
-  GET_FORGOT_PASSWORD_SUCCESS,
-} from '../../services/actions/userData'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { resetPasswordPath, loginPath } from '../../utils/routerPath'
+import { useForm } from '../../hooks/useForm'
+import { EMAIL } from '../../constants/inputType/inputType'
+import { fetchForgotPassword } from '../../services/reducers/user'
 
 function validateEmail(mail) {
   return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)
@@ -21,28 +18,26 @@ function validateEmail(mail) {
 }
 
 const ForgotPassword = () => {
-  const [emailValue, setEmailValue] = useState('mama@mail.ru')
+  const { values, handleChange } = useForm({
+    [EMAIL]: 'semen@mail.ru',
+  })
+  const location = useLocation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const clickHadler = () => {
-    const requestObj = {
-      routing: 'password-reset',
-      action: {
-        failed: GET_FORGOT_PASSWORD_FAILED,
-        request: GET_FORGOT_PASSWORD_REQUEST,
-        success: GET_FORGOT_PASSWORD_SUCCESS,
+  const handleSumbit = (e) => {
+    e.preventDefault()
+
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
       },
-      data: {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: emailValue }),
-      },
+      body: JSON.stringify({ email: values[EMAIL] }),
     }
 
-    validateEmail(emailValue) && dispatch(request(requestObj))
+    validateEmail(values[EMAIL]) &&
+      dispatch(fetchForgotPassword(requestOptions))
     navigate(resetPasswordPath, { state: { from: 'fromForgotPassword' } })
   }
 
@@ -50,29 +45,30 @@ const ForgotPassword = () => {
     <div className={styles.wrapper}>
       <div className={styles.loginContainer}>
         <h2 className={styles.title}>Вход</h2>
-        <div className={styles.emailWrapper}>
-          <Input
-            value={emailValue}
-            onChange={(e) => setEmailValue(e.target.value)}
-            placeholder={'E-mail'}
-            type={'email'}
-          />
-        </div>
+        <form onSubmit={handleSumbit}>
+          <div className={styles.emailWrapper} onSubmit={handleSumbit}>
+            <Input
+              value={values[EMAIL]}
+              onChange={handleChange}
+              placeholder={'E-mail'}
+              type={EMAIL}
+              name={EMAIL}
+            />
+          </div>
 
-        <div className={styles.buttonWrapper}>
-          <Button
-            htmlType="button"
-            type="primary"
-            size="medium"
-            onClick={clickHadler}
-          >
-            Восстановить
-          </Button>
-        </div>
-
+          <div className={styles.buttonWrapper}>
+            <Button htmlType="submit" type="primary" size="medium">
+              Восстановить
+            </Button>
+          </div>
+        </form>
         <div className={styles.loginBlock}>
           <span className={styles.linkHint}>Вспомнили пароль?</span>
-          <Link to={loginPath} className={styles.link}>
+          <Link
+            to={loginPath}
+            className={styles.link}
+            state={{ from: location }}
+          >
             Войти
           </Link>
         </div>
