@@ -4,6 +4,7 @@ import { createAsyncAction } from '../../utils/request'
 export const fetchOrderData = createAsyncAction({
   prefix: 'order',
   route: 'orders',
+  method: 'POST',
 })
 
 const orderSlice = createSlice({

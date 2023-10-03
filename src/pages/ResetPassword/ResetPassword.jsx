@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './ResetPassword.module.css'
 import {
   Button,
@@ -31,21 +31,16 @@ const ResetPassword = () => {
 
   const dispatch = useDispatch()
 
-  if (!location.state) {
-    return <Navigate to={forgotPasswordPath} />
-  }
+  const from = localStorage.getItem('from')
+  from ? <Navigate to={forgotPasswordPath} /> : localStorage.removeItem('from')
 
   const handleSubmit = (e) => {
     e.preventDefault()
     const requestOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+      body: {
         password: values[PASSWORD],
         token: values[CONFIRMATION_CODE],
-      }),
+      },
     }
 
     validateInput([values[PASSWORD], values[CONFIRMATION_CODE]]) &&

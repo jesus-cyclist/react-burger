@@ -16,7 +16,7 @@ const Login = () => {
   const location = useLocation()
 
   const { values, handleChange, setValues } = useForm({
-    [EMAIL]: 'semen@mail.ru',
+    [EMAIL]: 'soulrussianbear@gmail.com',
     [PASSWORD]: 'qwerty',
   })
 
@@ -24,17 +24,13 @@ const Login = () => {
 
   const handleSumbit = (e) => {
     e.preventDefault()
-    const requestOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+    const requestData = {
+      body: {
         email: values[EMAIL],
         password: values[PASSWORD],
-      }),
+      },
     }
-    dispatch(fetchLogin(requestOptions))
+    dispatch(fetchLogin(requestData))
   }
 
   return (

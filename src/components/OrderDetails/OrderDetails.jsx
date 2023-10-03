@@ -20,15 +20,11 @@ const OrderDetails = () => {
         return acc
       }, [])
 
-      const payload = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ ingredients: allIngredientsId }),
+      const requestData = {
+        body: { ingredients: allIngredientsId },
       }
 
-      dispatch(fetchOrderData(payload))
+      dispatch(fetchOrderData(requestData))
     }
   }, [])
 

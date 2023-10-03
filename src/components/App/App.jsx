@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Route, Routes, useLocation } from 'react-router-dom'
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import Home from '../../pages/Home/Home'
 import Login from '../../pages/Login/Login'
 import Register from '../../pages/Register/Register'
@@ -12,7 +12,6 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute'
 import Cookies from 'js-cookie'
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
 import { refreshToken } from '../../utils/token'
-
 import IngredientDetails from '../IngredientDetails/IngredientDetails'
 import {
   homePagePath,
@@ -29,30 +28,32 @@ import Modal from '../Modal/Modal'
 import OrderDetails from '../OrderDetails/OrderDetails'
 import { fetchIngredientsData } from '../../services/reducers/ingredients'
 import { fetchCheckRefreshToken } from '../../services/reducers/user'
+import { CLEAR_CONSTRUCTOR } from '../../services/actions/constructorList'
 
 function App() {
   const dispatch = useAppDispatch()
   const location = useLocation()
+  const navigate = useNavigate()
   const state = location.state
   const { isAuthenticated } = useAppSelector((state) => state.rootReducer.user)
 
   useEffect(() => {
     dispatch(fetchIngredientsData())
-
-    if (Cookies.get(refreshToken) && !isAuthenticated) {
+    const token = Cookies.get(refreshToken)
+    if (token && !isAuthenticated) {
       const requestOptions = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          token: Cookies.get(refreshToken),
-        }),
+        body: { token },
       }
 
       dispatch(fetchCheckRefreshToken(requestOptions))
     }
   }, [])
+
+  const closeModalIngredients = () => navigate(-1)
+  const closeModalOrder = () => {
+    closeModalIngredients()
+    dispatch({ type: CLEAR_CONSTRUCTOR })
+  }
 
   return (
     <>
@@ -95,7 +96,7 @@ function App() {
             <Route
               path={`${ingredientsPath}/:id`}
               element={
-                <Modal>
+                <Modal closeModal={closeModalIngredients}>
                   <IngredientDetails />
                 </Modal>
               }
@@ -107,7 +108,7 @@ function App() {
             <Route
               path={orderPath}
               element={
-                <Modal>
+                <Modal closeModal={closeModalOrder}>
                   <OrderDetails />
                 </Modal>
               }

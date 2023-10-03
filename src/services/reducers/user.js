@@ -6,18 +6,22 @@ import { createAsyncAction } from '../../utils/request'
 export const fetchForgotPassword = createAsyncAction({
   prefix: 'user/password-forgot',
   route: 'password-reset',
+  method: 'POST',
 })
 export const fetchResetPassword = createAsyncAction({
   prefix: 'user/password-reset',
   route: 'password-reset/reset',
+  method: 'POST',
 })
 export const fetchRegister = createAsyncAction({
   prefix: 'user/register',
   route: 'auth/register',
+  method: 'POST',
 })
 export const fetchLogin = createAsyncAction({
   prefix: 'user/login',
   route: 'auth/login',
+  method: 'POST',
 })
 export const fetchUserData = createAsyncAction({
   prefix: 'user/user-data',
@@ -26,6 +30,7 @@ export const fetchUserData = createAsyncAction({
 export const fetchCheckRefreshToken = createAsyncAction({
   prefix: 'user/check-refresh-token',
   route: 'auth/token',
+  method: 'POST',
 })
 export const fetchUpdateUserData = createAsyncAction({
   prefix: 'user/udpate-user-data',
@@ -94,6 +99,9 @@ const userSlice = createSlice({
           data: response ? action.payload : 'Some troubles',
           loading: false,
         }
+        if (response) {
+          localStorage.setItem('from', 'forgotPassword')
+        }
       })
       .addCase(fetchForgotPassword.rejected, (state, action) => {
         state.passwordForgot = {
@@ -145,7 +153,6 @@ const userSlice = createSlice({
         }
       })
       .addCase(fetchRegister.rejected, (state, action) => {
-        console.log(action)
         state.register = {
           ...state.register,
           error: action.error.message,

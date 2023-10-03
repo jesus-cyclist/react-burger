@@ -12,9 +12,9 @@ import { fetchRegister } from '../../services/reducers/user'
 
 const Register = () => {
   const { values, handleChange, setValues } = useForm({
-    [EMAIL]: 'semen@mail.ru',
+    [EMAIL]: 'soulrussianbear@gmail.com',
     [PASSWORD]: 'qwerty',
-    [NAME]: 'Semen',
+    [NAME]: 'nikolay',
   })
   const location = useLocation()
   const [passwordType, setPasswordType] = useState(PASSWORD)
@@ -24,15 +24,11 @@ const Register = () => {
   const handleSumbit = (e) => {
     e.preventDefault()
     const requestOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+      body: {
         email: values[EMAIL],
         password: values[PASSWORD],
         name: values[NAME],
-      }),
+      },
     }
 
     dispatch(fetchRegister(requestOptions))
@@ -78,7 +74,7 @@ const Register = () => {
           </div>
           <div className={styles.buttonWrapper}>
             <Button htmlType="submit" type="primary" size="medium">
-              Нажми на меня
+              Зарегистрироваться
             </Button>
           </div>
         </form>

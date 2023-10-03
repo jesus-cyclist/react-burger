@@ -19,26 +19,22 @@ function validateEmail(mail) {
 
 const ForgotPassword = () => {
   const { values, handleChange } = useForm({
-    [EMAIL]: 'semen@mail.ru',
+    [EMAIL]: 'soulrussianbear@gmail.com',
   })
   const location = useLocation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const handleSumbit = (e) => {
+  const handleSumbit = async (e) => {
     e.preventDefault()
 
     const requestOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email: values[EMAIL] }),
+      body: { email: values[EMAIL] },
     }
 
     validateEmail(values[EMAIL]) &&
       dispatch(fetchForgotPassword(requestOptions))
-    navigate(resetPasswordPath, { state: { from: 'fromForgotPassword' } })
+    navigate(resetPasswordPath)
   }
 
   return (

@@ -37,12 +37,9 @@ const ProfileData = () => {
   useEffect(() => {
     const token = Cookies.get(accessToken)
     const requestOptions = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token,
-      },
+      token: { accessToken: token },
     }
+
     dispatch(fetchUserData(requestOptions))
   }, [])
 
@@ -93,52 +90,50 @@ const ProfileData = () => {
   }
 
   return (
-    <main className={styles.main}>
-      <form onSubmit={handleSubmit}>
-        <div className={styles.nameWrapper}>
-          <Input
-            ref={nameRef}
-            value={values[NAME]}
-            onChange={handleChange}
-            onIconClick={(e) => onIconClick('name', nameRef)}
-            placeholder={'Имя'}
-            type={'text'}
-            icon={'EditIcon'}
-            disabled={editInput === 'name' ? false : true}
-            name={NAME}
-          />
-        </div>
-        <div className={styles.loginWrapper}>
-          <Input
-            ref={loginRef}
-            value={values[EMAIL]}
-            onChange={handleChange}
-            onIconClick={() => onIconClick('login', loginRef)}
-            placeholder={'Логин'}
-            type={'text'}
-            icon={'EditIcon'}
-            disabled={editInput === 'login' ? false : true}
-            name={EMAIL}
-          />
-        </div>
-        <div className={styles.passwordWrapper}>
-          <Input
-            ref={passwordRef}
-            value={values[PASSWORD]}
-            onChange={handleChange}
-            onIconClick={() => onIconClick('password', passwordRef)}
-            placeholder={'Пароль'}
-            type={editInput === 'password' ? 'text' : 'password'}
-            icon={'EditIcon'}
-            disabled={editInput === 'password' ? false : true}
-            name={PASSWORD}
-          />
-        </div>
-        <Button htmlType="submit" type="primary" size="large">
-          Сохранить
-        </Button>
-      </form>
-    </main>
+    <form onSubmit={handleSubmit} className={styles.main}>
+      <div className={styles.nameWrapper}>
+        <Input
+          ref={nameRef}
+          value={values[NAME]}
+          onChange={handleChange}
+          onIconClick={(e) => onIconClick('name', nameRef)}
+          placeholder={'Имя'}
+          type={'text'}
+          icon={'EditIcon'}
+          disabled={editInput === 'name' ? false : true}
+          name={NAME}
+        />
+      </div>
+      <div className={styles.loginWrapper}>
+        <Input
+          ref={loginRef}
+          value={values[EMAIL]}
+          onChange={handleChange}
+          onIconClick={() => onIconClick('login', loginRef)}
+          placeholder={'Логин'}
+          type={'text'}
+          icon={'EditIcon'}
+          disabled={editInput === 'login' ? false : true}
+          name={EMAIL}
+        />
+      </div>
+      <div className={styles.passwordWrapper}>
+        <Input
+          ref={passwordRef}
+          value={values[PASSWORD]}
+          onChange={handleChange}
+          onIconClick={() => onIconClick('password', passwordRef)}
+          placeholder={'Пароль'}
+          type={editInput === 'password' ? 'text' : 'password'}
+          icon={'EditIcon'}
+          disabled={editInput === 'password' ? false : true}
+          name={PASSWORD}
+        />
+      </div>
+      <Button htmlType="submit" type="primary" size="large">
+        Сохранить
+      </Button>
+    </form>
   )
 }
 
