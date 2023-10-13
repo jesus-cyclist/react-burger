@@ -2,6 +2,7 @@ import {
   ADD_BUH,
   ADD_FILLING,
   DELETE_FILLING,
+  CLEAR_CONSTRUCTOR,
 } from '../actions/constructorList'
 import uniqid from 'uniqid'
 
@@ -35,6 +36,14 @@ export const constructorReducer = (state = initialState, action) => {
       return {
         ...state,
         filling: arr,
+      }
+    }
+    case CLEAR_CONSTRUCTOR: {
+      return {
+        bun: {},
+        filling: [],
+        draggableTarget: null,
+        dropTarget: null,
       }
     }
     default: {

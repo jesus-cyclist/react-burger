@@ -1,14 +1,13 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import style from './BurgerIngredientsItem.module.css'
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import PropTypes from 'prop-types'
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
-import { OPEN_MODAL } from '../../services/actions/modal'
-import IngredientDetails from '../IngredientDetails/IngredientDetails'
+import { useAppSelector } from '../../hooks/hooks'
 import { useDrag } from 'react-dnd'
 import { Counter } from '@ya.praktikum/react-developer-burger-ui-components'
-import { ModalDataContext } from '../../context/appContext'
 import { ingredientPropType } from '../../utils/prop-types'
+import { NavLink, useLocation } from 'react-router-dom'
+import { ingredientsPath } from '../../utils/routerPath'
 
 const BurgerIngredientsItem = (props) => {
   const [count, setCount] = useState(0)
@@ -16,8 +15,8 @@ const BurgerIngredientsItem = (props) => {
   const { bun, filling } = useAppSelector(
     (state) => state.rootReducer.constructorList
   )
-  const dispatch = useAppDispatch()
-  const setModalContent = useContext(ModalDataContext)
+
+  const location = useLocation()
 
   useEffect(() => {
     const bunCount = bun.name === item.name ? 2 : 0
@@ -35,12 +34,10 @@ const BurgerIngredientsItem = (props) => {
   })
 
   return (
-    <div
+    <NavLink
       className={style.ingredient}
-      onClick={() => {
-        dispatch({ type: OPEN_MODAL })
-        setModalContent(<IngredientDetails data={item} />)
-      }}
+      to={`${ingredientsPath}/:${item._id}`}
+      state={{ ingredientsLocation: location }}
       ref={dragRef}
     >
       <div className={style.logoBox}>
@@ -56,7 +53,7 @@ const BurgerIngredientsItem = (props) => {
           <Counter count={count} size="default" />
         </div>
       )}
-    </div>
+    </NavLink>
   )
 }
 

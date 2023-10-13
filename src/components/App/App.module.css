@@ -19,18 +19,10 @@
   src: url('../../fonts/Iceland-Regular.ttf') format('ttf');
 }
 
-.App {
+.main {
+  max-width: 1240px;
+  margin: 0 auto;
   font-family: 'JetBrainsMono', Arial, sans-serif;
   line-height: 24px;
   font-size: 16px;
-}
-
-.wrapper {
-  max-width: 1240px;
-  margin: 0 auto;
-  height: 500px;
-}
-
-.main {
-  display: flex;
 }

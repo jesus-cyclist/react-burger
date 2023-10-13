@@ -1,0 +1,3 @@
+export const CONSTRUCTOR_TAB = 'CONSTRUCTOR_TAB'
+export const ORDERS_LIST_TAB = 'ORDERS_LIST_TAB'
+export const PROFILE_TAB = 'PROFILE_TAB'

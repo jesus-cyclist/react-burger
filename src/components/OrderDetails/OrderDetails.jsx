@@ -1,72 +1,77 @@
 import React, { useEffect } from 'react'
 import style from './OrderDetails.module.css'
 import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import { request } from '../../utils/request'
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks'
-import {
-  GET_ORDER_FAILED,
-  GET_ORDER_REQUEST,
-  GET_ORDER_SUCCESS,
-} from '../../services/actions/modal'
+import { ThreeDots } from 'react-loader-spinner'
+import { fetchOrderData } from '../../services/reducers/order'
 
 const OrderDetails = () => {
   const ingredients = useAppSelector(
-    (state) => state.rootReducer.ingredientsMenu.ingredients
+    (state) => state.rootReducer.ingredients.data
   )
-
-  const orderData = useAppSelector((state) => state.rootReducer.modal.orderData)
-
-  const allIngredientsId = ingredients.reduce((acc, item) => {
-    acc.push(item._id)
-    return acc
-  }, [])
+  const { data } = useAppSelector((state) => state.rootReducer.order)
 
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    const requestObj = {
-      method: 'POST',
-      routing: 'orders',
-      data: {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ ingredients: allIngredientsId }),
-      },
-      action: {
-        request: GET_ORDER_REQUEST,
-        success: GET_ORDER_SUCCESS,
-        failed: GET_ORDER_FAILED,
-      },
+    if (ingredients) {
+      const allIngredientsId = ingredients.reduce((acc, item) => {
+        acc.push(item._id)
+        return acc
+      }, [])
+
+      const requestData = {
+        body: { ingredients: allIngredientsId },
+      }
+
+      dispatch(fetchOrderData(requestData))
     }
-    dispatch(request(requestObj))
   }, [])
 
   return (
-    orderData && (
-      <div className={style.order}>
-        <div className={style.main}>
-          <div className={style.orderNumber}>
-            <p className="text text_type_digits-large">
-              {orderData.order.number}
-            </p>
-          </div>
-          <span className={style.orderNumberText}>идентификатор заказа</span>
-          <div className={style.logoConfirm}>
-            <div className={style.logo}>
-              <CheckMarkIcon type="primary" />
+    <>
+      {data ? (
+        <>
+          <div className={style.order}>
+            <div className={style.main}>
+              <div className={style.orderNumber}>
+                <p className="text text_type_digits-large">
+                  {data.order.number}
+                </p>
+              </div>
+              <span className={style.orderNumberText}>
+                идентификатор заказа
+              </span>
+              <div className={style.logoConfirm}>
+                <div className={style.logo}>
+                  <CheckMarkIcon type="primary" />
+                </div>
+              </div>
+              <span className={style.startedCookingText}>
+                Ваш заказ начали готовить
+              </span>
+              <span className={style.waitToBeReadyText}>
+                Дождитесь готовности на орбитальной станции
+              </span>
             </div>
           </div>
-          <span className={style.startedCookingText}>
-            Ваш заказ начали готовить
-          </span>
-          <span className={style.waitToBeReadyText}>
-            Дождитесь готовности на орбитальной станции
-          </span>
-        </div>
-      </div>
-    )
+        </>
+      ) : (
+        <ThreeDots
+          height="80"
+          width="80"
+          radius="9"
+          color="#4C4CFF"
+          ariaLabel="three-dots-loading"
+          wrapperStyle={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          visible={true}
+        />
+      )}
+    </>
   )
 }
 

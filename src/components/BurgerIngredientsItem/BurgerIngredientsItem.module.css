@@ -3,6 +3,7 @@
   max-width: 50%;
   cursor: pointer;
   position: relative;
+  color: #f2f2f3;
 }
 
 .ingredient:nth-child(odd) {

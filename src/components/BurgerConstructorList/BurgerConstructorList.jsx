@@ -1,23 +1,24 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import BurgerConstructorItem from '../BurgerConstructorItem/BurgerConstructorItem'
 import {
   Button,
   CurrencyIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import style from './BurgerConstructorList.module.css'
-import OrderDetails from '../OrderDetails/OrderDetails'
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks'
-import { OPEN_MODAL } from '../../services/actions/modal'
 import update from 'immutability-helper'
-import { ModalDataContext } from '../../context/appContext'
+import { NavLink, useLocation } from 'react-router-dom'
+import { loginPath, orderPath } from '../../utils/routerPath'
 
 const BurgerConstructorList = () => {
   const [totalAmount, setTotalAmount] = useState(0)
+  const { isAuthenticated } = useAppSelector((state) => state.rootReducer.user)
   const dispatch = useAppDispatch()
   const { bun, filling } = useAppSelector(
     (state) => state.rootReducer.constructorList
   )
-  const setModalContent = useContext(ModalDataContext)
+
+  const location = useLocation()
 
   const [fill, setFill] = useState()
   useEffect(() => setFill(filling), [filling])
@@ -32,8 +33,6 @@ const BurgerConstructorList = () => {
       })
     })
   }, [])
-
-  //тут лютая ахинея но я не понимаю как упростить
 
   useEffect(() => {
     const bunCost = bun.price ? bun.price * 2 : 0
@@ -95,19 +94,14 @@ const BurgerConstructorList = () => {
               <span className={style.totalCost}>{totalAmount}</span>
               <CurrencyIcon type="primary" />
             </div>
-            <Button
-              htmlType="submit"
-              type="primary"
-              size="large"
-              onClick={() => {
-                setModalContent(<OrderDetails />)
-                dispatch({
-                  type: OPEN_MODAL,
-                })
-              }}
+            <NavLink
+              to={isAuthenticated ? orderPath : loginPath}
+              state={isAuthenticated && { orderLocation: location }}
             >
-              Оформить заказ
-            </Button>
+              <Button htmlType="submit" type="primary" size="large">
+                Оформить заказ
+              </Button>
+            </NavLink>
           </div>
         </>
       )}

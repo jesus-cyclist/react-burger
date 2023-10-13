@@ -3,19 +3,12 @@ import style from './Modal.module.css'
 import PropTypes from 'prop-types'
 import ModalOverlay from '../ModalOverlay/ModalOverlay'
 import { createPortal } from 'react-dom'
-import { useAppDispatch } from '../../hooks/hooks'
-import { CLOSE_MODAL } from '../../services/actions/modal'
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 
 const reactModal = document.querySelector('#react-modals')
 
 const Modal = (props) => {
-  const { children } = props
-  const dispatch = useAppDispatch()
-
-  function closeModal() {
-    dispatch({ type: CLOSE_MODAL })
-  }
+  const { children, closeModal = null } = props
 
   useEffect(() => {
     function escapeHandler(event) {
@@ -44,6 +37,8 @@ const Modal = (props) => {
 
 Modal.propTypes = {
   children: PropTypes.element.isRequired,
+  closeModal: PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf([null])])
+    .isRequired,
 }
 
 export default Modal

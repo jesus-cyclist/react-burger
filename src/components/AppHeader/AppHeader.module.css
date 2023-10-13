@@ -33,20 +33,27 @@
   align-items: center;
 }
 
-.menuItem,
-.account {
+.tab {
   padding: 16px 20px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   cursor: pointer;
+  z-index: 10;
+  gap: 8px;
 }
 
-.menuItem:nth-child(1) {
+.tab:nth-child(1) {
   padding: 16px 20px 16px 0;
-  margin-right: 8px;
+}
+/* 
+.tab a {
+  color: #8585ad;
+} */
+
+.link {
+  color: #8585ad;
 }
 
-.account {
-  padding: 16px 0 16px 20px;
+.linkActive {
+  color: #f2f2f3;
 }

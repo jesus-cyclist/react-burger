@@ -1,0 +1,36 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 180px;
+  font-family: 'JetBrainsMono', Arial, sans-serif;
+}
+
+.loginContainer {
+  text-align: center;
+}
+
+.title,
+.nameWrapper,
+.emailWrapper,
+.passwordWrapper {
+  margin-bottom: 24px;
+}
+
+.buttonWrapper {
+  margin-bottom: 80px;
+}
+
+.loginBlock {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.linkHint {
+  color: #8585ad;
+}
+
+.link {
+  color: #4c4cff;
+}
