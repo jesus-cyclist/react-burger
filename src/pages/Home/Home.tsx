@@ -5,9 +5,11 @@ import { useAppSelector } from '../../hooks/hooks'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import styles from './Home.module.css'
+import { useSelector } from 'react-redux'
 
-function HomePage() {
-  const data = useAppSelector((state) => state.rootReducer.ingredients.data)
+const HomePage = (): JSX.Element => {
+  //@ts-ignore
+  const data = useSelector((state) => state.rootReducer.ingredients.data)
 
   return (
     <div className={styles.wrapper}>

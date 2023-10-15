@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, FormEvent } from 'react'
 import styles from './Register.module.css'
 import {
   Button,
@@ -6,22 +6,23 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Link, useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { useForm } from '../../hooks/useForm'
+import { useInput } from '../../hooks/useInput'
 import { EMAIL, PASSWORD, NAME } from '../../constants/inputType/inputType'
 import { fetchRegister } from '../../services/reducers/user'
+import { TInputType } from '../../utils/types'
 
-const Register = () => {
-  const { values, handleChange, setValues } = useForm({
+const Register = (): JSX.Element => {
+  const { values, handleChange } = useInput({
     [EMAIL]: 'soulrussianbear@gmail.com',
     [PASSWORD]: 'qwerty',
     [NAME]: 'nikolay',
   })
   const location = useLocation()
-  const [passwordType, setPasswordType] = useState(PASSWORD)
+  const [passwordType, setPasswordType] = useState<TInputType>(PASSWORD)
 
   const dispatch = useDispatch()
 
-  const handleSumbit = (e) => {
+  const handleSumbit = (e: FormEvent) => {
     e.preventDefault()
     const requestOptions = {
       body: {
@@ -31,6 +32,7 @@ const Register = () => {
       },
     }
 
+    //@ts-ignore
     dispatch(fetchRegister(requestOptions))
   }
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, FormEvent } from 'react'
 import styles from './ResetPassword.module.css'
 import {
   Button,
@@ -7,25 +7,26 @@ import {
 import { Link, Navigate, useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { forgotPasswordPath } from '../../utils/routerPath'
-import { useForm } from '../../hooks/useForm'
+import { useInput } from '../../hooks/useInput'
 import {
   PASSWORD,
   CONFIRMATION_CODE,
 } from '../../constants/inputType/inputType'
 import { fetchResetPassword } from '../../services/reducers/user'
+import { TInputType } from '../../utils/types'
 
-function validateInput(arrayOfValue) {
+function validateInput(arrayOfValue: string[] | []) {
   const nonValidate = arrayOfValue.filter((item) => item.length === 0)
   return nonValidate.length ? false : true
 }
 
-const ResetPassword = () => {
-  const { values, handleChange, setValues } = useForm({
+const ResetPassword = (): JSX.Element => {
+  const { values, handleChange } = useInput({
     [PASSWORD]: 'qwerty',
     [CONFIRMATION_CODE]: '123345',
   })
 
-  const [passwordType, setPasswordType] = useState(PASSWORD)
+  const [passwordType, setPasswordType] = useState<TInputType>(PASSWORD)
 
   const location = useLocation()
 
@@ -34,7 +35,7 @@ const ResetPassword = () => {
   const from = localStorage.getItem('from')
   from ? <Navigate to={forgotPasswordPath} /> : localStorage.removeItem('from')
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     const requestOptions = {
       body: {
@@ -44,6 +45,7 @@ const ResetPassword = () => {
     }
 
     validateInput([values[PASSWORD], values[CONFIRMATION_CODE]]) &&
+      //@ts-ignore
       dispatch(fetchResetPassword(requestOptions))
   }
 

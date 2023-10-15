@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, FC } from 'react'
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import Home from '../../pages/Home/Home'
 import Login from '../../pages/Login/Login'
@@ -29,13 +29,15 @@ import OrderDetails from '../OrderDetails/OrderDetails'
 import { fetchIngredientsData } from '../../services/reducers/ingredients'
 import { fetchCheckRefreshToken } from '../../services/reducers/user'
 import { CLEAR_CONSTRUCTOR } from '../../services/actions/constructorList'
+import { useSelector } from 'react-redux'
 
-function App() {
+const App = (): JSX.Element => {
   const dispatch = useAppDispatch()
   const location = useLocation()
   const navigate = useNavigate()
   const state = location.state
-  const { isAuthenticated } = useAppSelector((state) => state.rootReducer.user)
+  //@ts-ignore
+  const { isAuthenticated } = useSelector((state) => state.rootReducer.user)
 
   useEffect(() => {
     dispatch(fetchIngredientsData())
@@ -44,7 +46,7 @@ function App() {
       const requestOptions = {
         body: { token },
       }
-
+      //@ts-ignore
       dispatch(fetchCheckRefreshToken(requestOptions))
     }
   }, [])

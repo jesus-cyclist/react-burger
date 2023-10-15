@@ -1,22 +1,23 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, FC } from 'react'
 import styles from './IngredientDetails.module.css'
 import { useLocation, useParams } from 'react-router-dom'
 import { useAppSelector } from '../../hooks/hooks'
 import { ThreeDots } from 'react-loader-spinner'
+import { TIngredient } from '../../utils/types'
 
-const IngredientDetails = () => {
+const IngredientDetails = (): JSX.Element => {
   const params = useParams()
-  const ingredients = useAppSelector(
+  const ingredients = useAppSelector<Array<TIngredient> | null>(
     (state) => state.rootReducer.ingredients.data
   )
   const location = useLocation()
-  const [ingredient, setIngredient] = useState(null)
+  const [ingredient, setIngredient] = useState<TIngredient>()
 
   useEffect(() => {
     if (params?.id && ingredients) {
       const requiredId = params.id.slice(1)
       const requiredIngredient = ingredients.find(
-        (item) => item._id === requiredId
+        (item: TIngredient) => item._id === requiredId
       )
       setIngredient(requiredIngredient)
     }

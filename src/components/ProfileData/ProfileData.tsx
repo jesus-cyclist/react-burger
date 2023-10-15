@@ -1,34 +1,38 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { FormEvent, useEffect, useRef, useState } from 'react'
 import styles from './ProfileData.module.css'
 import {
   Button,
   Input,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useAppSelector } from '../../hooks/hooks'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Cookies from 'js-cookie'
 import { accessToken } from '../../utils/token'
-import { useForm } from '../../hooks/useForm'
+import { useInput } from '../../hooks/useInput'
 import { EMAIL, PASSWORD, NAME } from '../../constants/inputType/inputType'
 import {
   fetchUserData,
   fetchUpdateUserData,
 } from '../../services/reducers/user'
+import { TUserData } from '../../utils/types'
 
-const ProfileData = () => {
-  const { values, handleChange, setValues } = useForm({
+type TInputType = null | HTMLInputElement
+
+const ProfileData = (): JSX.Element => {
+  const { values, handleChange, setValues } = useInput({
     [EMAIL]: '',
     [PASSWORD]: '',
     [NAME]: '',
   })
 
-  const nameRef = useRef(null)
-  const loginRef = useRef(null)
-  const passwordRef = useRef(null)
+  const nameRef = useRef<TInputType>(null)
+  const loginRef = useRef<TInputType>(null)
+  const passwordRef = useRef<TInputType>(null)
 
-  const [editInput, setEditInput] = useState(null)
+  const [editInput, setEditInput] = useState<string | null>(null)
 
-  const response = useAppSelector(
+  const response = useSelector(
+    //@ts-ignore
     (state) => state.rootReducer.user.userData.data
   )
 
@@ -39,7 +43,7 @@ const ProfileData = () => {
     const requestOptions = {
       token: { accessToken: token },
     }
-
+    //@ts-ignore
     dispatch(fetchUserData(requestOptions))
   }, [])
 
@@ -53,7 +57,7 @@ const ProfileData = () => {
   }, [response])
 
   useEffect(() => {
-    function escapeHandler(event) {
+    function escapeHandler(event: MouseEvent) {
       setEditInput(null)
     }
 
@@ -63,13 +67,16 @@ const ProfileData = () => {
     }
   }, [])
 
-  function onIconClick(inputType, ref) {
-    setEditInput(inputType)
-    setTimeout(() => ref.current.focus(), 0)
+  function onIconClick(inputType: string, ref: { current: TInputType }) {
+    if (ref.current) {
+      setEditInput(inputType)
+      setTimeout(() => ref.current!.focus(), 0)
+    }
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
+
     if (response.name !== values[NAME] || response.email !== values[EMAIL]) {
       const token = Cookies.get(accessToken)
       const requestOptions = {
@@ -83,6 +90,7 @@ const ProfileData = () => {
           name: values[NAME],
         }),
       }
+      //@ts-ignore
       dispatch(fetchUpdateUserData(requestOptions))
     } else {
       alert('ничего не поменял')
@@ -96,7 +104,7 @@ const ProfileData = () => {
           ref={nameRef}
           value={values[NAME]}
           onChange={handleChange}
-          onIconClick={(e) => onIconClick('name', nameRef)}
+          onIconClick={() => onIconClick('name', nameRef)}
           placeholder={'Имя'}
           type={'text'}
           icon={'EditIcon'}

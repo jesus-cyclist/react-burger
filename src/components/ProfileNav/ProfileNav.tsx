@@ -1,23 +1,25 @@
-import React from 'react'
+import React, { FC } from 'react'
 import styles from './ProfileNav.module.css'
 import {
-  SET_EXIT_PROFILE_ACTIVE,
   SET_ORDERS_LIST_ACTIVE,
   SET_PROFILE_DATA_ACTIVE,
 } from '../../utils/profileNav'
-import { LOGOUT_USER } from '../../services/actions/userData'
 import ProfileHint from '../ProfileHint/ProfileHint'
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
-import { Navigate } from 'react-router-dom'
-import PropTypes from 'prop-types'
+import { Link, Navigate } from 'react-router-dom'
 import { logout } from '../../services/reducers/user'
 
-const ProfileNav = (props) => {
+type TProfileNavProps = {
+  activeTab: string
+  onClickHandler: (a: string) => void
+}
+
+const ProfileNav = (props: TProfileNavProps): JSX.Element => {
   const { activeTab, onClickHandler } = props
   const dispatch = useAppDispatch()
   const { isAuthenticated } = useAppSelector((state) => state.rootReducer.user)
 
-  const isTabActive = (linkValue) =>
+  const isTabActive = (linkValue: string) =>
     activeTab === linkValue ? `${styles.navlinkActive}` : `${styles.navlink}`
 
   const logoutClickHandler = () => {
@@ -33,22 +35,22 @@ const ProfileNav = (props) => {
       <nav className={styles.profileNav}>
         <ul className={styles.navList}>
           <li className={styles.navItem}>
-            <a
-              href="#"
+            <Link
+              to="#"
               className={isTabActive(SET_PROFILE_DATA_ACTIVE)}
               onClick={() => onClickHandler(SET_PROFILE_DATA_ACTIVE)}
             >
               Профиль
-            </a>
+            </Link>
           </li>
           <li className={styles.navItem}>
-            <a
-              href="#"
+            <Link
+              to="#"
               className={isTabActive(SET_ORDERS_LIST_ACTIVE)}
               onClick={() => onClickHandler(SET_ORDERS_LIST_ACTIVE)}
             >
               История заказов
-            </a>
+            </Link>
           </li>
           <li className={styles.navItem}>
             <button className={styles.exitButton} onClick={logoutClickHandler}>
@@ -60,11 +62,6 @@ const ProfileNav = (props) => {
       <ProfileHint activeTab={activeTab} />
     </div>
   )
-}
-
-ProfileNav.propTypes = {
-  activeTab: PropTypes.string.isRequired,
-  onClickHandler: PropTypes.func.isRequired,
 }
 
 export default ProfileNav

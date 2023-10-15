@@ -1,9 +1,17 @@
-import React from 'react'
+import React, { FC, ReactNode } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import { useAppSelector } from '../../hooks/hooks'
 import { loginPath } from '../../utils/routerPath'
 
-const ProtectedRoute = ({ onlyAuth = false, component }) => {
+type TProtectedRouteProps = {
+  onlyAuth?: boolean
+  component: ReactNode
+}
+
+const ProtectedRoute = ({
+  onlyAuth = false,
+  component,
+}: TProtectedRouteProps): JSX.Element => {
   const { isAuthenticated } = useAppSelector((state) => state.rootReducer.user)
   const location = useLocation()
   const from = location.state?.from || '/'
@@ -16,7 +24,7 @@ const ProtectedRoute = ({ onlyAuth = false, component }) => {
     return <Navigate to={loginPath} state={{ from: location }} replace />
   }
 
-  return component
+  return <>{component}</>
 }
 
 export default ProtectedRoute

@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { FC } from 'react'
 import style from './BurgerIngredients.module.css'
 import BurgerIngredientsNav from '../BurgerIngredientsNav/BurgerIngredientsNav'
 import BurgerIngredientsList from '../BurgerIngredientsList/BurgerIngredientsList'
 
-const BurgerIngredients = () => {
+const BurgerIngredients = (): JSX.Element => {
   return (
     <div className={style.column}>
       <div className={style.title}>

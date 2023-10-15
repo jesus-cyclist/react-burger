@@ -1,20 +1,46 @@
-import React, { useRef } from 'react'
+import React, { useRef, FC } from 'react'
 import {
   ConstructorElement,
   DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import style from './BurgerConstructorItem.module.css'
-import PropTypes from 'prop-types'
 import { DELETE_FILLING } from '../../services/actions/constructorList'
 import { useAppDispatch } from '../../hooks/hooks'
 import { useDrag, useDrop } from 'react-dnd'
+import { TIngredient } from '../../utils/types'
+import { Identifier } from 'dnd-core'
 
-const BurgerConstructorItem = (props) => {
+type TBurgerConstructorItem = {
+  id: string
+  text: string
+  isLocked: boolean
+  last: boolean
+  dragIcon: boolean
+  item: TIngredient
+  position: 'bottom' | 'top' | undefined
+  moveCard: (x: number, y: number) => void
+  index: number
+  type: string
+}
+
+type TDragObject = {
+  id: string
+  index: number
+  type: string
+}
+
+type TDragCollectedProps = {
+  isDragging: boolean
+}
+
+type TDropCollectedProps = {
+  handlerId: Identifier | null
+}
+
+const BurgerConstructorItem = (props: TBurgerConstructorItem): JSX.Element => {
   const {
     id,
     text,
-    price,
-    thumbnail,
     isLocked,
     last,
     dragIcon,
@@ -22,12 +48,18 @@ const BurgerConstructorItem = (props) => {
     position,
     moveCard,
     index,
+    type,
   } = props
-  const dispatch = useAppDispatch()
-  const refBun = useRef()
-  const refFilling = useRef()
 
-  const [{ handlerId }, dropTarget] = useDrop({
+  const dispatch = useAppDispatch()
+  const refBun = useRef<HTMLDivElement | null>(null)
+  const refFilling = useRef<HTMLDivElement | null>(null)
+
+  const [{ handlerId }, dropTarget] = useDrop<
+    TDragObject,
+    undefined,
+    TDropCollectedProps
+  >({
     accept: 'filling',
     collect(monitor) {
       return {
@@ -50,7 +82,7 @@ const BurgerConstructorItem = (props) => {
         (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
       const clientOffset = monitor.getClientOffset()
 
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top
+      const hoverClientY = clientOffset!.y - hoverBoundingRect.top
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
         return
       }
@@ -65,10 +97,15 @@ const BurgerConstructorItem = (props) => {
     },
   })
 
-  const [{ isDragging }, dragRef] = useDrag({
+  const [{ isDragging }, dragRef] = useDrag<
+    TDragObject,
+    unknown,
+    TDragCollectedProps
+  >({
     type: 'filling',
+
     item: () => {
-      return { id, index }
+      return { id, index, type }
     },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
@@ -97,37 +134,18 @@ const BurgerConstructorItem = (props) => {
             : style.dragIconHidden + ' ' + style.dragIcon
         }
       >
-        <DragIcon />
+        <DragIcon type="primary" />
       </div>
       <ConstructorElement
         text={text}
-        price={price}
-        thumbnail={thumbnail}
+        price={item.price}
+        thumbnail={item.image}
         isLocked={isLocked}
         type={position}
         handleClose={handleClose}
       />
     </div>
   )
-}
-
-BurgerConstructorItem.defaultProps = {
-  dragIcon: true,
-  last: false,
-  type: 'bun',
-  isLocked: true,
-  id: '',
-}
-
-BurgerConstructorItem.propTypes = {
-  id: PropTypes.string.isRequired,
-  dragIcon: PropTypes.bool.isRequired,
-  last: PropTypes.bool.isRequired,
-  isLocked: PropTypes.bool.isRequired,
-  price: PropTypes.number.isRequired,
-  text: PropTypes.string.isRequired,
-  thumbnail: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
 }
 
 export default BurgerConstructorItem

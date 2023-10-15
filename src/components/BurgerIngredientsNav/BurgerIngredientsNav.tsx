@@ -7,27 +7,34 @@ import {
   MAKE_MAIN_ACTIVE,
   MAKE_SAUCE_ACTIVE,
 } from '../../services/actions/activeTab'
+import { useSelector } from 'react-redux'
 
-function clickHandler(event) {
-  event.preventDefault()
-
-  const targetId = event.target
-    .closest('.link')
-    .getAttribute('href')
-    .substring(1)
-  const targetElement = document.getElementById(targetId)
-
-  targetElement && targetElement.scrollIntoView({ behavior: 'smooth' })
-}
-
-const BurgerIngredientsNav = () => {
-  const activeTab = useAppSelector(
+const BurgerIngredientsNav = (): JSX.Element => {
+  const activeTab = useSelector(
+    //@ts-ignore
     (state) => state.rootReducer.activeTab.current
   )
   const dispatch = useAppDispatch()
 
   useEffect(() => {
     const tabs = document.querySelectorAll('.link')
+
+    function clickHandler(event: Event) {
+      event.preventDefault()
+
+      if (event.target) {
+        const targetId = (event.target as Element)
+          .closest('.link')
+          ?.getAttribute('href')
+          ?.substring(1)
+
+        if (targetId) {
+          const targetElement = document.getElementById(targetId)
+
+          targetElement && targetElement.scrollIntoView({ behavior: 'smooth' })
+        }
+      }
+    }
 
     tabs.forEach((link) => {
       link.addEventListener('click', (e) => clickHandler(e))

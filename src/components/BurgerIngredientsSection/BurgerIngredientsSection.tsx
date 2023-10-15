@@ -2,18 +2,30 @@ import React, { useMemo } from 'react'
 import BurgerIngredientsItem from '../BurgerIngredientsItem/BurgerIngredientsItem'
 import style from './BurgerIngredientsSection.module.css'
 import PropTypes from 'prop-types'
-import { useAppSelector } from '../../hooks/hooks'
+import { TIngredient } from '../../utils/types'
+import { useSelector } from 'react-redux'
 
-const BurgerIngredientsSection = (props) => {
-  const ingredients = useAppSelector(
-    (state) => state.rootReducer.ingredients.data
-  )
+type TBurgerIngredientsSection = {
+  title: string
+}
+
+const BurgerIngredientsSection = (
+  props: TBurgerIngredientsSection
+): JSX.Element => {
+  //@ts-ignore
+  const ingredients = useSelector((state) => state.rootReducer.ingredients.data)
 
   const { title } = props
 
-  const list = { Булки: 'bun', Соусы: 'sauce', Начинки: 'main' }
+  const list: Record<string, string> = {
+    Булки: 'bun',
+    Соусы: 'sauce',
+    Начинки: 'main',
+  }
   const sortedData = useMemo(
-    () => ingredients.filter((item) => item.type === list[title]),
+    () =>
+      ingredients &&
+      ingredients.filter((item: TIngredient) => item.type === list[title]),
     [ingredients, title]
   )
 
@@ -21,7 +33,7 @@ const BurgerIngredientsSection = (props) => {
     <li className={style.section} id={list[title]}>
       <h2 className={style.title}>{title}</h2>
       <div className={style.list}>
-        {sortedData.map((item) => (
+        {sortedData.map((item: TIngredient) => (
           <BurgerIngredientsItem key={item._id} item={item} />
         ))}
       </div>

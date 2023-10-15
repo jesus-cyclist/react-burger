@@ -4,26 +4,33 @@ import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-component
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks'
 import { ThreeDots } from 'react-loader-spinner'
 import { fetchOrderData } from '../../services/reducers/order'
+import { TIngredient } from '../../utils/types'
+import { useSelector } from 'react-redux'
 
-const OrderDetails = () => {
-  const ingredients = useAppSelector(
+const OrderDetails = (): JSX.Element => {
+  const ingredients = useSelector(
+    //@ts-ignore
     (state) => state.rootReducer.ingredients.data
   )
-  const { data } = useAppSelector((state) => state.rootReducer.order)
+  //@ts-ignore
+  const { data } = useSelector((state) => state.rootReducer.order)
 
   const dispatch = useAppDispatch()
 
   useEffect(() => {
     if (ingredients) {
-      const allIngredientsId = ingredients.reduce((acc, item) => {
-        acc.push(item._id)
-        return acc
-      }, [])
+      const allIngredientsId = ingredients.reduce(
+        (acc: string[], item: TIngredient) => {
+          acc.push(item._id)
+          return acc
+        },
+        []
+      )
 
       const requestData = {
         body: { ingredients: allIngredientsId },
       }
-
+      //@ts-ignore
       dispatch(fetchOrderData(requestData))
     }
   }, [])

@@ -1,27 +1,33 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, FC } from 'react'
 import style from './BurgerIngredientsItem.module.css'
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import PropTypes from 'prop-types'
 import { useAppSelector } from '../../hooks/hooks'
 import { useDrag } from 'react-dnd'
 import { Counter } from '@ya.praktikum/react-developer-burger-ui-components'
-import { ingredientPropType } from '../../utils/prop-types'
 import { NavLink, useLocation } from 'react-router-dom'
 import { ingredientsPath } from '../../utils/routerPath'
+import { TIngredient } from '../../utils/types'
+import { useSelector } from 'react-redux'
 
-const BurgerIngredientsItem = (props) => {
+type TBurgerIngredientsItemProps = {
+  item: TIngredient
+}
+
+const BurgerIngredientsItem = (
+  props: TBurgerIngredientsItemProps
+): JSX.Element => {
   const [count, setCount] = useState(0)
   const { item } = props
-  const { bun, filling } = useAppSelector(
+  const { bun, filling } = useSelector(
+    //@ts-ignore
     (state) => state.rootReducer.constructorList
   )
-
   const location = useLocation()
 
   useEffect(() => {
     const bunCount = bun.name === item.name ? 2 : 0
     const fillingCount = filling.reduce(
-      (acc, ingredient) =>
+      (acc: number, ingredient: TIngredient) =>
         ingredient.name === item.name ? (acc += 1) : (acc += 0),
       0
     )
@@ -55,10 +61,6 @@ const BurgerIngredientsItem = (props) => {
       )}
     </NavLink>
   )
-}
-
-BurgerIngredientsItem.propTypes = {
-  item: PropTypes.shape(ingredientPropType.isRequired).isRequired,
 }
 
 export default BurgerIngredientsItem

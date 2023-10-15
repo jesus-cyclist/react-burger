@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, FormEvent } from 'react'
 import styles from './Login.module.css'
 import { Link, useLocation } from 'react-router-dom'
 import {
@@ -7,22 +7,23 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useDispatch } from 'react-redux'
 import { registerPath, forgotPasswordPath } from '../../utils/routerPath'
-import { useForm } from '../../hooks/useForm'
+import { useInput } from '../../hooks/useInput'
 import { EMAIL, PASSWORD } from '../../constants/inputType/inputType'
 import { fetchLogin } from '../../services/reducers/user'
+import { TInputType } from '../../utils/types'
 
-const Login = () => {
-  const [passwordType, setPasswordType] = useState(PASSWORD)
+const Login = (): JSX.Element => {
+  const [passwordType, setPasswordType] = useState<TInputType>(PASSWORD)
   const location = useLocation()
 
-  const { values, handleChange, setValues } = useForm({
+  const { values, handleChange } = useInput({
     [EMAIL]: 'soulrussianbear@gmail.com',
     [PASSWORD]: 'qwerty',
   })
 
   const dispatch = useDispatch()
 
-  const handleSumbit = (e) => {
+  const handleSumbit = (e: FormEvent) => {
     e.preventDefault()
     const requestData = {
       body: {
@@ -30,6 +31,8 @@ const Login = () => {
         password: values[PASSWORD],
       },
     }
+
+    //@ts-ignore
     dispatch(fetchLogin(requestData))
   }
 

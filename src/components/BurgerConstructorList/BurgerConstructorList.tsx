@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState, FC } from 'react'
 import BurgerConstructorItem from '../BurgerConstructorItem/BurgerConstructorItem'
 import {
   Button,
@@ -9,22 +9,28 @@ import { useAppSelector, useAppDispatch } from '../../hooks/hooks'
 import update from 'immutability-helper'
 import { NavLink, useLocation } from 'react-router-dom'
 import { loginPath, orderPath } from '../../utils/routerPath'
+import { useSelector } from 'react-redux'
+import { TIngredient } from '../../utils/types'
 
 const BurgerConstructorList = () => {
   const [totalAmount, setTotalAmount] = useState(0)
-  const { isAuthenticated } = useAppSelector((state) => state.rootReducer.user)
-  const dispatch = useAppDispatch()
-  const { bun, filling } = useAppSelector(
+  const { isAuthenticated } = useSelector(
+    //@ts-ignore
+    (state) => state.rootReducer.user
+  )
+
+  const { bun, filling } = useSelector(
+    //@ts-ignore
     (state) => state.rootReducer.constructorList
   )
 
   const location = useLocation()
 
-  const [fill, setFill] = useState()
+  const [fill, setFill] = useState<Array<TIngredient>>([])
   useEffect(() => setFill(filling), [filling])
 
-  const moveCard = useCallback((dragIndex, hoverIndex) => {
-    setFill((prevState) => {
+  const moveCard = useCallback((dragIndex: number, hoverIndex: number) => {
+    setFill((prevState: Array<TIngredient>) => {
       return update(prevState, {
         $splice: [
           [dragIndex, 1],
@@ -38,7 +44,10 @@ const BurgerConstructorList = () => {
     const bunCost = bun.price ? bun.price * 2 : 0
     const fillingCost =
       filling.length > 0
-        ? filling.reduce((acc, item) => (acc += item.price), 0)
+        ? filling.reduce(
+            (acc: number, item: TIngredient) => (acc += item.price),
+            0
+          )
         : 0
     setTotalAmount(bunCost + fillingCost)
   }, [bun, filling])
@@ -53,39 +62,50 @@ const BurgerConstructorList = () => {
               id={bun.key}
               text={`${bun.name}  (верх)`}
               position="top"
-              thumbnail={bun.image}
-              price={bun.price}
               dragIcon={false}
+              isLocked={true}
+              last={false}
+              moveCard={() => {}}
+              index={0}
+              type={'bun'}
             />
           )}
 
-          <div className={style.ingredients}>
-            {fill.map((item, ind, arr) => {
-              return (
-                <BurgerConstructorItem
-                  moveCard={moveCard}
-                  index={ind}
-                  key={item.key}
-                  id={item.key}
-                  text={item.name}
-                  price={item.price}
-                  thumbnail={item.image}
-                  isLocked={false}
-                  item={item}
-                  last={ind === arr.length - 1 ? false : true}
-                />
-              )
-            })}
-          </div>
+          {fill && (
+            <div className={style.ingredients}>
+              {fill.map(
+                (item: TIngredient, ind: number, arr: TIngredient[]) => {
+                  return (
+                    <BurgerConstructorItem
+                      moveCard={moveCard}
+                      index={ind}
+                      key={item.key}
+                      id={item.key || ''}
+                      text={item.name}
+                      isLocked={false}
+                      item={item}
+                      last={ind === arr.length - 1 ? false : true}
+                      dragIcon={true}
+                      position={undefined}
+                      type={item.type}
+                    />
+                  )
+                }
+              )}
+            </div>
+          )}
           {bun.price && (
             <BurgerConstructorItem
               item={bun}
               id={bun.key}
               text={`${bun.name}  (низ)`}
               position="bottom"
-              thumbnail={bun.image}
-              price={bun.price}
               dragIcon={false}
+              isLocked={true}
+              last={false}
+              moveCard={() => {}}
+              index={0}
+              type={'bun'}
             />
           )}
 

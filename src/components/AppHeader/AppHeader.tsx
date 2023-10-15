@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, FC } from 'react'
 import { Logo } from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './AppHeader.module.css'
 import {
@@ -14,11 +14,15 @@ import {
   ProfileIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useAppSelector } from '../../hooks/hooks'
+import { useSelector } from 'react-redux'
 
-const AppHeader = () => {
-  const [activeTab, setActiveTab] = useState(null)
+type TActiveTab = string | null
 
-  const { isAuthenticated } = useAppSelector((state) => state.rootReducer.user)
+const AppHeader = (): JSX.Element => {
+  const [activeTab, setActiveTab] = useState<TActiveTab>(null)
+
+  //@ts-ignore
+  const { isAuthenticated } = useSelector((state) => state.rootReducer.user)
 
   const location = useLocation()
 
@@ -38,7 +42,7 @@ const AppHeader = () => {
     }
   }, [location])
 
-  function isActive(tab) {
+  function isActive(tab: string) {
     return activeTab === tab ? 'primary' : 'secondary'
   }
 
