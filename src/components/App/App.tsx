@@ -30,14 +30,15 @@ import { fetchIngredientsData } from '../../services/reducers/ingredients'
 import { fetchCheckRefreshToken } from '../../services/reducers/user'
 import { CLEAR_CONSTRUCTOR } from '../../services/actions/constructorList'
 import { useSelector } from 'react-redux'
+import { selectIsAuthenticated } from '../../services/selectors/userSelectors'
 
 const App = (): JSX.Element => {
   const dispatch = useAppDispatch()
   const location = useLocation()
   const navigate = useNavigate()
   const state = location.state
-  //@ts-ignore
-  const { isAuthenticated } = useSelector((state) => state.rootReducer.user)
+
+  const isAuthenticated = useSelector(selectIsAuthenticated)
 
   useEffect(() => {
     dispatch(fetchIngredientsData())

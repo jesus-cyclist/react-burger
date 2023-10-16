@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState, FC } from 'react'
+import React, { useCallback, useEffect, useState, useMemo } from 'react'
 import BurgerConstructorItem from '../BurgerConstructorItem/BurgerConstructorItem'
 import {
   Button,
@@ -11,18 +11,18 @@ import { NavLink, useLocation } from 'react-router-dom'
 import { loginPath, orderPath } from '../../utils/routerPath'
 import { useSelector } from 'react-redux'
 import { TIngredient } from '../../utils/types'
+import { selectIsAuthenticated } from '../../services/selectors/userSelectors'
+import {
+  selectFilling,
+  selectBun,
+} from '../../services/selectors/constructorSelectors'
 
 const BurgerConstructorList = () => {
   const [totalAmount, setTotalAmount] = useState(0)
-  const { isAuthenticated } = useSelector(
-    //@ts-ignore
-    (state) => state.rootReducer.user
-  )
+  const isAuthenticated = useSelector(selectIsAuthenticated)
 
-  const { bun, filling } = useSelector(
-    //@ts-ignore
-    (state) => state.rootReducer.constructorList
-  )
+  const bun = useSelector(selectBun)
+  const filling = useSelector(selectFilling)
 
   const location = useLocation()
 

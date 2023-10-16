@@ -15,14 +15,14 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useAppSelector } from '../../hooks/hooks'
 import { useSelector } from 'react-redux'
+import { selectIsAuthenticated } from '../../services/selectors/userSelectors'
 
 type TActiveTab = string | null
 
 const AppHeader = (): JSX.Element => {
   const [activeTab, setActiveTab] = useState<TActiveTab>(null)
 
-  //@ts-ignore
-  const { isAuthenticated } = useSelector((state) => state.rootReducer.user)
+  const isAuthenticated = useSelector(selectIsAuthenticated)
 
   const location = useLocation()
 

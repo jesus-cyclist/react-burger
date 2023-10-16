@@ -15,6 +15,7 @@ import {
   fetchUpdateUserData,
 } from '../../services/reducers/user'
 import { TUserData } from '../../utils/types'
+import { selectResponse } from '../../services/selectors/userSelectors'
 
 type TInputType = null | HTMLInputElement
 
@@ -31,10 +32,7 @@ const ProfileData = (): JSX.Element => {
 
   const [editInput, setEditInput] = useState<string | null>(null)
 
-  const response = useSelector(
-    //@ts-ignore
-    (state) => state.rootReducer.user.userData.data
-  )
+  const response = useSelector(selectResponse)
 
   const dispatch = useDispatch()
 
@@ -74,7 +72,7 @@ const ProfileData = (): JSX.Element => {
     }
   }
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     if (response.name !== values[NAME] || response.email !== values[EMAIL]) {

@@ -22,7 +22,7 @@ const Register = (): JSX.Element => {
 
   const dispatch = useDispatch()
 
-  const handleSumbit = (e: FormEvent) => {
+  const handleSumbit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const requestOptions = {
       body: {

@@ -6,14 +6,12 @@ import { ThreeDots } from 'react-loader-spinner'
 import { fetchOrderData } from '../../services/reducers/order'
 import { TIngredient } from '../../utils/types'
 import { useSelector } from 'react-redux'
+import { selectIngredients } from '../../services/selectors/ingredientsSelectors'
+import { selectOrder } from '../../services/selectors/orderSelectors'
 
 const OrderDetails = (): JSX.Element => {
-  const ingredients = useSelector(
-    //@ts-ignore
-    (state) => state.rootReducer.ingredients.data
-  )
-  //@ts-ignore
-  const { data } = useSelector((state) => state.rootReducer.order)
+  const ingredients = useSelector(selectIngredients)
+  const data = useSelector(selectOrder)
 
   const dispatch = useAppDispatch()
 

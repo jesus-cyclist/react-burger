@@ -4,12 +4,12 @@ import { useLocation, useParams } from 'react-router-dom'
 import { useAppSelector } from '../../hooks/hooks'
 import { ThreeDots } from 'react-loader-spinner'
 import { TIngredient } from '../../utils/types'
+import { useSelector } from 'react-redux'
+import { selectIngredients } from '../../services/selectors/ingredientsSelectors'
 
 const IngredientDetails = (): JSX.Element => {
   const params = useParams()
-  const ingredients = useAppSelector<Array<TIngredient> | null>(
-    (state) => state.rootReducer.ingredients.data
-  )
+  const ingredients = useSelector(selectIngredients)
   const location = useLocation()
   const [ingredient, setIngredient] = useState<TIngredient>()
 

@@ -8,6 +8,8 @@ import ProfileHint from '../ProfileHint/ProfileHint'
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
 import { Link, Navigate } from 'react-router-dom'
 import { logout } from '../../services/reducers/user'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectIsAuthenticated } from '../../services/selectors/userSelectors'
 
 type TProfileNavProps = {
   activeTab: string
@@ -16,8 +18,8 @@ type TProfileNavProps = {
 
 const ProfileNav = (props: TProfileNavProps): JSX.Element => {
   const { activeTab, onClickHandler } = props
-  const dispatch = useAppDispatch()
-  const { isAuthenticated } = useAppSelector((state) => state.rootReducer.user)
+  const dispatch = useDispatch()
+  const isAuthenticated = useSelector(selectIsAuthenticated)
 
   const isTabActive = (linkValue: string) =>
     activeTab === linkValue ? `${styles.navlinkActive}` : `${styles.navlink}`

@@ -8,12 +8,10 @@ import {
   MAKE_SAUCE_ACTIVE,
 } from '../../services/actions/activeTab'
 import { useSelector } from 'react-redux'
+import { selectActiveTab } from '../../services/selectors/activeTabSelectors'
 
 const BurgerIngredientsNav = (): JSX.Element => {
-  const activeTab = useSelector(
-    //@ts-ignore
-    (state) => state.rootReducer.activeTab.current
-  )
+  const activeTab = useSelector(selectActiveTab)
   const dispatch = useAppDispatch()
 
   useEffect(() => {

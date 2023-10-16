@@ -35,7 +35,7 @@ const ResetPassword = (): JSX.Element => {
   const from = localStorage.getItem('from')
   from ? <Navigate to={forgotPasswordPath} /> : localStorage.removeItem('from')
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const requestOptions = {
       body: {

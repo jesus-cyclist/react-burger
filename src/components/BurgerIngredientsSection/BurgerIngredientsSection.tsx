@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react'
 import BurgerIngredientsItem from '../BurgerIngredientsItem/BurgerIngredientsItem'
 import style from './BurgerIngredientsSection.module.css'
-import PropTypes from 'prop-types'
 import { TIngredient } from '../../utils/types'
 import { useSelector } from 'react-redux'
+import { selectIngredients } from '../../services/selectors/ingredientsSelectors'
 
 type TBurgerIngredientsSection = {
   title: string
@@ -12,8 +12,7 @@ type TBurgerIngredientsSection = {
 const BurgerIngredientsSection = (
   props: TBurgerIngredientsSection
 ): JSX.Element => {
-  //@ts-ignore
-  const ingredients = useSelector((state) => state.rootReducer.ingredients.data)
+  const ingredients = useSelector(selectIngredients)
 
   const { title } = props
 
@@ -39,10 +38,6 @@ const BurgerIngredientsSection = (
       </div>
     </li>
   )
-}
-
-BurgerIngredientsSection.propTypes = {
-  title: PropTypes.string.isRequired,
 }
 
 export default BurgerIngredientsSection

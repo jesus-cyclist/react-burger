@@ -121,19 +121,22 @@ const BurgerConstructorItem = (props: TBurgerConstructorItem): JSX.Element => {
     })
   }
   dragRef(dropTarget(refFilling))
+
+  function getClassName(dragIcon: boolean) {
+    if (dragIcon === true) {
+      return style.dragIcon
+    } else {
+      return style.dragIconHidden + ' ' + style.dragIcon
+    }
+  }
+
   return (
     <div
       className={last ? style.item : style.item + ' ' + style.itemLast}
       ref={item.type !== 'bun' ? refFilling : refBun}
       style={{ opacity }}
     >
-      <div
-        className={
-          dragIcon === true
-            ? style.dragIcon
-            : style.dragIconHidden + ' ' + style.dragIcon
-        }
-      >
+      <div className={getClassName(dragIcon)}>
         <DragIcon type="primary" />
       </div>
       <ConstructorElement

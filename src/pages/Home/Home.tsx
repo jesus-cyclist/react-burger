@@ -6,10 +6,11 @@ import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import styles from './Home.module.css'
 import { useSelector } from 'react-redux'
+import { selectIngredients } from '../../services/selectors/ingredientsSelectors'
 
 const HomePage = (): JSX.Element => {
   //@ts-ignore
-  const data = useSelector((state) => state.rootReducer.ingredients.data)
+  const data = useSelector(selectIngredients)
 
   return (
     <div className={styles.wrapper}>

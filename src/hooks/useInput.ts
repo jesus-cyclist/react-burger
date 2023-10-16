@@ -4,14 +4,14 @@ type FormValues = {
   [key: string]: string
 }
 
-type UseInput = {
-  values: FormValues
+type UseInput<T extends FormValues> = {
+  values: T
   handleChange: (event: ChangeEvent<HTMLInputElement>) => void
-  setValues: Dispatch<SetStateAction<FormValues>>
+  setValues: Dispatch<SetStateAction<T>>
 }
 
-export function useInput(inputValues: FormValues = {}): UseInput {
-  const [values, setValues] = useState<FormValues>(inputValues)
+export function useInput<T extends FormValues>(inputValues: T): UseInput<T> {
+  const [values, setValues] = useState<T>(inputValues)
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = event.target
