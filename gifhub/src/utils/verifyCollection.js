@@ -1,0 +1,1 @@
+const verifyCollection = (imagesCollection, imagesToUpload) => {}

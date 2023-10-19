@@ -1,0 +1,11 @@
+.container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.gridGallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px;
+}

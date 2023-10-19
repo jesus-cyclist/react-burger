@@ -1,0 +1,52 @@
+.dropDawn {
+  position: relative;
+}
+
+.dropDawnButton {
+}
+
+.dropDawnContent {
+  position: absolute;
+  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  flex-direction: column;
+  min-width: 200px;
+  right: 0;
+  top: 40px;
+}
+
+.dropDawnItem {
+  padding: 10px 15px;
+  border: 1px solid #8a8a8a;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  z-index: 30;
+  cursor: pointer;
+  background: #f0efe9;
+  transition: all 0.3s ease-in-out;
+  -webkit-box-shadow: 1px 1px 5px 0px rgba(34, 60, 80, 0.2);
+  -moz-box-shadow: 1px 1px 5px 0px rgba(34, 60, 80, 0.2);
+  box-shadow: 1px 1px 5px 0px rgba(34, 60, 80, 0.2);
+}
+
+.dropDawnItem:first-child {
+  border-radius: 15px 0 0 0;
+  border-bottom: none;
+}
+
+.dropDawnItem:last-child {
+  border-radius: 0 0 0 15px;
+}
+
+.dropDawnItem:hover {
+  background: #e8e2ca;
+  transition: all 0.3s ease-in-out;
+}
+
+.dropDawnItem a {
+  color: #333333;
+}
