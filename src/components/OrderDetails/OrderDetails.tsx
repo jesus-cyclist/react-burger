@@ -37,7 +37,6 @@ const OrderDetails = (): JSX.Element => {
         body: { ingredients: allIngredientsId },
         token: { accessToken: token },
       }
-      console.log(allIngredientsId)
 
       dispatch(fetchOrderData(requestData))
     }

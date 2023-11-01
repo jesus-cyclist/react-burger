@@ -29,6 +29,8 @@ export const activeTabReducer = createReducer(initialState, (builder) => {
     .addCase(makeScroll, (state, action) => {
       const { bunDistance, sauceDistance, mainDistance } = action.payload
 
+      console.log(bunDistance, sauceDistance, mainDistance)
+
       const minValue = Math.min(
         ...[bunDistance, sauceDistance, mainDistance].filter(
           (item) => item > 50

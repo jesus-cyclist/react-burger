@@ -26,6 +26,7 @@ const BurgerIngredientsList = (): JSX.Element => {
 
       return { bunDistance, sauceDistance, mainDistance }
     }
+    return { bunDistance: 0, sauceDistance: 0, mainDistance: 0 }
   }
 
   return (

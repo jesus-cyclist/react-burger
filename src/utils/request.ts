@@ -54,14 +54,8 @@ export const request = (
     requestOptions.body = JSON.stringify(requestData.body)
   }
 
-  return (
-    fetch(url, requestOptions)
-      .then(checkResponse)
-      .then(checkSuccess)
-      // .then((res) => {
-      //   console.log(res)
-      //   return res
-      // })
-      .catch((error) => console.log(error))
-  )
+  return fetch(url, requestOptions)
+    .then(checkResponse)
+    .then(checkSuccess)
+    .catch((error) => console.log(error))
 }

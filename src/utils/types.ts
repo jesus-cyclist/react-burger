@@ -54,7 +54,7 @@ export type TCheckSuccess = (response: Response) => Response | Promise<any>
 export type TCreateAsyncAction = {
   prefix: string
   route: string
-  method: string
+  method?: string
 }
 
 export type TIngredientId = string

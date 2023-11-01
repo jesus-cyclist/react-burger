@@ -29,7 +29,7 @@ import Modal from '../Modal/Modal'
 import OrderDetails from '../OrderDetails/OrderDetails'
 import { fetchIngredientsData } from '../../services/reducers/ingredients'
 import { fetchCheckRefreshToken } from '../../services/reducers/user'
-import { CLEAR_CONSTRUCTOR } from '../../services/actions/constructorList'
+import { clearConstructor } from '../../services/actions/constructorList'
 import { useSelector } from 'react-redux'
 import { selectIsAuthenticated } from '../../services/selectors/userSelectors'
 import Feed from '../../pages/Feed/Feed'
@@ -67,7 +67,7 @@ const App = (): JSX.Element => {
   const closeModalIngredients = () => navigate(-1)
   const closeModalOrder = () => {
     closeModalIngredients()
-    dispatch({ type: CLEAR_CONSTRUCTOR })
+    dispatch(clearConstructor())
   }
 
   return (

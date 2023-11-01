@@ -1,15 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { TOrders, WebsocketStatus } from '../../utils/types'
 import {
-  wsClose,
   wsCloseProfile,
-  wsConnecting,
   wsConnectingProfile,
-  wsError,
   wsErrorProfile,
-  wsMessage,
   wsMessageProfile,
-  wsOpen,
   wsOpenProfile,
 } from '../actions/orderFeed'
 

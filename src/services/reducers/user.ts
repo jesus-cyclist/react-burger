@@ -23,6 +23,7 @@ export const fetchLogin = createAsyncAction({
   route: 'auth/login',
   method: 'POST',
 })
+
 export const fetchUserData = createAsyncAction({
   prefix: 'user/user-data',
   route: 'auth/user',
@@ -32,6 +33,7 @@ export const fetchCheckRefreshToken = createAsyncAction({
   route: 'auth/token',
   method: 'POST',
 })
+
 export const fetchUpdateUserData = createAsyncAction({
   prefix: 'user/udpate-user-data',
   route: 'auth/user',
@@ -106,7 +108,7 @@ const userSlice = createSlice({
       .addCase(fetchForgotPassword.rejected, (state, action) => {
         state.passwordForgot = {
           ...state.passwordForgot,
-          error: action.error.message,
+          error: true,
           loading: false,
         }
       })
@@ -125,7 +127,7 @@ const userSlice = createSlice({
       .addCase(fetchResetPassword.rejected, (state, action) => {
         state.passwordReset = {
           ...state.passwordReset,
-          error: action.error.message,
+          error: true,
           loading: false,
         }
       })
@@ -155,7 +157,7 @@ const userSlice = createSlice({
       .addCase(fetchRegister.rejected, (state, action) => {
         state.register = {
           ...state.register,
-          error: action.error.message,
+          error: true,
           loading: false,
         }
       })
@@ -182,7 +184,7 @@ const userSlice = createSlice({
       .addCase(fetchLogin.rejected, (state, action) => {
         state.login = {
           ...state.login,
-          error: action.error.message,
+          error: true,
           loading: false,
         }
       })
@@ -200,7 +202,7 @@ const userSlice = createSlice({
       .addCase(fetchUserData.rejected, (state, action) => {
         state.userData = {
           ...state.userData,
-          error: action.error.message,
+          error: true,
           loading: false,
         }
       })
@@ -226,7 +228,7 @@ const userSlice = createSlice({
       .addCase(fetchCheckRefreshToken.rejected, (state, action) => {
         state.checkRefreshToken = {
           ...state.checkRefreshToken,
-          error: action.error.message,
+          error: true,
           loading: false,
         }
       })
@@ -244,7 +246,7 @@ const userSlice = createSlice({
       .addCase(fetchUpdateUserData.rejected, (state, action) => {
         state.updateUserData = {
           ...state.updateUserData,
-          error: action.error.message,
+          error: true,
           loading: false,
         }
       })

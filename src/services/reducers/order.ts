@@ -22,14 +22,13 @@ const orderSlice = createSlice({
         state.data = null
         state.loading = false
       })
-      .addCase(fetchOrderData.fulfilled, (state, action) => {
-        console.log(action)
+      .addCase(fetchOrderData.fulfilled, (state, action: any) => {
         state.loading = false
         state.data = action.payload
       })
       .addCase(fetchOrderData.rejected, (state, action) => {
         state.loading = false
-        state.error = action.error.message
+        state.error = true
       })
   },
 })
