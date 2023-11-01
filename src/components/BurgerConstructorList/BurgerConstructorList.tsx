@@ -118,7 +118,7 @@ const BurgerConstructorList = () => {
               to={isAuthenticated ? orderPath : loginPath}
               state={isAuthenticated && { orderLocation: location }}
             >
-              <Button htmlType="submit" type="primary" size="large">
+              <Button htmlType="button" type="primary" size="large">
                 Оформить заказ
               </Button>
             </NavLink>

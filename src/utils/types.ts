@@ -12,6 +12,7 @@ export type TIngredient = {
   __v: number
   _id: string
   key?: string
+  count?: number
 }
 
 export type TLocation = {
@@ -35,7 +36,7 @@ export type TUserData = {
 }
 
 export type TRequestData = {
-  token?: { accessToken: string }
+  token?: any
   body?: any
 }
 
@@ -54,4 +55,37 @@ export type TCreateAsyncAction = {
   prefix: string
   route: string
   method: string
+}
+
+export type TIngredientId = string
+
+export type TIngredients = Array<TIngredientId>
+
+export type TOrder = {
+  ingredients: TIngredients
+  _id: string
+  status: string
+  name: string
+  number: number
+  createdAt: string
+  updatedAt: string
+}
+
+export type TOrders = {
+  success: boolean
+  orders: Array<TOrder>
+  total: number
+  totalToday: number
+}
+
+export enum WebsocketStatus {
+  CONNECTING = 'CONNECTING',
+  ONLINE = 'ONLINE',
+  OFFLINE = 'OFFLINE',
+}
+
+export type TScrollData = {
+  bunDistance: number
+  sauceDistance: number
+  mainDistance: number
 }

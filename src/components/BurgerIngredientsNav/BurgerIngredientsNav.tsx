@@ -1,14 +1,14 @@
-import React, { useEffect } from 'react'
-import styles from './BurgerIngredientsNav.module.css'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
-import { useAppSelector, useAppDispatch } from '../../hooks/hooks'
-import {
-  MAKE_BUN_ACTIVE,
-  MAKE_MAIN_ACTIVE,
-  MAKE_SAUCE_ACTIVE,
-} from '../../services/actions/activeTab'
+import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
+import { useAppDispatch } from '../../hooks/hooks'
+import {
+  makeBunActive,
+  makeMainActive,
+  makeSauceActive,
+} from '../../services/actions/activeTab'
 import { selectActiveTab } from '../../services/selectors/activeTabSelectors'
+import styles from './BurgerIngredientsNav.module.css'
 
 const BurgerIngredientsNav = (): JSX.Element => {
   const activeTab = useSelector(selectActiveTab)
@@ -48,7 +48,7 @@ const BurgerIngredientsNav = (): JSX.Element => {
         <Tab
           value="bun"
           active={activeTab === 'bun'}
-          onClick={() => dispatch({ type: MAKE_BUN_ACTIVE })}
+          onClick={() => dispatch(makeBunActive())}
         >
           Булки
         </Tab>
@@ -58,7 +58,7 @@ const BurgerIngredientsNav = (): JSX.Element => {
         <Tab
           value="sauce"
           active={activeTab === 'sauce'}
-          onClick={() => dispatch({ type: MAKE_SAUCE_ACTIVE })}
+          onClick={() => dispatch(makeMainActive())}
         >
           Соусы
         </Tab>
@@ -68,7 +68,7 @@ const BurgerIngredientsNav = (): JSX.Element => {
         <Tab
           value="main"
           active={activeTab === 'main'}
-          onClick={() => dispatch({ type: MAKE_MAIN_ACTIVE })}
+          onClick={() => dispatch(makeSauceActive())}
         >
           Начинки
         </Tab>

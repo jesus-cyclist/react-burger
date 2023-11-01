@@ -37,27 +37,25 @@ const ProfileNav = (props: TProfileNavProps): JSX.Element => {
       <nav className={styles.profileNav}>
         <ul className={styles.navList}>
           <li className={styles.navItem}>
-            <Link
-              to="#"
+            <span
               className={isTabActive(SET_PROFILE_DATA_ACTIVE)}
               onClick={() => onClickHandler(SET_PROFILE_DATA_ACTIVE)}
             >
               Профиль
-            </Link>
+            </span>
           </li>
           <li className={styles.navItem}>
-            <Link
-              to="#"
+            <span
               className={isTabActive(SET_ORDERS_LIST_ACTIVE)}
               onClick={() => onClickHandler(SET_ORDERS_LIST_ACTIVE)}
             >
               История заказов
-            </Link>
+            </span>
           </li>
           <li className={styles.navItem}>
-            <button className={styles.exitButton} onClick={logoutClickHandler}>
+            <span className={styles.exitButton} onClick={logoutClickHandler}>
               Выход
-            </button>
+            </span>
           </li>
         </ul>
       </nav>

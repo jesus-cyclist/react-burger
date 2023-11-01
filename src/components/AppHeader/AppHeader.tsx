@@ -7,7 +7,7 @@ import {
   ORDERS_LIST_TAB,
 } from '../../utils/menuNav'
 import { NavLink, useLocation } from 'react-router-dom'
-import { homePagePath, profilePath, ordersList } from '../../utils/routerPath'
+import { homePagePath, profilePath, feed } from '../../utils/routerPath'
 import {
   BurgerIcon,
   ListIcon,
@@ -31,7 +31,7 @@ const AppHeader = (): JSX.Element => {
       case homePagePath:
         setActiveTab(CONSTRUCTOR_TAB)
         break
-      case ordersList:
+      case feed:
         setActiveTab(ORDERS_LIST_TAB)
         break
       case profilePath:
@@ -69,7 +69,7 @@ const AppHeader = (): JSX.Element => {
                 className={({ isActive }) =>
                   isActive ? styles.linkActive : styles.link
                 }
-                to={ordersList}
+                to={feed}
               >
                 {'Лента заказов'}
               </NavLink>

@@ -1,34 +1,44 @@
-import React, { useEffect } from 'react'
-import style from './OrderDetails.module.css'
 import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import { useAppSelector, useAppDispatch } from '../../hooks/hooks'
+import Cookies from 'js-cookie'
+import { useEffect } from 'react'
 import { ThreeDots } from 'react-loader-spinner'
-import { fetchOrderData } from '../../services/reducers/order'
-import { TIngredient } from '../../utils/types'
 import { useSelector } from 'react-redux'
-import { selectIngredients } from '../../services/selectors/ingredientsSelectors'
+import { useAppDispatch } from '../../hooks/hooks'
+import { fetchOrderData } from '../../services/reducers/order'
+import {
+  selectBun,
+  selectFilling,
+} from '../../services/selectors/constructorSelectors'
 import { selectOrder } from '../../services/selectors/orderSelectors'
+import { accessToken } from '../../utils/token'
+import { TIngredient } from '../../utils/types'
+import style from './OrderDetails.module.css'
 
 const OrderDetails = (): JSX.Element => {
-  const ingredients = useSelector(selectIngredients)
+  const filling = useSelector(selectFilling)
+  const bun = useSelector(selectBun)
   const data = useSelector(selectOrder)
 
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    if (ingredients) {
-      const allIngredientsId = ingredients.reduce(
-        (acc: string[], item: TIngredient) => {
-          acc.push(item._id)
-          return acc
-        },
-        []
+    if (filling || bun) {
+      const allIngredientsId: string[] = []
+      filling.forEach((ingredient: TIngredient) =>
+        allIngredientsId.push(ingredient._id)
       )
+      {
+        bun._id && allIngredientsId.push(bun._id)
+        allIngredientsId.push(bun._id)
+      }
 
+      const token = Cookies.get(accessToken)
       const requestData = {
         body: { ingredients: allIngredientsId },
+        token: { accessToken: token },
       }
-      //@ts-ignore
+      console.log(allIngredientsId)
+
       dispatch(fetchOrderData(requestData))
     }
   }, [])

@@ -1,0 +1,45 @@
+.container {
+  margin-bottom: 16px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-gap: 16px;
+  justify-items: center;
+}
+
+.ingredientsImage {
+  border-radius: 50%;
+  border: 2px solid #6223a7;
+  padding: 3px;
+}
+
+.ingredientsImage img {
+  aspect-ratio: 1/1;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ingredientsName {
+  margin: 0 16px;
+  font-family: 'JetBrainsMono';
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px; /* 150% */
+}
+
+.ingredientsName,
+.ingredientsCost {
+  align-self: center;
+}
+
+.ingredientsCost {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Iceland';
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px; /* 85.714% */
+}

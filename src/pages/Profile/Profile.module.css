@@ -1,4 +1,13 @@
 .wrapper {
   padding-top: 120px;
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(320px, 320px) 1fr;
+  font-family: 'JetBrainsMono';
+  color: #f2f2f3;
+  justify-items: start;
+}
+
+.wrapper a {
+  font-family: 'JetBrainsMono';
+  color: #f2f2f3;
 }

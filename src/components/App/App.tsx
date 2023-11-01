@@ -22,7 +22,8 @@ import {
   profilePath,
   ingredientsPath,
   orderPath,
-  ordersList,
+  feed,
+  profileOrders,
 } from '../../utils/routerPath'
 import Modal from '../Modal/Modal'
 import OrderDetails from '../OrderDetails/OrderDetails'
@@ -31,6 +32,13 @@ import { fetchCheckRefreshToken } from '../../services/reducers/user'
 import { CLEAR_CONSTRUCTOR } from '../../services/actions/constructorList'
 import { useSelector } from 'react-redux'
 import { selectIsAuthenticated } from '../../services/selectors/userSelectors'
+import Feed from '../../pages/Feed/Feed'
+import OrderFeedDeatails from '../OrderFeedDeatails/OrderFeedDeatails'
+import {
+  connect as connectOrderFeed,
+  disconnect as disconnectOrderFeed,
+} from '../../services/actions/orderFeed'
+import { socketPath } from '../../utils/request'
 
 const App = (): JSX.Element => {
   const dispatch = useAppDispatch()
@@ -50,6 +58,10 @@ const App = (): JSX.Element => {
       //@ts-ignore
       dispatch(fetchCheckRefreshToken(requestOptions))
     }
+    dispatch(connectOrderFeed(socketPath))
+    return () => {
+      dispatch(disconnectOrderFeed())
+    }
   }, [])
 
   const closeModalIngredients = () => navigate(-1)
@@ -64,14 +76,23 @@ const App = (): JSX.Element => {
       <main className={styles.main}>
         <Routes
           location={
-            state?.ingredientsLocation || state?.orderLocation || location
+            state?.ingredientsLocation ||
+            state?.orderLocation ||
+            state?.orderFeed ||
+            state?.profileOrderFeed ||
+            location
           }
         >
           <Route path={homePagePath} element={<Home />} />
-          <Route path={ordersList} element={<h2>Coming soon</h2>} />
           <Route
             path={`${ingredientsPath}/:id`}
             element={<IngredientDetails />}
+          />
+          <Route path={feed} element={<Feed />} />
+          <Route path={`${feed}/:id`} element={<OrderFeedDeatails />} />
+          <Route
+            path={`${profileOrders}/:id`}
+            element={<OrderFeedDeatails />}
           />
           <Route
             path={loginPath}
@@ -113,6 +134,30 @@ const App = (): JSX.Element => {
               element={
                 <Modal closeModal={closeModalOrder}>
                   <OrderDetails />
+                </Modal>
+              }
+            />
+          </Routes>
+        )}
+        {state?.orderFeed && (
+          <Routes>
+            <Route
+              path={`${feed}/:id`}
+              element={
+                <Modal closeModal={closeModalOrder}>
+                  {<OrderFeedDeatails />}
+                </Modal>
+              }
+            />
+          </Routes>
+        )}
+        {state?.profileOrderFeed && (
+          <Routes>
+            <Route
+              path={`${profileOrders}/:id`}
+              element={
+                <Modal closeModal={closeModalOrder}>
+                  {<OrderFeedDeatails />}
                 </Modal>
               }
             />

@@ -1,8 +1,9 @@
+import { createReducer } from '@reduxjs/toolkit'
 import {
-  MAKE_BUN_ACTIVE,
-  MAKE_MAIN_ACTIVE,
-  MAKE_SAUCE_ACTIVE,
-  SCROLL,
+  makeBunActive,
+  makeSauceActive,
+  makeMainActive,
+  makeScroll,
 } from '../actions/activeTab'
 
 const initialState = {
@@ -14,28 +15,19 @@ const initialState = {
   current: 'bun',
 }
 
-export const activeTabReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case MAKE_BUN_ACTIVE: {
-      return {
-        ...state,
-        current: 'bun',
-      }
-    }
-    case MAKE_MAIN_ACTIVE: {
-      return {
-        ...state,
-        current: 'main',
-      }
-    }
-    case MAKE_SAUCE_ACTIVE: {
-      return {
-        ...state,
-        current: 'sauce',
-      }
-    }
-    case SCROLL: {
-      const { bunDistance, sauceDistance, mainDistance } = action.distance
+export const activeTabReducer = createReducer(initialState, (builder) => {
+  builder
+    .addCase(makeBunActive, (state) => {
+      state.current = 'bun'
+    })
+    .addCase(makeSauceActive, (state) => {
+      state.current = 'main'
+    })
+    .addCase(makeMainActive, (state) => {
+      state.current = 'sauce'
+    })
+    .addCase(makeScroll, (state, action) => {
+      const { bunDistance, sauceDistance, mainDistance } = action.payload
 
       const minValue = Math.min(
         ...[bunDistance, sauceDistance, mainDistance].filter(
@@ -60,9 +52,5 @@ export const activeTabReducer = (state = initialState, action) => {
         },
         current: nearTitle,
       }
-    }
-    default: {
-      return state
-    }
-  }
-}
+    })
+})
