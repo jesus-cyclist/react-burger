@@ -1,4 +1,4 @@
-//@ts-ignore
-// export const getOrdersFeedData = (state) => state.rootReducer.user.userData.data
+import { RootState } from '../store'
 
-export const getOrdersFeedData = (state) => state.rootReducer.ordersFeed.data
+export const getOrdersFeedData = (state: RootState) =>
+  state.rootReducer.ordersFeed.data

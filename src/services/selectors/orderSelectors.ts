@@ -1,2 +1,3 @@
-//@ts-ignore
-export const selectOrder = (state) => state.rootReducer.order.data
+import { RootState } from '../store'
+
+export const selectOrder = (state: RootState) => state.rootReducer.order.data

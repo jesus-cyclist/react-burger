@@ -1,5 +1,7 @@
-//@ts-ignore
-export const selectIsAuthenticated = (state) =>
+import { RootState } from '../store'
+
+export const selectIsAuthenticated = (state: RootState) =>
   state.rootReducer.user.isAuthenticated
-//@ts-ignore
-export const selectResponse = (state) => state.rootReducer.user.userData.data
+
+export const selectResponse = (state: RootState) =>
+  state.rootReducer.user.userData.data
