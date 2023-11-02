@@ -3,7 +3,7 @@ import Cookies from 'js-cookie'
 import { useEffect } from 'react'
 import { ThreeDots } from 'react-loader-spinner'
 import { useSelector } from 'react-redux'
-import { useAppDispatch } from '../../hooks/hooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
 import { fetchOrderData } from '../../services/reducers/order'
 import {
   selectBun,
@@ -15,31 +15,31 @@ import { TIngredient } from '../../utils/types'
 import style from './OrderDetails.module.css'
 
 const OrderDetails = (): JSX.Element => {
-  const filling = useSelector(selectFilling)
-  const bun = useSelector(selectBun)
-  const data = useSelector(selectOrder)
+  const filling = useAppSelector(selectFilling)
+  const bun = useAppSelector(selectBun)
+  const data = useAppSelector(selectOrder)
 
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    if (filling || bun) {
-      const allIngredientsId: string[] = []
+    const allIngredientsId: string[] = []
+    if (filling) {
       filling.forEach((ingredient: TIngredient) =>
         allIngredientsId.push(ingredient._id)
       )
-      {
-        bun._id && allIngredientsId.push(bun._id)
-        allIngredientsId.push(bun._id)
-      }
-
-      const token = Cookies.get(accessToken)
-      const requestData = {
-        body: { ingredients: allIngredientsId },
-        token: { accessToken: token },
-      }
-
-      dispatch(fetchOrderData(requestData))
     }
+    if (bun) {
+      bun._id && allIngredientsId.push(bun._id)
+      allIngredientsId.push(bun._id)
+    }
+
+    const token = Cookies.get(accessToken)
+    const requestData = {
+      body: { ingredients: allIngredientsId },
+      token: { accessToken: token },
+    }
+
+    dispatch(fetchOrderData(requestData))
   }, [])
 
   return (

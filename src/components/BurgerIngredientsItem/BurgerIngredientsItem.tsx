@@ -1,7 +1,6 @@
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useEffect, useState } from 'react'
 import style from './BurgerIngredientsItem.module.css'
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import { useAppSelector } from '../../hooks/hooks'
 import { useDrag } from 'react-dnd'
 import { Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 import { NavLink, useLocation } from 'react-router-dom'
@@ -27,12 +26,16 @@ const BurgerIngredientsItem = (
   const location = useLocation()
 
   useEffect(() => {
-    const bunCount = bun.name === item.name ? 2 : 0
-    const fillingCount = filling.reduce(
-      (acc: number, ingredient: TIngredient) =>
-        ingredient.name === item.name ? (acc += 1) : (acc += 0),
-      0
-    )
+    let bunCount = 0
+    if (bun) bunCount = bun.name === item.name ? 2 : 0
+
+    let fillingCount = 0
+    if (filling)
+      fillingCount = filling.reduce(
+        (acc: number, ingredient: TIngredient) =>
+          ingredient.name === item.name ? (acc += 1) : (acc += 0),
+        0
+      )
     setCount(item.type === 'bun' ? bunCount : fillingCount)
   }, [bun, filling, item])
 

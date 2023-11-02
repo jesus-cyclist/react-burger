@@ -9,7 +9,6 @@ import { useSelector } from 'react-redux'
 import { selectIngredients } from '../../services/selectors/ingredientsSelectors'
 
 const HomePage = (): JSX.Element => {
-  //@ts-ignore
   const data = useSelector(selectIngredients)
 
   return (

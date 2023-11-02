@@ -9,13 +9,13 @@ import uniqid from 'uniqid'
 import { TIngredient } from '../../utils/types'
 
 type TInitialState = {
-  bun: TIngredient | {}
-  filling: Array<TIngredient> | []
+  bun: TIngredient | null
+  filling: Array<TIngredient> | null
 }
 
 const initialState: TInitialState = {
-  bun: {},
-  filling: [],
+  bun: null,
+  filling: null,
 }
 
 export const constructorReducer = createReducer(initialState, (builder) => {
@@ -27,16 +27,22 @@ export const constructorReducer = createReducer(initialState, (builder) => {
       const key = uniqid()
       const modifiedFilling = { ...action.payload, key }
 
-      state.filling = [...state.filling, modifiedFilling]
+      if (!state.filling) {
+        state.filling = [modifiedFilling]
+      } else {
+        state.filling = [...state.filling, modifiedFilling]
+      }
     })
     .addCase(deleteFilling, (state, action) => {
-      const arr = [...state.filling].filter(
-        (item) => item.key !== action.payload
-      )
-      state.filling = arr
+      if (state.filling) {
+        const arr = [...state.filling].filter(
+          (item) => item.key !== action.payload
+        )
+        state.filling = arr
+      }
     })
     .addCase(clearConstructor, (state) => {
-      state.bun = {}
-      state.filling = []
+      state.bun = null
+      state.filling = null
     })
 })

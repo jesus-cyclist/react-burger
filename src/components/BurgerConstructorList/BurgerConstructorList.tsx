@@ -21,13 +21,15 @@ const BurgerConstructorList = () => {
   const [totalAmount, setTotalAmount] = useState(0)
   const isAuthenticated = useSelector(selectIsAuthenticated)
 
-  const bun = useSelector(selectBun)
-  const filling = useSelector(selectFilling)
+  const bun = useAppSelector(selectBun)
+  const filling = useAppSelector(selectFilling)
 
   const location = useLocation()
 
   const [fill, setFill] = useState<Array<TIngredient>>([])
-  useEffect(() => setFill(filling), [filling])
+  useEffect(() => {
+    filling && setFill(filling)
+  }, [filling])
 
   const moveCard = useCallback((dragIndex: number, hoverIndex: number) => {
     setFill((prevState: Array<TIngredient>) => {
@@ -41,14 +43,22 @@ const BurgerConstructorList = () => {
   }, [])
 
   useEffect(() => {
-    const bunCost = bun.price ? bun.price * 2 : 0
-    const fillingCost =
-      filling.length > 0
-        ? filling.reduce(
-            (acc: number, item: TIngredient) => (acc += item.price),
-            0
-          )
-        : 0
+    let bunCost = 0
+    let fillingCost = 0
+    if (bun) {
+      bunCost = bun.price ? bun.price * 2 : 0
+    }
+
+    if (filling) {
+      fillingCost =
+        filling.length > 0
+          ? filling.reduce(
+              (acc: number, item: TIngredient) => (acc += item.price),
+              0
+            )
+          : 0
+    }
+
     setTotalAmount(bunCost + fillingCost)
   }, [bun, filling])
 
@@ -56,10 +66,10 @@ const BurgerConstructorList = () => {
     <div className={style.list}>
       {totalAmount > 0 && (
         <>
-          {bun.price && (
+          {bun && bun.price && (
             <BurgerConstructorItem
               item={bun}
-              id={bun.key}
+              id={bun.key || ''}
               text={`${bun.name}  (верх)`}
               position="top"
               dragIcon={false}
@@ -94,10 +104,10 @@ const BurgerConstructorList = () => {
               )}
             </div>
           )}
-          {bun.price && (
+          {bun && bun.price && (
             <BurgerConstructorItem
               item={bun}
-              id={bun.key}
+              id={bun.key || ''}
               text={`${bun.name}  (низ)`}
               position="bottom"
               dragIcon={false}

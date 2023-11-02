@@ -28,7 +28,7 @@ const Modal = (props: TModal): JSX.Element => {
   return createPortal(
     <div className={style.wrapper}>
       <div className={style.modal}>
-        <button className={style.modalCloseButton}>
+        <button className={style.modalCloseButton} title={'close'}>
           <CloseIcon type={'primary'} onClick={closeModal} />
         </button>
         {children}

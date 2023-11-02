@@ -19,7 +19,10 @@ const OrderFeedCard = (props: TOrderFeedCard): JSX.Element => {
   const { orderFeedData, link, state } = props
   const ingredientsData = useAppSelector(selectIngredientsMap)
   const totalCost = orderFeedData.ingredients.reduce((total, ingredientId) => {
-    return (total += ingredientsData[ingredientId].price)
+    if (ingredientsData && ingredientsData.get(ingredientId)) {
+      return total + (ingredientsData.get(ingredientId)?.price || 0)
+    }
+    return total
   }, 0)
   const location = useLocation()
 
@@ -60,10 +63,12 @@ const OrderFeedCard = (props: TOrderFeedCard): JSX.Element => {
                       </div>
                     </>
                   )}
-                  <img
-                    src={ingredientsData[ingredientId].image_mobile}
-                    alt={ingredientsData[ingredientId].name}
-                  />
+                  {ingredientsData && (
+                    <img
+                      src={ingredientsData.get(ingredientId)?.image_mobile}
+                      alt={ingredientsData.get(ingredientId)?.name}
+                    />
+                  )}
                 </div>
               )
             })}

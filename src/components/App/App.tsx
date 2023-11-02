@@ -55,7 +55,7 @@ const App = (): JSX.Element => {
       const requestOptions = {
         body: { token },
       }
-      //@ts-ignore
+
       dispatch(fetchCheckRefreshToken(requestOptions))
     }
     dispatch(connectOrderFeed(socketPath))

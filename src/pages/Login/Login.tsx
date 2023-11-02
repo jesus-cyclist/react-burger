@@ -11,6 +11,7 @@ import { useInput } from '../../hooks/useInput'
 import { EMAIL, PASSWORD } from '../../constants/inputType/inputType'
 import { fetchLogin } from '../../services/reducers/user'
 import { TInputType } from '../../utils/types'
+import { useAppDispatch } from '../../hooks/hooks'
 
 const Login = (): JSX.Element => {
   const [passwordType, setPasswordType] = useState<TInputType>(PASSWORD)
@@ -21,7 +22,7 @@ const Login = (): JSX.Element => {
     [PASSWORD]: 'qwerty',
   })
 
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const handleSumbit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -32,7 +33,6 @@ const Login = (): JSX.Element => {
       },
     }
 
-    //@ts-ignore
     dispatch(fetchLogin(requestData))
   }
 

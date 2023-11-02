@@ -1,7 +1,7 @@
 import { createAsyncAction } from '../../utils/request'
 import { createSlice } from '@reduxjs/toolkit'
 import { TIngredient } from '../../utils/types'
-const { Map } = require('immutable')
+import { TSMap } from 'typescript-map'
 
 export const fetchIngredientsData = createAsyncAction({
   prefix: 'ingredients',
@@ -9,10 +9,10 @@ export const fetchIngredientsData = createAsyncAction({
 })
 
 type TInitialState = {
-  data: null | Array<TIngredient>
+  data: Array<TIngredient> | null
   loading: boolean
   error: boolean
-  ingredients: null | Map<string, TIngredient>
+  ingredients: TSMap<string, TIngredient> | null
 }
 
 const initialState: TInitialState = {
@@ -35,10 +35,12 @@ const ingredientsSlice = createSlice({
         state.ingredients = null
       })
       .addCase(fetchIngredientsData.fulfilled, (state, action) => {
-        const ingredients = new Map()
+        const ingredients = new TSMap<string, TIngredient>()
 
-        action.payload.data.forEach((ingredient: TIngredient) =>
-          ingredients.set(ingredient._id, ingredient)
+        action.payload.data.forEach(
+          (ingredient: TIngredient, index: number) => {
+            ingredients.set(ingredient._id, ingredient)
+          }
         )
 
         state.ingredients = ingredients

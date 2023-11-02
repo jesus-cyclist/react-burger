@@ -12,6 +12,8 @@ import {
   FormattedDate,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
+type TIngredientWithCount = TIngredient & { count: number }
+
 const OrderFeedDeatails = () => {
   const params = useParams()
   const location = useLocation()
@@ -24,42 +26,48 @@ const OrderFeedDeatails = () => {
   const data = useSelector(getOrdersFeedData)
 
   useEffect(() => {
-    if (params?.id && data?.orders) {
+    if (params?.id && data?.orders && ingredientsData) {
       const requiredId = params.id.slice(1)
-      const order = data?.orders.find(
+      const order = data.orders.find(
         (order: TOrder) => order._id === requiredId
       )
 
-      const totalCost = order.ingredients.reduce(
-        (total: number, ingredients: string) => {
-          return (total += ingredientsData[ingredients].price)
-        },
-        0
-      )
+      if (order) {
+        const totalCost = order.ingredients.reduce(
+          (total: number, ingredientId: string) => {
+            if (ingredientsData && ingredientsData.get(ingredientId)) {
+              return (total += ingredientsData.get(ingredientId)?.price || 0)
+            }
+            return total
+          },
+          0
+        )
 
-      setOrderPrice(totalCost)
-      setCurrentOrder(order)
+        setOrderPrice(totalCost)
+        setCurrentOrder(order)
 
-      const structure: Array<TIngredient> = []
-      order.ingredients.forEach(
-        (ingredientId: string, index: number, array: Array<string>) => {
-          const repeatIngredient = structure.some(
-            (ingredient) => ingredient._id === ingredientId
-          )
-          if (repeatIngredient) {
-            return
+        const structure: Array<TIngredient> = []
+        order.ingredients.forEach(
+          (ingredientId: string, index: number, array: Array<string>) => {
+            const repeatIngredient = structure.some(
+              (ingredient) => ingredient._id === ingredientId
+            )
+            if (repeatIngredient) {
+              return
+            }
+            const count = array.filter((ingId) => ingredientId === ingId).length
+
+            const ingredientCount: TIngredientWithCount = {
+              ...ingredientsData.get(ingredientId),
+              count,
+            }
+
+            structure.push(ingredientCount)
           }
-          const count = array.filter((ingId) => ingredientId === ingId).length
-          const ingredientCount: TIngredient = {
-            ...ingredientsData[ingredientId],
-            count,
-          }
+        )
 
-          structure.push(ingredientCount)
-        }
-      )
-
-      setBurgerStructure(structure)
+        setBurgerStructure(structure)
+      }
     }
   }, [params, data?.orders])
 

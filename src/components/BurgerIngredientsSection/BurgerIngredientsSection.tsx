@@ -32,9 +32,10 @@ const BurgerIngredientsSection = (
     <li className={style.section} id={list[title]}>
       <h2 className={style.title}>{title}</h2>
       <div className={style.list}>
-        {sortedData.map((item: TIngredient) => (
-          <BurgerIngredientsItem key={item._id} item={item} />
-        ))}
+        {sortedData &&
+          sortedData.map((item: TIngredient) => (
+            <BurgerIngredientsItem key={item._id} item={item} />
+          ))}
       </div>
     </li>
   )
