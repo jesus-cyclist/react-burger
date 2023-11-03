@@ -1,44 +1,43 @@
-import React, { useEffect, FC } from 'react'
+import Cookies from 'js-cookie'
+import { useEffect } from 'react'
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
+import Feed from '../../pages/Feed/Feed'
+import ForgotPassword from '../../pages/ForgotPassword/ForgotPassword'
 import Home from '../../pages/Home/Home'
 import Login from '../../pages/Login/Login'
-import Register from '../../pages/Register/Register'
-import ForgotPassword from '../../pages/ForgotPassword/ForgotPassword'
-import ResetPassword from '../../pages/ResetPassword/ResetPassword'
 import Profile from '../../pages/Profile/Profile'
-import AppHeader from '../AppHeader/AppHeader'
-import styles from './App.module.css'
-import ProtectedRoute from '../ProtectedRoute/ProtectedRoute'
-import Cookies from 'js-cookie'
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
-import { refreshToken } from '../../utils/token'
-import IngredientDetails from '../IngredientDetails/IngredientDetails'
-import {
-  homePagePath,
-  loginPath,
-  registerPath,
-  forgotPasswordPath,
-  resetPasswordPath,
-  profilePath,
-  ingredientsPath,
-  orderPath,
-  feed,
-  profileOrders,
-} from '../../utils/routerPath'
-import Modal from '../Modal/Modal'
-import OrderDetails from '../OrderDetails/OrderDetails'
-import { fetchIngredientsData } from '../../services/reducers/ingredients'
-import { fetchCheckRefreshToken } from '../../services/reducers/user'
+import Register from '../../pages/Register/Register'
+import ResetPassword from '../../pages/ResetPassword/ResetPassword'
 import { clearConstructor } from '../../services/actions/constructorList'
-import { useSelector } from 'react-redux'
-import { selectIsAuthenticated } from '../../services/selectors/userSelectors'
-import Feed from '../../pages/Feed/Feed'
-import OrderFeedDeatails from '../OrderFeedDeatails/OrderFeedDeatails'
 import {
   connect as connectOrderFeed,
   disconnect as disconnectOrderFeed,
 } from '../../services/actions/orderFeed'
+import { fetchIngredientsData } from '../../services/reducers/ingredients'
+import { fetchCheckRefreshToken } from '../../services/reducers/user'
+import { selectIsAuthenticated } from '../../services/selectors/userSelectors'
 import { socketPath } from '../../utils/request'
+import {
+  feed,
+  forgotPasswordPath,
+  homePagePath,
+  ingredientsPath,
+  loginPath,
+  orderPath,
+  profileOrders,
+  profilePath,
+  registerPath,
+  resetPasswordPath,
+} from '../../utils/routerPath'
+import { refreshToken } from '../../utils/token'
+import AppHeader from '../AppHeader/AppHeader'
+import IngredientDetails from '../IngredientDetails/IngredientDetails'
+import Modal from '../Modal/Modal'
+import OrderDetails from '../OrderDetails/OrderDetails'
+import OrderFeedDeatails from '../OrderFeedDeatails/OrderFeedDeatails'
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute'
+import styles from './App.module.css'
 
 const App = (): JSX.Element => {
   const dispatch = useAppDispatch()
@@ -46,10 +45,10 @@ const App = (): JSX.Element => {
   const navigate = useNavigate()
   const state = location.state
 
-  const isAuthenticated = useSelector(selectIsAuthenticated)
+  const isAuthenticated = useAppSelector(selectIsAuthenticated)
 
   useEffect(() => {
-    dispatch(fetchIngredientsData())
+    dispatch(fetchIngredientsData(null))
     const token = Cookies.get(refreshToken)
     if (token && !isAuthenticated) {
       const requestOptions = {

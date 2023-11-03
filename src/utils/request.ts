@@ -13,6 +13,8 @@ export const socketPath = 'wss://norma.nomoreparties.space/orders/all'
 
 export const socketPathProfile = 'wss://norma.nomoreparties.space/orders'
 
+export const allOrdersPath = 'https://norma.nomoreparties.space/api/orders/'
+
 const checkResponse: TCheckResponse = (res) =>
   res.ok ? res.json() : Promise.reject(`Error ${res.status}`)
 

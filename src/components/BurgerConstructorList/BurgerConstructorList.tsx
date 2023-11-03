@@ -1,25 +1,24 @@
-import React, { useCallback, useEffect, useState, useMemo } from 'react'
-import BurgerConstructorItem from '../BurgerConstructorItem/BurgerConstructorItem'
 import {
   Button,
   CurrencyIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components'
-import style from './BurgerConstructorList.module.css'
-import { useAppSelector, useAppDispatch } from '../../hooks/hooks'
 import update from 'immutability-helper'
+import { useCallback, useEffect, useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
-import { loginPath, orderPath } from '../../utils/routerPath'
-import { useSelector } from 'react-redux'
-import { TIngredient } from '../../utils/types'
-import { selectIsAuthenticated } from '../../services/selectors/userSelectors'
+import { useAppSelector } from '../../hooks/hooks'
 import {
-  selectFilling,
   selectBun,
+  selectFilling,
 } from '../../services/selectors/constructorSelectors'
+import { selectIsAuthenticated } from '../../services/selectors/userSelectors'
+import { loginPath, orderPath } from '../../utils/routerPath'
+import { TIngredient } from '../../utils/types'
+import BurgerConstructorItem from '../BurgerConstructorItem/BurgerConstructorItem'
+import style from './BurgerConstructorList.module.css'
 
 const BurgerConstructorList = () => {
   const [totalAmount, setTotalAmount] = useState(0)
-  const isAuthenticated = useSelector(selectIsAuthenticated)
+  const isAuthenticated = useAppSelector(selectIsAuthenticated)
 
   const bun = useAppSelector(selectBun)
   const filling = useAppSelector(selectFilling)

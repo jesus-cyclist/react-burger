@@ -1,15 +1,13 @@
-import React from 'react'
-import BurgerIngredients from '../../components/BurgerIngredients/BurgerIngredients'
-import BurgerConstructor from '../../components/BurgerConstructor/BurgerConstructor'
-import { useAppSelector } from '../../hooks/hooks'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
-import styles from './Home.module.css'
-import { useSelector } from 'react-redux'
+import BurgerConstructor from '../../components/BurgerConstructor/BurgerConstructor'
+import BurgerIngredients from '../../components/BurgerIngredients/BurgerIngredients'
+import { useAppSelector } from '../../hooks/hooks'
 import { selectIngredients } from '../../services/selectors/ingredientsSelectors'
+import styles from './Home.module.css'
 
 const HomePage = (): JSX.Element => {
-  const data = useSelector(selectIngredients)
+  const data = useAppSelector(selectIngredients)
 
   return (
     <div className={styles.wrapper}>

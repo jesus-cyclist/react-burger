@@ -28,7 +28,10 @@ const OrderFeedCard = (props: TOrderFeedCard): JSX.Element => {
 
   return (
     <div className={styles.container}>
-      <NavLink to={link} state={{ [state]: location }}>
+      <NavLink
+        to={link}
+        state={{ [state]: location, number: orderFeedData.number }}
+      >
         <div className={styles.orderDetails}>
           <span className={styles.orderNumber}>#{orderFeedData.number}</span>
           <div className={styles.orderDate}>

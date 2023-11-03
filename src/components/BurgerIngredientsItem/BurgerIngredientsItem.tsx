@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from 'react'
-import style from './BurgerIngredientsItem.module.css'
-import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import {
+  Counter,
+  CurrencyIcon,
+} from '@ya.praktikum/react-developer-burger-ui-components'
+import { useEffect, useState } from 'react'
 import { useDrag } from 'react-dnd'
-import { Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 import { NavLink, useLocation } from 'react-router-dom'
-import { ingredientsPath } from '../../utils/routerPath'
-import { TIngredient } from '../../utils/types'
-import { useSelector } from 'react-redux'
+import { useAppSelector } from '../../hooks/hooks'
 import {
   selectBun,
   selectFilling,
 } from '../../services/selectors/constructorSelectors'
+import { ingredientsPath } from '../../utils/routerPath'
+import { TIngredient } from '../../utils/types'
+import style from './BurgerIngredientsItem.module.css'
 
 type TBurgerIngredientsItemProps = {
   item: TIngredient
@@ -21,8 +23,8 @@ const BurgerIngredientsItem = (
 ): JSX.Element => {
   const [count, setCount] = useState(0)
   const { item } = props
-  const bun = useSelector(selectBun)
-  const filling = useSelector(selectFilling)
+  const bun = useAppSelector(selectBun)
+  const filling = useAppSelector(selectFilling)
   const location = useLocation()
 
   useEffect(() => {

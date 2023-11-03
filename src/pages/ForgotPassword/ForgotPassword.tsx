@@ -5,7 +5,7 @@ import {
   Input,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import {} from 'react-redux'
 import { resetPasswordPath, loginPath } from '../../utils/routerPath'
 import { useInput } from '../../hooks/useInput'
 import { EMAIL } from '../../constants/inputType/inputType'

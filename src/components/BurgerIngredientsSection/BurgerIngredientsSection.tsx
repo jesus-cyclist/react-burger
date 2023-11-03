@@ -1,9 +1,9 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
+import { useAppSelector } from '../../hooks/hooks'
+import { selectIngredients } from '../../services/selectors/ingredientsSelectors'
+import { TIngredient } from '../../utils/types'
 import BurgerIngredientsItem from '../BurgerIngredientsItem/BurgerIngredientsItem'
 import style from './BurgerIngredientsSection.module.css'
-import { TIngredient } from '../../utils/types'
-import { useSelector } from 'react-redux'
-import { selectIngredients } from '../../services/selectors/ingredientsSelectors'
 
 type TBurgerIngredientsSection = {
   title: string
@@ -12,7 +12,7 @@ type TBurgerIngredientsSection = {
 const BurgerIngredientsSection = (
   props: TBurgerIngredientsSection
 ): JSX.Element => {
-  const ingredients = useSelector(selectIngredients)
+  const ingredients = useAppSelector(selectIngredients)
 
   const { title } = props
 
@@ -32,10 +32,21 @@ const BurgerIngredientsSection = (
     <li className={style.section} id={list[title]}>
       <h2 className={style.title}>{title}</h2>
       <div className={style.list}>
-        {sortedData &&
-          sortedData.map((item: TIngredient) => (
-            <BurgerIngredientsItem key={item._id} item={item} />
-          ))}
+        {
+          sortedData &&
+            // <TransitionGroup className="todo-list">
+            sortedData.map((item: TIngredient) => (
+              // <CSSTransition
+              //   key={id}
+              //   nodeRef={createRef()}
+              //   timeout={500}
+              //   classNames="item"
+              // >
+              <BurgerIngredientsItem key={item._id} item={item} />
+              // </CSSTransition>
+            ))
+          // </TransitionGroup>
+        }
       </div>
     </li>
   )

@@ -1,28 +1,28 @@
-import React, { useEffect, useState, FC } from 'react'
-import { Logo } from '@ya.praktikum/react-developer-burger-ui-components'
-import styles from './AppHeader.module.css'
-import {
-  PROFILE_TAB,
-  CONSTRUCTOR_TAB,
-  ORDERS_LIST_TAB,
-} from '../../utils/menuNav'
-import { NavLink, useLocation } from 'react-router-dom'
-import { homePagePath, profilePath, feed } from '../../utils/routerPath'
 import {
   BurgerIcon,
   ListIcon,
+  Logo,
   ProfileIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components'
+import { useEffect, useState } from 'react'
+import {} from 'react-redux'
+import { NavLink, useLocation } from 'react-router-dom'
 import { useAppSelector } from '../../hooks/hooks'
-import { useSelector } from 'react-redux'
 import { selectIsAuthenticated } from '../../services/selectors/userSelectors'
+import {
+  CONSTRUCTOR_TAB,
+  ORDERS_LIST_TAB,
+  PROFILE_TAB,
+} from '../../utils/menuNav'
+import { feed, homePagePath, profilePath } from '../../utils/routerPath'
+import styles from './AppHeader.module.css'
 
 type TActiveTab = string | null
 
 const AppHeader = (): JSX.Element => {
   const [activeTab, setActiveTab] = useState<TActiveTab>(null)
 
-  const isAuthenticated = useSelector(selectIsAuthenticated)
+  const isAuthenticated = useAppSelector(selectIsAuthenticated)
 
   const location = useLocation()
 

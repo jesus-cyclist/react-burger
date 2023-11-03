@@ -1,7 +1,6 @@
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import { useAppDispatch } from '../../hooks/hooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
 import {
   makeBunActive,
   makeMainActive,
@@ -11,7 +10,7 @@ import { selectActiveTab } from '../../services/selectors/activeTabSelectors'
 import styles from './BurgerIngredientsNav.module.css'
 
 const BurgerIngredientsNav = (): JSX.Element => {
-  const activeTab = useSelector(selectActiveTab)
+  const activeTab = useAppSelector(selectActiveTab)
   const dispatch = useAppDispatch()
 
   useEffect(() => {

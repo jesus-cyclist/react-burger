@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from 'react'
-import { useLoaderData, useLocation, useParams } from 'react-router-dom'
-import styles from './OrderFeedDeatails.module.css'
-import { useSelector } from 'react-redux'
-import { getOrdersFeedData } from '../../services/selectors/ordersFeedSelectors'
-import { TIngredient, TOrder } from '../../utils/types'
-import { useAppSelector } from '../../hooks/hooks'
-import { selectIngredientsMap } from '../../services/selectors/ingredientsSelectors'
-import OrderFeedDetailsCard from '../OrderFeedDetailsCard/OrderFeedDetailsCard'
 import {
   CurrencyIcon,
   FormattedDate,
 } from '@ya.praktikum/react-developer-burger-ui-components'
+import { useEffect, useState } from 'react'
+import { ThreeDots } from 'react-loader-spinner'
+import { useLocation } from 'react-router-dom'
+import { useAppSelector } from '../../hooks/hooks'
+import { selectIngredientsMap } from '../../services/selectors/ingredientsSelectors'
+import { getOrdersFeedData } from '../../services/selectors/ordersFeedSelectors'
+import { allOrdersPath } from '../../utils/request'
+import { TIngredient, TOrder } from '../../utils/types'
+import OrderFeedDetailsCard from '../OrderFeedDetailsCard/OrderFeedDetailsCard'
+import styles from './OrderFeedDeatails.module.css'
 
 type TIngredientWithCount = TIngredient & { count: number }
 
 const OrderFeedDeatails = () => {
-  const params = useParams()
   const location = useLocation()
   const [currentOrder, setCurrentOrder] = useState<TOrder | null>(null)
   const [burgerStructure, setBurgerStructure] =
@@ -23,53 +23,53 @@ const OrderFeedDeatails = () => {
   const [orderPrice, setOrderPrice] = useState<null | number>(null)
   const ingredientsData = useAppSelector(selectIngredientsMap)
 
-  const data = useSelector(getOrdersFeedData)
+  const data = useAppSelector(getOrdersFeedData)
 
   useEffect(() => {
-    if (params?.id && data?.orders && ingredientsData) {
-      const requiredId = params.id.slice(1)
-      const order = data.orders.find(
-        (order: TOrder) => order._id === requiredId
+    fetch(`${allOrdersPath}${location.state.number}`)
+      .then((res) =>
+        res.ok ? res.json() : Promise.reject(`Error ${res.status}`)
+      )
+      .then((res) => setCurrentOrder(res.orders[0]))
+  }, [])
+
+  useEffect(() => {
+    if (currentOrder && ingredientsData) {
+      const totalCost = currentOrder.ingredients.reduce(
+        (total: number, ingredientId: string) => {
+          if (ingredientsData && ingredientsData.get(ingredientId)) {
+            return (total += ingredientsData.get(ingredientId)?.price || 0)
+          }
+          return total
+        },
+        0
       )
 
-      if (order) {
-        const totalCost = order.ingredients.reduce(
-          (total: number, ingredientId: string) => {
-            if (ingredientsData && ingredientsData.get(ingredientId)) {
-              return (total += ingredientsData.get(ingredientId)?.price || 0)
-            }
-            return total
-          },
-          0
-        )
+      setOrderPrice(totalCost)
 
-        setOrderPrice(totalCost)
-        setCurrentOrder(order)
-
-        const structure: Array<TIngredient> = []
-        order.ingredients.forEach(
-          (ingredientId: string, index: number, array: Array<string>) => {
-            const repeatIngredient = structure.some(
-              (ingredient) => ingredient._id === ingredientId
-            )
-            if (repeatIngredient) {
-              return
-            }
-            const count = array.filter((ingId) => ingredientId === ingId).length
-
-            const ingredientCount: TIngredientWithCount = {
-              ...ingredientsData.get(ingredientId),
-              count,
-            }
-
-            structure.push(ingredientCount)
+      const structure: Array<TIngredient> = []
+      currentOrder.ingredients.forEach(
+        (ingredientId: string, index: number, array: Array<string>) => {
+          const repeatIngredient = structure.some(
+            (ingredient) => ingredient._id === ingredientId
+          )
+          if (repeatIngredient) {
+            return
           }
-        )
+          const count = array.filter((ingId) => ingredientId === ingId).length
 
-        setBurgerStructure(structure)
-      }
+          const ingredientCount: TIngredientWithCount = {
+            ...ingredientsData.get(ingredientId),
+            count,
+          }
+
+          structure.push(ingredientCount)
+        }
+      )
+
+      setBurgerStructure(structure)
     }
-  }, [params, data?.orders])
+  }, [currentOrder])
 
   const orderStatus = (status: string) => {
     switch (status) {
@@ -84,7 +84,7 @@ const OrderFeedDeatails = () => {
 
   return (
     <div className={!location.state ? styles.wrapper : ''}>
-      {currentOrder && data?.orders && (
+      {currentOrder ? (
         <div className={styles.container}>
           <span
             className={styles.orderNumber}
@@ -111,6 +111,20 @@ const OrderFeedDeatails = () => {
             </div>
           </div>
         </div>
+      ) : (
+        <ThreeDots
+          height="80"
+          width="80"
+          radius="9"
+          color="#4C4CFF"
+          ariaLabel="three-dots-loading"
+          wrapperStyle={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          visible={true}
+        />
       )}
     </div>
   )

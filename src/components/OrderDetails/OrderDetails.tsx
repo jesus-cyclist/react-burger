@@ -2,7 +2,6 @@ import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-component
 import Cookies from 'js-cookie'
 import { useEffect } from 'react'
 import { ThreeDots } from 'react-loader-spinner'
-import { useSelector } from 'react-redux'
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
 import { fetchOrderData } from '../../services/reducers/order'
 import {
@@ -34,6 +33,7 @@ const OrderDetails = (): JSX.Element => {
     }
 
     const token = Cookies.get(accessToken)
+
     const requestData = {
       body: { ingredients: allIngredientsId },
       token: { accessToken: token },

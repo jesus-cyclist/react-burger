@@ -1,15 +1,14 @@
-import React, { useEffect, useState, FC } from 'react'
-import styles from './IngredientDetails.module.css'
+import { useEffect, useState } from 'react'
+import { ThreeDots } from 'react-loader-spinner'
 import { useLocation, useParams } from 'react-router-dom'
 import { useAppSelector } from '../../hooks/hooks'
-import { ThreeDots } from 'react-loader-spinner'
-import { TIngredient } from '../../utils/types'
-import { useSelector } from 'react-redux'
 import { selectIngredients } from '../../services/selectors/ingredientsSelectors'
+import { TIngredient } from '../../utils/types'
+import styles from './IngredientDetails.module.css'
 
 const IngredientDetails = (): JSX.Element => {
   const params = useParams()
-  const ingredients = useSelector(selectIngredients)
+  const ingredients = useAppSelector(selectIngredients)
   const location = useLocation()
   const [ingredient, setIngredient] = useState<TIngredient>()
 

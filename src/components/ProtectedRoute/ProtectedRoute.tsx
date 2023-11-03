@@ -1,9 +1,8 @@
-import React, { FC, ReactNode } from 'react'
+import { ReactNode } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import { useAppSelector } from '../../hooks/hooks'
-import { loginPath } from '../../utils/routerPath'
-import { useSelector } from 'react-redux'
 import { selectIsAuthenticated } from '../../services/selectors/userSelectors'
+import { loginPath } from '../../utils/routerPath'
 
 type TProtectedRouteProps = {
   onlyAuth?: boolean
@@ -14,7 +13,7 @@ const ProtectedRoute = ({
   onlyAuth = false,
   component,
 }: TProtectedRouteProps): JSX.Element => {
-  const isAuthenticated = useSelector(selectIsAuthenticated)
+  const isAuthenticated = useAppSelector(selectIsAuthenticated)
   const location = useLocation()
   const from = location.state?.from || '/'
 

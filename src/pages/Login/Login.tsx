@@ -1,17 +1,16 @@
-import React, { useState, FormEvent } from 'react'
-import styles from './Login.module.css'
-import { Link, useLocation } from 'react-router-dom'
 import {
-  Input,
   Button,
+  Input,
 } from '@ya.praktikum/react-developer-burger-ui-components'
-import { useDispatch } from 'react-redux'
-import { registerPath, forgotPasswordPath } from '../../utils/routerPath'
-import { useInput } from '../../hooks/useInput'
+import { FormEvent, useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import { EMAIL, PASSWORD } from '../../constants/inputType/inputType'
-import { fetchLogin } from '../../services/reducers/user'
-import { TInputType } from '../../utils/types'
 import { useAppDispatch } from '../../hooks/hooks'
+import { useInput } from '../../hooks/useInput'
+import { fetchLogin } from '../../services/reducers/user'
+import { forgotPasswordPath, registerPath } from '../../utils/routerPath'
+import { TInputType } from '../../utils/types'
+import styles from './Login.module.css'
 
 const Login = (): JSX.Element => {
   const [passwordType, setPasswordType] = useState<TInputType>(PASSWORD)
