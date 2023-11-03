@@ -2,7 +2,7 @@ import {
   Counter,
   CurrencyIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components'
-import { useEffect, useState } from 'react'
+import { LegacyRef, RefObject, useEffect, useState } from 'react'
 import { useDrag } from 'react-dnd'
 import { NavLink, useLocation } from 'react-router-dom'
 import { useAppSelector } from '../../hooks/hooks'
@@ -13,16 +13,18 @@ import {
 import { ingredientsPath } from '../../utils/routerPath'
 import { TIngredient } from '../../utils/types'
 import style from './BurgerIngredientsItem.module.css'
+import { Transition } from 'react-transition-group'
 
 type TBurgerIngredientsItemProps = {
   item: TIngredient
+  nodeRef: any
 }
 
 const BurgerIngredientsItem = (
   props: TBurgerIngredientsItemProps
 ): JSX.Element => {
   const [count, setCount] = useState(0)
-  const { item } = props
+  const { item, nodeRef } = props
   const bun = useAppSelector(selectBun)
   const filling = useAppSelector(selectFilling)
   const location = useLocation()
@@ -47,26 +49,28 @@ const BurgerIngredientsItem = (
   })
 
   return (
-    <NavLink
-      className={style.ingredient}
-      to={`${ingredientsPath}/:${item._id}`}
-      state={{ ingredientsLocation: location }}
-      ref={dragRef}
-    >
-      <div className={style.logoBox}>
-        <img className={style.logo} src={item.image} alt={item.name} />
-      </div>
-      <div className={style.priceBox}>
-        <span className={style.price}>{item.price}</span>
-        <CurrencyIcon type="primary" />
-      </div>
-      <h3 className={style.title}>{item.name}</h3>
-      {count > 0 && (
-        <div className={style.counter}>
-          <Counter count={count} size="default" />
+    <div ref={nodeRef}>
+      <NavLink
+        className={style.ingredient}
+        to={`${ingredientsPath}/:${item._id}`}
+        state={{ ingredientsLocation: location }}
+        ref={dragRef}
+      >
+        <div className={style.logoBox}>
+          <img className={style.logo} src={item.image} alt={item.name} />
         </div>
-      )}
-    </NavLink>
+        <div className={style.priceBox}>
+          <span className={style.price}>{item.price}</span>
+          <CurrencyIcon type="primary" />
+        </div>
+        <h3 className={style.title}>{item.name}</h3>
+        {count > 0 && (
+          <div className={style.counter}>
+            <Counter count={count} size="default" />
+          </div>
+        )}
+      </NavLink>
+    </div>
   )
 }
 

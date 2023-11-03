@@ -12,3 +12,18 @@
   line-height: 30px;
   font-weight: 700;
 }
+
+.ingredientEnter {
+  opacity: 0;
+}
+.ingredientEnterActive {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+.ingredientExit {
+  opacity: 1;
+}
+.ingredientExitActive {
+  opacity: 0;
+  transition: opacity 500ms ease-in;
+}
