@@ -12,6 +12,8 @@ import { allOrdersPath } from '../../utils/request'
 import { TIngredient, TOrder } from '../../utils/types'
 import OrderFeedDetailsCard from '../OrderFeedDetailsCard/OrderFeedDetailsCard'
 import styles from './OrderFeedDeatails.module.css'
+import Cookies from 'js-cookie'
+import { refreshToken } from '../../utils/token'
 
 type TIngredientWithCount = TIngredient & { count: number }
 
@@ -25,8 +27,6 @@ const OrderFeedDeatails = () => {
   const ingredientsData = useAppSelector(selectIngredientsMap)
 
   const data = useAppSelector(getOrdersFeedData)
-
-  console.log(params)
 
   useEffect(() => {
     params.id &&

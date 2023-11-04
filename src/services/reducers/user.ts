@@ -2,6 +2,7 @@ import Cookies from 'js-cookie'
 import { refreshToken, accessToken } from '../../utils/token'
 import { createSlice } from '@reduxjs/toolkit'
 import { createAsyncAction } from '../../utils/request'
+import { truncate } from 'fs/promises'
 
 export const fetchForgotPassword = createAsyncAction({
   prefix: 'user/password-forgot',
@@ -87,6 +88,10 @@ const userSlice = createSlice({
       Cookies.remove(refreshToken)
       Cookies.remove(accessToken)
     },
+
+    setIsAuthenticated: (state) => {
+      state.isAuthenticated = true
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -144,10 +149,10 @@ const userSlice = createSlice({
         }
 
         if (response) {
-          Cookies.set('refreshToken', action.payload.refreshToken, {
+          Cookies.set(refreshToken, action.payload.refreshToken, {
             expires: 1,
           })
-          Cookies.set('accessToken', action.payload.accessToken.split(' ')[1], {
+          Cookies.set(accessToken, action.payload.accessToken.split(' ')[1], {
             expires: 1,
           })
           state.isAuthenticated = true
@@ -174,10 +179,10 @@ const userSlice = createSlice({
         state.isAuthenticated = true
         state.user = action.payload.user
 
-        Cookies.set('refreshToken', action.payload.refreshToken, {
+        Cookies.set(refreshToken, action.payload.refreshToken, {
           expires: 1,
         })
-        Cookies.set('accessToken', action.payload.accessToken.split(' ')[1], {
+        Cookies.set(accessToken, action.payload.accessToken.split(' ')[1], {
           expires: 1,
         })
       })
@@ -218,10 +223,12 @@ const userSlice = createSlice({
         }
         state.isAuthenticated = true
 
-        Cookies.set('refreshToken', action.payload.refreshToken, {
+        console.log('action.payload', action)
+
+        Cookies.set(refreshToken, action.payload.refreshToken, {
           expires: 1,
         })
-        Cookies.set('accessToken', action.payload.accessToken.split(' ')[1], {
+        Cookies.set(accessToken, action.payload.accessToken.split(' ')[1], {
           expires: 1,
         })
       })
@@ -253,5 +260,5 @@ const userSlice = createSlice({
   },
 })
 
-export const { logout } = userSlice.actions
+export const { logout, setIsAuthenticated } = userSlice.actions
 export default userSlice.reducer

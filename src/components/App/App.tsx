@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
 import Feed from '../../pages/Feed/Feed'
@@ -15,7 +15,7 @@ import {
   disconnect as disconnectOrderFeed,
 } from '../../services/actions/orderFeed'
 import { fetchIngredientsData } from '../../services/reducers/ingredients'
-import { fetchCheckRefreshToken } from '../../services/reducers/user'
+import { logout, setIsAuthenticated } from '../../services/reducers/user'
 import { selectIsAuthenticated } from '../../services/selectors/userSelectors'
 import { socketPath } from '../../utils/request'
 import {
@@ -30,7 +30,7 @@ import {
   registerPath,
   resetPasswordPath,
 } from '../../utils/routerPath'
-import { refreshToken } from '../../utils/token'
+import { accessToken, refreshToken } from '../../utils/token'
 import AppHeader from '../AppHeader/AppHeader'
 import IngredientDetails from '../IngredientDetails/IngredientDetails'
 import Modal from '../Modal/Modal'
@@ -38,25 +38,53 @@ import OrderDetails from '../OrderDetails/OrderDetails'
 import OrderFeedDeatails from '../OrderFeedDeatails/OrderFeedDeatails'
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute'
 import styles from './App.module.css'
+import axios from 'axios'
 
 const App = (): JSX.Element => {
   const dispatch = useAppDispatch()
   const location = useLocation()
   const navigate = useNavigate()
   const state = location.state
-
+  const [isTokenRefreshing, setIsTokenRefreshing] = useState(false)
   const isAuthenticated = useAppSelector(selectIsAuthenticated)
 
   useEffect(() => {
-    dispatch(fetchIngredientsData(null))
     const token = Cookies.get(refreshToken)
-    if (token && !isAuthenticated) {
+    if (token && !isAuthenticated && !isTokenRefreshing) {
+      setIsTokenRefreshing(true)
       const requestOptions = {
         body: { token },
       }
 
-      dispatch(fetchCheckRefreshToken(requestOptions))
+      axios
+        .post(
+          'https://norma.nomoreparties.space/api/auth/token',
+          { token },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        )
+        .then((res) => {
+          console.log(res)
+
+          Cookies.set(refreshToken, res.data.refreshToken.slice(1), {
+            expires: 1,
+          })
+          Cookies.set(accessToken, res.data.accessToken.split(' ')[1], {
+            expires: 1,
+          })
+          dispatch(setIsAuthenticated())
+        })
+        .catch((e) => dispatch(logout()))
+        .finally(() => setIsTokenRefreshing(false))
     }
+  }, [isAuthenticated])
+
+  useEffect(() => {
+    dispatch(fetchIngredientsData(null))
+
     dispatch(connectOrderFeed(socketPath))
     return () => {
       dispatch(disconnectOrderFeed())
