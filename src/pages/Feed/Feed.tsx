@@ -1,22 +1,11 @@
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
-import styles from './Feed.module.css'
-
 import OrderFeedCard from '../../components/OrderFeedCard/OrderFeedCard'
 import OrdersFeedStats from '../../components/OrdersFeedStats/OrdersFeedStats'
+import { useAppSelector } from '../../hooks/hooks'
 import { feed } from '../../utils/routerPath'
-import { useEffect, useState } from 'react'
-import { TOrder } from '../../utils/types'
+import styles from './Feed.module.css'
 
 const Feed = () => {
   const data = useAppSelector((state) => state.rootReducer.ordersFeed.data)
-
-  useEffect(() => {
-    if (data) {
-      const getSortedOrders = [...data.orders].sort(
-        (frstOrder, scndOrder) => scndOrder.number - frstOrder.number
-      )
-    }
-  }, [data])
 
   return (
     <div className={styles.container}>
@@ -29,7 +18,7 @@ const Feed = () => {
                 <OrderFeedCard
                   key={order.number}
                   orderFeedData={order}
-                  link={`${feed}/:${order._id}`}
+                  link={`${feed}/:${order.number}`}
                   state={'orderFeed'}
                 />
               )

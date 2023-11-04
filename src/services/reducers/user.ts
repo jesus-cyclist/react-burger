@@ -144,10 +144,10 @@ const userSlice = createSlice({
         }
 
         if (response) {
-          Cookies.set(refreshToken, action.payload.refreshToken, {
+          Cookies.set('refreshToken', action.payload.refreshToken, {
             expires: 1,
           })
-          Cookies.set(accessToken, action.payload.accessToken.split(' ')[1], {
+          Cookies.set('accessToken', action.payload.accessToken.split(' ')[1], {
             expires: 1,
           })
           state.isAuthenticated = true
@@ -174,10 +174,10 @@ const userSlice = createSlice({
         state.isAuthenticated = true
         state.user = action.payload.user
 
-        Cookies.set(refreshToken, action.payload.refreshToken, {
+        Cookies.set('refreshToken', action.payload.refreshToken, {
           expires: 1,
         })
-        Cookies.set(accessToken, action.payload.accessToken.split(' ')[1], {
+        Cookies.set('accessToken', action.payload.accessToken.split(' ')[1], {
           expires: 1,
         })
       })
@@ -218,10 +218,10 @@ const userSlice = createSlice({
         }
         state.isAuthenticated = true
 
-        Cookies.set(refreshToken, action.payload.refreshToken, {
+        Cookies.set('refreshToken', action.payload.refreshToken, {
           expires: 1,
         })
-        Cookies.set(accessToken, action.payload.accessToken.split(' ')[1], {
+        Cookies.set('accessToken', action.payload.accessToken.split(' ')[1], {
           expires: 1,
         })
       })

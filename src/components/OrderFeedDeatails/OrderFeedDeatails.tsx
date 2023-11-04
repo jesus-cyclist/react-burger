@@ -4,7 +4,7 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useEffect, useState } from 'react'
 import { ThreeDots } from 'react-loader-spinner'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import { useAppSelector } from '../../hooks/hooks'
 import { selectIngredientsMap } from '../../services/selectors/ingredientsSelectors'
 import { getOrdersFeedData } from '../../services/selectors/ordersFeedSelectors'
@@ -16,6 +16,7 @@ import styles from './OrderFeedDeatails.module.css'
 type TIngredientWithCount = TIngredient & { count: number }
 
 const OrderFeedDeatails = () => {
+  const params = useParams()
   const location = useLocation()
   const [currentOrder, setCurrentOrder] = useState<TOrder | null>(null)
   const [burgerStructure, setBurgerStructure] =
@@ -25,12 +26,15 @@ const OrderFeedDeatails = () => {
 
   const data = useAppSelector(getOrdersFeedData)
 
+  console.log(params)
+
   useEffect(() => {
-    fetch(`${allOrdersPath}${location.state.number}`)
-      .then((res) =>
-        res.ok ? res.json() : Promise.reject(`Error ${res.status}`)
-      )
-      .then((res) => setCurrentOrder(res.orders[0]))
+    params.id &&
+      fetch(`${allOrdersPath}${params.id.slice(1)}`)
+        .then((res) =>
+          res.ok ? res.json() : Promise.reject(`Error ${res.status}`)
+        )
+        .then((res) => setCurrentOrder(res.orders[0]))
   }, [])
 
   useEffect(() => {

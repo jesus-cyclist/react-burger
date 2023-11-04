@@ -2,8 +2,8 @@
 }
 
 .list {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   padding: 24px 16px 40px 16px;
 }
 

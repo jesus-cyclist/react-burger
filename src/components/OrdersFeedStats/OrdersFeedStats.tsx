@@ -34,7 +34,7 @@ const OrdersFeedStats = (props: { orderFeedData: TOrders }): JSX.Element => {
               readyOrders.map((order: TOrder) => (
                 <NavLink
                   className={styles.ordersReadyLink}
-                  to={`${feed}/:${order._id}`}
+                  to={`${feed}/:${order.number}`}
                   key={order._id}
                   state={{ orderFeed: location }}
                 >

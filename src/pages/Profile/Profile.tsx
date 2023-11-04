@@ -49,7 +49,7 @@ const Profile = (): JSX.Element => {
             <OrderFeedCard
               key={order.number}
               orderFeedData={order}
-              link={`${profileOrders}/:${order._id}`}
+              link={`${profileOrders}/:${order.number}`}
               state={'profileOrderFeed'}
             />
           ))}
