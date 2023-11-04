@@ -1,5 +1,6 @@
+import axios from 'axios'
 import Cookies from 'js-cookie'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
 import Feed from '../../pages/Feed/Feed'
@@ -38,7 +39,6 @@ import OrderDetails from '../OrderDetails/OrderDetails'
 import OrderFeedDeatails from '../OrderFeedDeatails/OrderFeedDeatails'
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute'
 import styles from './App.module.css'
-import axios from 'axios'
 
 const App = (): JSX.Element => {
   const dispatch = useAppDispatch()
@@ -50,10 +50,6 @@ const App = (): JSX.Element => {
   useEffect(() => {
     const token = Cookies.get(refreshToken)
     if (token && !isAuthenticated) {
-      const requestOptions = {
-        body: { token },
-      }
-
       axios
         .post(
           'https://norma.nomoreparties.space/api/auth/token',
@@ -65,10 +61,6 @@ const App = (): JSX.Element => {
           }
         )
         .then((res) => {
-          console.log(token)
-          console.log(res.data)
-          console.log(document.cookie)
-
           Cookies.set(refreshToken, res.data.refreshToken, {
             expires: 1,
           })
