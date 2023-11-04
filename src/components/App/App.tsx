@@ -45,13 +45,11 @@ const App = (): JSX.Element => {
   const location = useLocation()
   const navigate = useNavigate()
   const state = location.state
-  const [isTokenRefreshing, setIsTokenRefreshing] = useState(false)
   const isAuthenticated = useAppSelector(selectIsAuthenticated)
 
   useEffect(() => {
     const token = Cookies.get(refreshToken)
-    if (token && !isAuthenticated && !isTokenRefreshing) {
-      setIsTokenRefreshing(true)
+    if (token && !isAuthenticated) {
       const requestOptions = {
         body: { token },
       }
@@ -67,9 +65,11 @@ const App = (): JSX.Element => {
           }
         )
         .then((res) => {
-          console.log(res)
+          console.log(token)
+          console.log(res.data)
+          console.log(document.cookie)
 
-          Cookies.set(refreshToken, res.data.refreshToken.slice(1), {
+          Cookies.set(refreshToken, res.data.refreshToken, {
             expires: 1,
           })
           Cookies.set(accessToken, res.data.accessToken.split(' ')[1], {
@@ -78,7 +78,6 @@ const App = (): JSX.Element => {
           dispatch(setIsAuthenticated())
         })
         .catch((e) => dispatch(logout()))
-        .finally(() => setIsTokenRefreshing(false))
     }
   }, [isAuthenticated])
 
