@@ -9,6 +9,12 @@ import {
 
 const path = 'https://norma.nomoreparties.space/api/'
 
+export const socketPath = 'wss://norma.nomoreparties.space/orders/all'
+
+export const socketPathProfile = 'wss://norma.nomoreparties.space/orders'
+
+export const allOrdersPath = 'https://norma.nomoreparties.space/api/orders/'
+
 const checkResponse: TCheckResponse = (res) =>
   res.ok ? res.json() : Promise.reject(`Error ${res.status}`)
 
@@ -20,17 +26,18 @@ export const createAsyncAction = ({
   route,
   method = 'GET',
 }: TCreateAsyncAction) => {
-  //@ts-ignore
-  return createAsyncThunk(`${prefix}`, async (requestData = null) => {
-    //@ts-ignore
-    return request(route, method, requestData)
-  })
+  return createAsyncThunk(
+    `${prefix}`,
+    async (requestData: null | TRequestData = null) => {
+      return request(route, method, requestData)
+    }
+  )
 }
 
 export const request = (
   route: string,
   method: string,
-  requestData: TRequestData
+  requestData: TRequestData | null
 ) => {
   const url = `${path}${route}`
   const requestOptions: TRequestOptions = {
@@ -43,7 +50,6 @@ export const request = (
   if (requestData?.token) {
     requestOptions.headers['Authorization'] =
       'Bearer ' + requestData.token.accessToken
-    console.log(requestData.token)
   }
 
   if (requestData?.body) {

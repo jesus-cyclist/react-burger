@@ -1,6 +1,5 @@
 .container {
   width: 320px;
-  margin-right: 60px;
 }
 
 .profileNav {
@@ -17,9 +16,11 @@
 .exitButton {
   color: #8585ad;
   transition: all 0.3s ease-in;
+  cursor: pointer;
 }
 
 .navlinkActive {
   color: #f2f2f3;
   transition: all 0.3s ease-in;
+  cursor: pointer;
 }

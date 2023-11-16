@@ -5,11 +5,11 @@ import {
   Input,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Link, useLocation } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
 import { useInput } from '../../hooks/useInput'
 import { EMAIL, PASSWORD, NAME } from '../../constants/inputType/inputType'
 import { fetchRegister } from '../../services/reducers/user'
 import { TInputType } from '../../utils/types'
+import { useAppDispatch } from '../../hooks/hooks'
 
 const Register = (): JSX.Element => {
   const { values, handleChange } = useInput({
@@ -20,7 +20,7 @@ const Register = (): JSX.Element => {
   const location = useLocation()
   const [passwordType, setPasswordType] = useState<TInputType>(PASSWORD)
 
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const handleSumbit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -32,7 +32,6 @@ const Register = (): JSX.Element => {
       },
     }
 
-    //@ts-ignore
     dispatch(fetchRegister(requestOptions))
   }
 

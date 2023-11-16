@@ -2,8 +2,8 @@
 }
 
 .list {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   padding: 24px 16px 40px 16px;
 }
 
@@ -11,4 +11,19 @@
   font-size: 24px;
   line-height: 30px;
   font-weight: 700;
+}
+
+.ingredientEnter {
+  opacity: 0;
+}
+.ingredientEnterActive {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+.ingredientExit {
+  opacity: 1;
+}
+.ingredientExitActive {
+  opacity: 0;
+  transition: opacity 500ms ease-in;
 }

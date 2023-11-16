@@ -1,18 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import './styles/index.css'
-import './styles/reset.css'
-import App from './components/App/App'
-import { configureStore } from '@reduxjs/toolkit'
-import { rootReducer } from './services/reducers'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
-
-const store = configureStore({
-  reducer: {
-    rootReducer,
-  },
-})
+import App from './components/App/App'
+import { store } from './services/store'
+import './styles/index.css'
+import './styles/reset.css'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 

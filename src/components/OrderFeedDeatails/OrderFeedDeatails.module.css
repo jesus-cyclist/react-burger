@@ -1,0 +1,105 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: 100%;
+  margin-top: 120px;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  max-width: 620px;
+}
+
+.orderNumber {
+  font-family: 'Iceland';
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px; /* 85.714% */
+  color: var(--text-primary-light-standart-text, #f2f2f3);
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.orderTitle {
+  color: var(--text-primary-light-standart-text, #f2f2f3);
+  font-family: 'JetBrainsMono';
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 30px; /* 125% */
+  margin-bottom: 12px;
+}
+
+.orderStatus {
+  color: var(--interface-success, #0cc);
+  font-family: 'JetBrainsMono';
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px; /* 150% */
+  margin-bottom: 60px;
+}
+
+.orderStructureTitle {
+  color: var(--text-primary-light-standart-text, #f2f2f3);
+  font-family: 'JetBrainsMono';
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 30px; /* 125% */
+  margin-bottom: 24px;
+}
+
+.orderStructure {
+  max-height: 600px;
+  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  margin-bottom: 40px;
+}
+
+.orderStructure::-webkit-scrollbar {
+  width: 6px;
+  background-color: #131316;
+}
+
+.orderStructure::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #515265;
+}
+
+.orderStructure::-webkit-scrollbar-corner,
+.orderStructure::-webkit-scrollbar-butto {
+  display: none;
+}
+
+.orderData {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'JetBrainsMono';
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px; /* 150% */
+  color: #8585ad;
+}
+
+.orderCost {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Iceland';
+  color: var(--text-primary-light-standart-text, #f2f2f3);
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px; /* 85.714% */
+}

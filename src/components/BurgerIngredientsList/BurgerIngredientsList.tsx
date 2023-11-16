@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import style from './BurgerIngredientsList.module.css'
 import BurgerIngredientsSection from '../BurgerIngredientsSection/BurgerIngredientsSection'
 import { useAppDispatch } from '../../hooks/hooks'
-import { SCROLL } from '../../services/actions/activeTab'
+import { makeScroll } from '../../services/actions/activeTab'
 
 const BurgerIngredientsList = (): JSX.Element => {
   const dispatch = useAppDispatch()
@@ -26,12 +26,13 @@ const BurgerIngredientsList = (): JSX.Element => {
 
       return { bunDistance, sauceDistance, mainDistance }
     }
+    return { bunDistance: 0, sauceDistance: 0, mainDistance: 0 }
   }
 
   return (
     <ul
       className={style.list}
-      onScroll={(e) => dispatch({ type: SCROLL, distance: scrollHandler() })}
+      onScroll={(e) => dispatch(makeScroll(scrollHandler()))}
     >
       {title.map((item) => (
         <BurgerIngredientsSection key={item} title={item} />

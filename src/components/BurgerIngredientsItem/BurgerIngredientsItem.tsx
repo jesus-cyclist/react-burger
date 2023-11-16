@@ -1,17 +1,19 @@
-import React, { useEffect, useState, useMemo } from 'react'
-import style from './BurgerIngredientsItem.module.css'
-import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import { useAppSelector } from '../../hooks/hooks'
+import {
+  Counter,
+  CurrencyIcon,
+} from '@ya.praktikum/react-developer-burger-ui-components'
+import { LegacyRef, RefObject, useEffect, useState } from 'react'
 import { useDrag } from 'react-dnd'
-import { Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 import { NavLink, useLocation } from 'react-router-dom'
-import { ingredientsPath } from '../../utils/routerPath'
-import { TIngredient } from '../../utils/types'
-import { useSelector } from 'react-redux'
+import { useAppSelector } from '../../hooks/hooks'
 import {
   selectBun,
   selectFilling,
 } from '../../services/selectors/constructorSelectors'
+import { ingredientsPath } from '../../utils/routerPath'
+import { TIngredient } from '../../utils/types'
+import style from './BurgerIngredientsItem.module.css'
+import { Transition } from 'react-transition-group'
 
 type TBurgerIngredientsItemProps = {
   item: TIngredient
@@ -22,17 +24,21 @@ const BurgerIngredientsItem = (
 ): JSX.Element => {
   const [count, setCount] = useState(0)
   const { item } = props
-  const bun = useSelector(selectBun)
-  const filling = useSelector(selectFilling)
+  const bun = useAppSelector(selectBun)
+  const filling = useAppSelector(selectFilling)
   const location = useLocation()
 
   useEffect(() => {
-    const bunCount = bun.name === item.name ? 2 : 0
-    const fillingCount = filling.reduce(
-      (acc: number, ingredient: TIngredient) =>
-        ingredient.name === item.name ? (acc += 1) : (acc += 0),
-      0
-    )
+    let bunCount = 0
+    if (bun) bunCount = bun.name === item.name ? 2 : 0
+
+    let fillingCount = 0
+    if (filling)
+      fillingCount = filling.reduce(
+        (acc: number, ingredient: TIngredient) =>
+          ingredient.name === item.name ? (acc += 1) : (acc += 0),
+        0
+      )
     setCount(item.type === 'bun' ? bunCount : fillingCount)
   }, [bun, filling, item])
 
@@ -42,6 +48,7 @@ const BurgerIngredientsItem = (
   })
 
   return (
+    // <div ref={nodeRef}>
     <NavLink
       className={style.ingredient}
       to={`${ingredientsPath}/:${item._id}`}
@@ -62,6 +69,7 @@ const BurgerIngredientsItem = (
         </div>
       )}
     </NavLink>
+    // </div>
   )
 }
 

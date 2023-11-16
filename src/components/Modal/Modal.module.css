@@ -14,7 +14,7 @@
 .modal {
   width: 640px;
   padding: 60px 40px;
-  z-index: 10;
+  z-index: 20;
   position: relative;
   border-radius: 30px;
   background: #131316;

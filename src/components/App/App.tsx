@@ -1,61 +1,91 @@
-import React, { useEffect, FC } from 'react'
+import axios from 'axios'
+import Cookies from 'js-cookie'
+import { useEffect } from 'react'
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
+import Feed from '../../pages/Feed/Feed'
+import ForgotPassword from '../../pages/ForgotPassword/ForgotPassword'
 import Home from '../../pages/Home/Home'
 import Login from '../../pages/Login/Login'
-import Register from '../../pages/Register/Register'
-import ForgotPassword from '../../pages/ForgotPassword/ForgotPassword'
-import ResetPassword from '../../pages/ResetPassword/ResetPassword'
 import Profile from '../../pages/Profile/Profile'
-import AppHeader from '../AppHeader/AppHeader'
-import styles from './App.module.css'
-import ProtectedRoute from '../ProtectedRoute/ProtectedRoute'
-import Cookies from 'js-cookie'
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
-import { refreshToken } from '../../utils/token'
-import IngredientDetails from '../IngredientDetails/IngredientDetails'
+import Register from '../../pages/Register/Register'
+import ResetPassword from '../../pages/ResetPassword/ResetPassword'
+import { clearConstructor } from '../../services/actions/constructorList'
 import {
-  homePagePath,
-  loginPath,
-  registerPath,
+  connect as connectOrderFeed,
+  disconnect as disconnectOrderFeed,
+} from '../../services/actions/orderFeed'
+import { fetchIngredientsData } from '../../services/reducers/ingredients'
+import { logout, setIsAuthenticated } from '../../services/reducers/user'
+import { selectIsAuthenticated } from '../../services/selectors/userSelectors'
+import { socketPath } from '../../utils/request'
+import {
+  feed,
   forgotPasswordPath,
-  resetPasswordPath,
-  profilePath,
+  homePagePath,
   ingredientsPath,
+  loginPath,
   orderPath,
-  ordersList,
+  profileOrders,
+  profilePath,
+  registerPath,
+  resetPasswordPath,
 } from '../../utils/routerPath'
+import { accessToken, refreshToken } from '../../utils/token'
+import AppHeader from '../AppHeader/AppHeader'
+import IngredientDetails from '../IngredientDetails/IngredientDetails'
 import Modal from '../Modal/Modal'
 import OrderDetails from '../OrderDetails/OrderDetails'
-import { fetchIngredientsData } from '../../services/reducers/ingredients'
-import { fetchCheckRefreshToken } from '../../services/reducers/user'
-import { CLEAR_CONSTRUCTOR } from '../../services/actions/constructorList'
-import { useSelector } from 'react-redux'
-import { selectIsAuthenticated } from '../../services/selectors/userSelectors'
+import OrderFeedDeatails from '../OrderFeedDeatails/OrderFeedDeatails'
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute'
+import styles from './App.module.css'
 
 const App = (): JSX.Element => {
   const dispatch = useAppDispatch()
   const location = useLocation()
   const navigate = useNavigate()
   const state = location.state
-
-  const isAuthenticated = useSelector(selectIsAuthenticated)
+  const isAuthenticated = useAppSelector(selectIsAuthenticated)
 
   useEffect(() => {
-    dispatch(fetchIngredientsData())
     const token = Cookies.get(refreshToken)
     if (token && !isAuthenticated) {
-      const requestOptions = {
-        body: { token },
-      }
-      //@ts-ignore
-      dispatch(fetchCheckRefreshToken(requestOptions))
+      axios
+        .post(
+          'https://norma.nomoreparties.space/api/auth/token',
+          { token },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        )
+        .then((res) => {
+          Cookies.set(refreshToken, res.data.refreshToken, {
+            expires: 1,
+          })
+          Cookies.set(accessToken, res.data.accessToken.split(' ')[1], {
+            expires: 1,
+          })
+          dispatch(setIsAuthenticated())
+        })
+        .catch((e) => dispatch(logout()))
+    }
+  }, [isAuthenticated])
+
+  useEffect(() => {
+    dispatch(fetchIngredientsData(null))
+
+    dispatch(connectOrderFeed(socketPath))
+    return () => {
+      dispatch(disconnectOrderFeed())
     }
   }, [])
 
   const closeModalIngredients = () => navigate(-1)
   const closeModalOrder = () => {
     closeModalIngredients()
-    dispatch({ type: CLEAR_CONSTRUCTOR })
+    dispatch(clearConstructor())
   }
 
   return (
@@ -64,14 +94,23 @@ const App = (): JSX.Element => {
       <main className={styles.main}>
         <Routes
           location={
-            state?.ingredientsLocation || state?.orderLocation || location
+            state?.ingredientsLocation ||
+            state?.orderLocation ||
+            state?.orderFeed ||
+            state?.profileOrderFeed ||
+            location
           }
         >
           <Route path={homePagePath} element={<Home />} />
-          <Route path={ordersList} element={<h2>Coming soon</h2>} />
           <Route
             path={`${ingredientsPath}/:id`}
             element={<IngredientDetails />}
+          />
+          <Route path={feed} element={<Feed />} />
+          <Route path={`${feed}/:id`} element={<OrderFeedDeatails />} />
+          <Route
+            path={`${profileOrders}/:id`}
+            element={<OrderFeedDeatails />}
           />
           <Route
             path={loginPath}
@@ -113,6 +152,30 @@ const App = (): JSX.Element => {
               element={
                 <Modal closeModal={closeModalOrder}>
                   <OrderDetails />
+                </Modal>
+              }
+            />
+          </Routes>
+        )}
+        {state?.orderFeed && (
+          <Routes>
+            <Route
+              path={`${feed}/:id`}
+              element={
+                <Modal closeModal={closeModalOrder}>
+                  {<OrderFeedDeatails />}
+                </Modal>
+              }
+            />
+          </Routes>
+        )}
+        {state?.profileOrderFeed && (
+          <Routes>
+            <Route
+              path={`${profileOrders}/:id`}
+              element={
+                <Modal closeModal={closeModalOrder}>
+                  {<OrderFeedDeatails />}
                 </Modal>
               }
             />

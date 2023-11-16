@@ -1,9 +1,9 @@
-import React, { useMemo } from 'react'
-import BurgerIngredientsItem from '../BurgerIngredientsItem/BurgerIngredientsItem'
-import style from './BurgerIngredientsSection.module.css'
-import { TIngredient } from '../../utils/types'
-import { useSelector } from 'react-redux'
+import { useMemo } from 'react'
+import { useAppSelector } from '../../hooks/hooks'
 import { selectIngredients } from '../../services/selectors/ingredientsSelectors'
+import { TIngredient } from '../../utils/types'
+import BurgerIngredientsItem from '../BurgerIngredientsItem/BurgerIngredientsItem'
+import styles from './BurgerIngredientsSection.module.css'
 
 type TBurgerIngredientsSection = {
   title: string
@@ -12,7 +12,7 @@ type TBurgerIngredientsSection = {
 const BurgerIngredientsSection = (
   props: TBurgerIngredientsSection
 ): JSX.Element => {
-  const ingredients = useSelector(selectIngredients)
+  const ingredients = useAppSelector(selectIngredients)
 
   const { title } = props
 
@@ -29,12 +29,13 @@ const BurgerIngredientsSection = (
   )
 
   return (
-    <li className={style.section} id={list[title]}>
-      <h2 className={style.title}>{title}</h2>
-      <div className={style.list}>
-        {sortedData.map((item: TIngredient) => (
-          <BurgerIngredientsItem key={item._id} item={item} />
-        ))}
+    <li className={styles.section} id={list[title]}>
+      <h2 className={styles.title}>{title}</h2>
+      <div className={styles.list}>
+        {sortedData &&
+          sortedData.map((item: TIngredient) => (
+            <BurgerIngredientsItem key={item._id} item={item} />
+          ))}
       </div>
     </li>
   )

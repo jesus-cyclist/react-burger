@@ -4,7 +4,7 @@ import {
   DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import style from './BurgerConstructorItem.module.css'
-import { DELETE_FILLING } from '../../services/actions/constructorList'
+import { deleteFilling } from '../../services/actions/constructorList'
 import { useAppDispatch } from '../../hooks/hooks'
 import { useDrag, useDrop } from 'react-dnd'
 import { TIngredient } from '../../utils/types'
@@ -115,10 +115,7 @@ const BurgerConstructorItem = (props: TBurgerConstructorItem): JSX.Element => {
   const opacity = isDragging ? 0 : 1
 
   function handleClose() {
-    dispatch({
-      type: DELETE_FILLING,
-      id,
-    })
+    dispatch(deleteFilling(id))
   }
   dragRef(dropTarget(refFilling))
 

@@ -1,4 +1,37 @@
 .wrapper {
   padding-top: 120px;
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(320px, 320px) 1fr;
+  font-family: 'JetBrainsMono';
+  color: #f2f2f3;
+  justify-items: start;
+}
+
+.wrapper a {
+  font-family: 'JetBrainsMono';
+  color: #f2f2f3;
+}
+
+.orders {
+  padding: 40px 0;
+  max-height: 75vh;
+  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.orders::-webkit-scrollbar {
+  width: 6px;
+  background-color: #131316;
+}
+
+.orders::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #515265;
+}
+
+.orders::-webkit-scrollbar-corner,
+.orders::-webkit-scrollbar-butto {
+  display: none;
 }

@@ -2,6 +2,7 @@ import Cookies from 'js-cookie'
 import { refreshToken, accessToken } from '../../utils/token'
 import { createSlice } from '@reduxjs/toolkit'
 import { createAsyncAction } from '../../utils/request'
+import { truncate } from 'fs/promises'
 
 export const fetchForgotPassword = createAsyncAction({
   prefix: 'user/password-forgot',
@@ -23,6 +24,7 @@ export const fetchLogin = createAsyncAction({
   route: 'auth/login',
   method: 'POST',
 })
+
 export const fetchUserData = createAsyncAction({
   prefix: 'user/user-data',
   route: 'auth/user',
@@ -32,6 +34,7 @@ export const fetchCheckRefreshToken = createAsyncAction({
   route: 'auth/token',
   method: 'POST',
 })
+
 export const fetchUpdateUserData = createAsyncAction({
   prefix: 'user/udpate-user-data',
   route: 'auth/user',
@@ -85,6 +88,10 @@ const userSlice = createSlice({
       Cookies.remove(refreshToken)
       Cookies.remove(accessToken)
     },
+
+    setIsAuthenticated: (state) => {
+      state.isAuthenticated = true
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -106,7 +113,7 @@ const userSlice = createSlice({
       .addCase(fetchForgotPassword.rejected, (state, action) => {
         state.passwordForgot = {
           ...state.passwordForgot,
-          error: action.error.message,
+          error: true,
           loading: false,
         }
       })
@@ -125,7 +132,7 @@ const userSlice = createSlice({
       .addCase(fetchResetPassword.rejected, (state, action) => {
         state.passwordReset = {
           ...state.passwordReset,
-          error: action.error.message,
+          error: true,
           loading: false,
         }
       })
@@ -155,7 +162,7 @@ const userSlice = createSlice({
       .addCase(fetchRegister.rejected, (state, action) => {
         state.register = {
           ...state.register,
-          error: action.error.message,
+          error: true,
           loading: false,
         }
       })
@@ -182,7 +189,7 @@ const userSlice = createSlice({
       .addCase(fetchLogin.rejected, (state, action) => {
         state.login = {
           ...state.login,
-          error: action.error.message,
+          error: true,
           loading: false,
         }
       })
@@ -200,7 +207,7 @@ const userSlice = createSlice({
       .addCase(fetchUserData.rejected, (state, action) => {
         state.userData = {
           ...state.userData,
-          error: action.error.message,
+          error: true,
           loading: false,
         }
       })
@@ -216,6 +223,8 @@ const userSlice = createSlice({
         }
         state.isAuthenticated = true
 
+        console.log('action.payload', action)
+
         Cookies.set(refreshToken, action.payload.refreshToken, {
           expires: 1,
         })
@@ -226,7 +235,7 @@ const userSlice = createSlice({
       .addCase(fetchCheckRefreshToken.rejected, (state, action) => {
         state.checkRefreshToken = {
           ...state.checkRefreshToken,
-          error: action.error.message,
+          error: true,
           loading: false,
         }
       })
@@ -244,12 +253,12 @@ const userSlice = createSlice({
       .addCase(fetchUpdateUserData.rejected, (state, action) => {
         state.updateUserData = {
           ...state.updateUserData,
-          error: action.error.message,
+          error: true,
           loading: false,
         }
       })
   },
 })
 
-export const { logout } = userSlice.actions
+export const { logout, setIsAuthenticated } = userSlice.actions
 export default userSlice.reducer

@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { createAsyncAction } from '../../utils/request'
+import { TOrder } from '../../utils/types'
 
 export const fetchOrderData = createAsyncAction({
   prefix: 'order',
@@ -7,13 +8,27 @@ export const fetchOrderData = createAsyncAction({
   method: 'POST',
 })
 
+type TResponseData = {
+  name: string
+  order: TOrder
+  success: boolean
+}
+
+type TInitialState = {
+  data: TResponseData | null
+  loading: boolean
+  error: boolean
+}
+
+const initialState: TInitialState = {
+  data: null,
+  loading: false,
+  error: false,
+}
+
 const orderSlice = createSlice({
   name: 'order',
-  initialState: {
-    data: null,
-    loading: false,
-    error: false,
-  },
+  initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
@@ -28,7 +43,7 @@ const orderSlice = createSlice({
       })
       .addCase(fetchOrderData.rejected, (state, action) => {
         state.loading = false
-        state.error = action.error.message
+        state.error = true
       })
   },
 })

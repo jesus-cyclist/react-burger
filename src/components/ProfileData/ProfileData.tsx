@@ -4,8 +4,7 @@ import {
   Button,
   Input,
 } from '@ya.praktikum/react-developer-burger-ui-components'
-import { useAppSelector } from '../../hooks/hooks'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
 import Cookies from 'js-cookie'
 import { accessToken } from '../../utils/token'
 import { useInput } from '../../hooks/useInput'
@@ -14,10 +13,14 @@ import {
   fetchUserData,
   fetchUpdateUserData,
 } from '../../services/reducers/user'
-import { TUserData } from '../../utils/types'
 import { selectResponse } from '../../services/selectors/userSelectors'
 
 type TInputType = null | HTMLInputElement
+
+type TResponse = {
+  email: string
+  name: string
+}
 
 const ProfileData = (): JSX.Element => {
   const { values, handleChange, setValues } = useInput({
@@ -32,16 +35,16 @@ const ProfileData = (): JSX.Element => {
 
   const [editInput, setEditInput] = useState<string | null>(null)
 
-  const response = useSelector(selectResponse)
+  const response = useAppSelector<TResponse | null>(selectResponse)
 
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     const token = Cookies.get(accessToken)
     const requestOptions = {
       token: { accessToken: token },
     }
-    //@ts-ignore
+
     dispatch(fetchUserData(requestOptions))
   }, [])
 
@@ -74,24 +77,25 @@ const ProfileData = (): JSX.Element => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    if (response) {
+      if (response.name !== values[NAME] || response.email !== values[EMAIL]) {
+        const token = Cookies.get(accessToken)
+        const requestOptions = {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+          },
+          body: JSON.stringify({
+            email: values[EMAIL],
+            name: values[NAME],
+          }),
+        }
 
-    if (response.name !== values[NAME] || response.email !== values[EMAIL]) {
-      const token = Cookies.get(accessToken)
-      const requestOptions = {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token,
-        },
-        body: JSON.stringify({
-          email: values[EMAIL],
-          name: values[NAME],
-        }),
+        dispatch(fetchUpdateUserData(requestOptions))
+      } else {
+        alert('ничего не поменял')
       }
-      //@ts-ignore
-      dispatch(fetchUpdateUserData(requestOptions))
-    } else {
-      alert('ничего не поменял')
     }
   }
 

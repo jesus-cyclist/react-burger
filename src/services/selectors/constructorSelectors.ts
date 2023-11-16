@@ -1,6 +1,7 @@
-//@ts-ignore
-export const selectFilling = (state) =>
+import { RootState } from '../store'
+
+export const selectFilling = (state: RootState) =>
   state.rootReducer.constructorList.filling
 
-//@ts-ignore
-export const selectBun = (state) => state.rootReducer.constructorList.bun
+export const selectBun = (state: RootState) =>
+  state.rootReducer.constructorList.bun

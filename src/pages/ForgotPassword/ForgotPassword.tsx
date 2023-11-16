@@ -5,12 +5,13 @@ import {
   Input,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import {} from 'react-redux'
 import { resetPasswordPath, loginPath } from '../../utils/routerPath'
 import { useInput } from '../../hooks/useInput'
 import { EMAIL } from '../../constants/inputType/inputType'
 import { fetchForgotPassword } from '../../services/reducers/user'
 import { TUserData } from '../../utils/types'
+import { useAppDispatch } from '../../hooks/hooks'
 
 function validateEmail(mail: string) {
   return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)
@@ -23,7 +24,7 @@ const ForgotPassword = () => {
     [EMAIL]: 'soulrussianbear@gmail.com',
   })
   const location = useLocation()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
   const handleSumbit = async (e: FormEvent<HTMLFormElement>) => {
@@ -34,7 +35,6 @@ const ForgotPassword = () => {
     }
 
     validateEmail(values[EMAIL]) &&
-      //@ts-ignore
       dispatch(fetchForgotPassword(requestOptions))
     navigate(resetPasswordPath)
   }

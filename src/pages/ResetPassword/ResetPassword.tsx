@@ -5,7 +5,7 @@ import {
   Input,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Link, Navigate, useLocation } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import {  } from 'react-redux'
 import { forgotPasswordPath } from '../../utils/routerPath'
 import { useInput } from '../../hooks/useInput'
 import {
@@ -14,6 +14,7 @@ import {
 } from '../../constants/inputType/inputType'
 import { fetchResetPassword } from '../../services/reducers/user'
 import { TInputType } from '../../utils/types'
+import { useAppDispatch } from '../../hooks/hooks'
 
 function validateInput(arrayOfValue: string[] | []) {
   const nonValidate = arrayOfValue.filter((item) => item.length === 0)
@@ -30,7 +31,7 @@ const ResetPassword = (): JSX.Element => {
 
   const location = useLocation()
 
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const from = localStorage.getItem('from')
   from ? <Navigate to={forgotPasswordPath} /> : localStorage.removeItem('from')
@@ -45,7 +46,6 @@ const ResetPassword = (): JSX.Element => {
     }
 
     validateInput([values[PASSWORD], values[CONFIRMATION_CODE]]) &&
-      //@ts-ignore
       dispatch(fetchResetPassword(requestOptions))
   }
 
