@@ -13,13 +13,19 @@ export const socketPath = 'wss://norma.nomoreparties.space/orders/all'
 
 export const socketPathProfile = 'wss://norma.nomoreparties.space/orders'
 
-export const allOrdersPath = 'https://norma.nomoreparties.space/api/orders/'
+export const allOrdersPath = 'https://norma.nomoreparties.space/api/ingredients'
 
-const checkResponse: TCheckResponse = (res) =>
-  res.ok ? res.json() : Promise.reject(`Error ${res.status}`)
+const checkResponse: TCheckResponse = (res) => {
+  // console.log(res)
 
-const checkSuccess: TCheckSuccess = (res: any) =>
-  res && res.success ? res : Promise.reject(`Answer on success ${res}`)
+  return res.ok ? res.json() : Promise.reject(`Error ${res.status}`)
+}
+
+const checkSuccess: TCheckSuccess = (res: any) => {
+  console.log(res)
+
+  return res && res.success ? res : Promise.reject(`Answer on success ${res}`)
+}
 
 export const createAsyncAction = ({
   prefix,
@@ -59,5 +65,5 @@ export const request = (
   return fetch(url, requestOptions)
     .then(checkResponse)
     .then(checkSuccess)
-    .catch((error) => console.log(error))
+    .catch((error) => console.log(`Error ${error.status}`))
 }

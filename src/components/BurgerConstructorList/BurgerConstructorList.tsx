@@ -62,7 +62,7 @@ const BurgerConstructorList = () => {
   }, [bun, filling])
 
   return (
-    <div className={style.list}>
+    <div className={style.list} data-test-id="burger-constructor-list">
       {totalAmount > 0 && (
         <>
           {bun && bun.price && (
@@ -120,7 +120,9 @@ const BurgerConstructorList = () => {
 
           <div className={style.order}>
             <div className={style.total}>
-              <span className={style.totalCost}>{totalAmount}</span>
+              <span className={style.totalCost} data-test-id="total-price">
+                {totalAmount}
+              </span>
               <CurrencyIcon type="primary" />
             </div>
             <NavLink

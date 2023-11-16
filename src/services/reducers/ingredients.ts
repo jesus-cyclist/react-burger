@@ -35,6 +35,8 @@ const ingredientsSlice = createSlice({
         state.ingredients = null
       })
       .addCase(fetchIngredientsData.fulfilled, (state, action) => {
+        console.log(action)
+
         const ingredients = new TSMap<string, TIngredient>()
 
         action.payload.data.forEach(
@@ -47,7 +49,7 @@ const ingredientsSlice = createSlice({
         state.data = action.payload.data
         state.loading = false
       })
-      .addCase(fetchIngredientsData.rejected, (state, action) => {
+      .addCase(fetchIngredientsData.rejected, (state) => {
         state.loading = false
         state.error = true
       })

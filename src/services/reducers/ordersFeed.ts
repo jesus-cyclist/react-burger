@@ -33,7 +33,7 @@ const orderFeedSlice = createSlice({
       })
       .addCase(wsOpen, (state) => {
         state.status = WebsocketStatus.ONLINE
-        state.error = ''
+        state.error = 'none'
       })
       .addCase(wsClose, (state) => {
         state.status = WebsocketStatus.OFFLINE

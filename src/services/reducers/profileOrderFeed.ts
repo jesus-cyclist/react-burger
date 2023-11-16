@@ -34,7 +34,7 @@ const profileOrdersFeedSlice = createSlice({
       })
       .addCase(wsOpenProfile, (state) => {
         state.status = WebsocketStatus.ONLINE
-        state.error = ''
+        state.error = 'none'
       })
       .addCase(wsCloseProfile, (state) => {
         state.status = WebsocketStatus.OFFLINE

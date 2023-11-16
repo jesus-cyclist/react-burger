@@ -25,6 +25,7 @@ export const constructorReducer = createReducer(initialState, (builder) => {
     })
     .addCase(addFilling, (state, action) => {
       const key = uniqid()
+
       const modifiedFilling = { ...action.payload, key }
 
       if (!state.filling) {

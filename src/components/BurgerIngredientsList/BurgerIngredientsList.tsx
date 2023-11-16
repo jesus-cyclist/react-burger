@@ -33,6 +33,7 @@ const BurgerIngredientsList = (): JSX.Element => {
     <ul
       className={style.list}
       onScroll={(e) => dispatch(makeScroll(scrollHandler()))}
+      data-test-id="burger-ingredients-list"
     >
       {title.map((item) => (
         <BurgerIngredientsSection key={item} title={item} />
