@@ -128,6 +128,7 @@ const BurgerConstructorList = () => {
             <NavLink
               to={isAuthenticated ? orderPath : loginPath}
               state={isAuthenticated && { orderLocation: location }}
+              data-test-id={'create-order-button'}
             >
               <Button htmlType="button" type="primary" size="large">
                 Оформить заказ
