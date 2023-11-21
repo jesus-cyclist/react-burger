@@ -16,13 +16,11 @@ export const socketPathProfile = 'wss://norma.nomoreparties.space/orders'
 export const allOrdersPath = 'https://norma.nomoreparties.space/api/ingredients'
 
 const checkResponse: TCheckResponse = (res) => {
-  // console.log(res)
-
   return res.ok ? res.json() : Promise.reject(`Error ${res.status}`)
 }
 
 const checkSuccess: TCheckSuccess = (res: any) => {
-  console.log(res)
+  //console.log(res)
 
   return res && res.success ? res : Promise.reject(`Answer on success ${res}`)
 }

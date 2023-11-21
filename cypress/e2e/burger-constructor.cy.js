@@ -1,6 +1,6 @@
 describe('test burger constructor', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:3001/')
+    cy.visit('http://localhost:3002/')
     cy.intercept('GET', 'https://norma.nomoreparties.space/api/ingredients', {
       fixture: 'ingredients.json',
     })
