@@ -1,17 +1,16 @@
-import React, { FormEvent } from 'react'
-import styles from './ForgotPassword.module.css'
 import {
   Button,
   Input,
 } from '@ya.praktikum/react-developer-burger-ui-components'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { FormEvent } from 'react'
 import {} from 'react-redux'
-import { resetPasswordPath, loginPath } from '../../utils/routerPath'
-import { useInput } from '../../hooks/useInput'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { EMAIL } from '../../constants/inputType/inputType'
-import { fetchForgotPassword } from '../../services/reducers/user'
-import { TUserData } from '../../utils/types'
 import { useAppDispatch } from '../../hooks/hooks'
+import { useInput } from '../../hooks/useInput'
+import { fetchForgotPassword } from '../../services/reducers/user'
+import { loginPath, resetPasswordPath } from '../../utils/routerPath'
+import styles from './ForgotPassword.module.css'
 
 function validateEmail(mail: string) {
   return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)

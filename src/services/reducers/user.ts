@@ -1,8 +1,7 @@
-import Cookies from 'js-cookie'
-import { refreshToken, accessToken } from '../../utils/token'
 import { createSlice } from '@reduxjs/toolkit'
+import Cookies from 'js-cookie'
 import { createAsyncAction } from '../../utils/request'
-import { truncate } from 'fs/promises'
+import { accessToken, refreshToken } from '../../utils/token'
 
 export const fetchForgotPassword = createAsyncAction({
   prefix: 'user/password-forgot',
@@ -204,7 +203,7 @@ const userSlice = createSlice({
           loading: false,
         }
       })
-      .addCase(fetchUserData.rejected, (state, action) => {
+      .addCase(fetchUserData.rejected, (state) => {
         state.userData = {
           ...state.userData,
           error: true,

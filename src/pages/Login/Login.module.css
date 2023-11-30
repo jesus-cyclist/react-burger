@@ -1,7 +1,7 @@
 .wrapper {
   display: flex;
   justify-content: center;
-  align-items: start;
+  align-items: flex-start;
   font-family: 'JetBrainsMono', Arial, sans-serif;
   padding-top: 180px;
 }

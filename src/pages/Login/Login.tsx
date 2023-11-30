@@ -64,7 +64,7 @@ const Login = (): JSX.Element => {
               name={PASSWORD}
             />
           </div>
-          <div className={styles.buttonWrapper}>
+          <div className={styles.buttonWrapper} data-test-id={'login-button'}>
             <Button htmlType="submit" type="primary" size="medium">
               Нажми на меня
             </Button>

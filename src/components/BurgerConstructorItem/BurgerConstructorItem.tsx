@@ -132,10 +132,12 @@ const BurgerConstructorItem = (props: TBurgerConstructorItem): JSX.Element => {
       className={last ? style.item : style.item + ' ' + style.itemLast}
       ref={item.type !== 'bun' ? refFilling : refBun}
       style={{ opacity }}
+      data-test-id={'constructor-ingredients'}
     >
       <div className={getClassName(dragIcon)}>
         <DragIcon type="primary" />
       </div>
+
       <ConstructorElement
         text={text}
         price={item.price}

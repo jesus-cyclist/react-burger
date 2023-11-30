@@ -49,7 +49,10 @@ const OrderDetails = (): JSX.Element => {
           <div className={style.order}>
             <div className={style.main}>
               <div className={style.orderNumber}>
-                <p className="text text_type_digits-large">
+                <p
+                  className="text text_type_digits-large"
+                  data-test-id={'order-number'}
+                >
                   {data.order.number}
                 </p>
               </div>

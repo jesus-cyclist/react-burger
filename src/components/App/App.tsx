@@ -11,14 +11,9 @@ import Profile from '../../pages/Profile/Profile'
 import Register from '../../pages/Register/Register'
 import ResetPassword from '../../pages/ResetPassword/ResetPassword'
 import { clearConstructor } from '../../services/actions/constructorList'
-import {
-  connect as connectOrderFeed,
-  disconnect as disconnectOrderFeed,
-} from '../../services/actions/orderFeed'
 import { fetchIngredientsData } from '../../services/reducers/ingredients'
 import { logout, setIsAuthenticated } from '../../services/reducers/user'
 import { selectIsAuthenticated } from '../../services/selectors/userSelectors'
-import { socketPath } from '../../utils/request'
 import {
   feed,
   forgotPasswordPath,
@@ -75,11 +70,6 @@ const App = (): JSX.Element => {
 
   useEffect(() => {
     dispatch(fetchIngredientsData(null))
-
-    dispatch(connectOrderFeed(socketPath))
-    return () => {
-      dispatch(disconnectOrderFeed())
-    }
   }, [])
 
   const closeModalIngredients = () => navigate(-1)

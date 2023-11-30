@@ -2,7 +2,7 @@ import {
   Counter,
   CurrencyIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components'
-import { LegacyRef, RefObject, useEffect, useState } from 'react'
+import { LegacyRef, RefObject, useEffect, useRef, useState } from 'react'
 import { useDrag } from 'react-dnd'
 import { NavLink, useLocation } from 'react-router-dom'
 import { useAppSelector } from '../../hooks/hooks'
@@ -12,7 +12,7 @@ import {
 } from '../../services/selectors/constructorSelectors'
 import { ingredientsPath } from '../../utils/routerPath'
 import { TIngredient } from '../../utils/types'
-import style from './BurgerIngredientsItem.module.css'
+import styles from './BurgerIngredientsItem.module.css'
 import { Transition } from 'react-transition-group'
 
 type TBurgerIngredientsItemProps = {
@@ -22,11 +22,15 @@ type TBurgerIngredientsItemProps = {
 const BurgerIngredientsItem = (
   props: TBurgerIngredientsItemProps
 ): JSX.Element => {
+  const [isComponentMouned, setIsComponentMounted] = useState(false)
   const [count, setCount] = useState(0)
   const { item } = props
   const bun = useAppSelector(selectBun)
   const filling = useAppSelector(selectFilling)
   const location = useLocation()
+  const nodeRef = useRef(null)
+
+  useEffect(() => setIsComponentMounted(true), [])
 
   useEffect(() => {
     let bunCount = 0
@@ -48,28 +52,36 @@ const BurgerIngredientsItem = (
   })
 
   return (
-    // <div ref={nodeRef}>
-    <NavLink
-      className={style.ingredient}
-      to={`${ingredientsPath}/:${item._id}`}
-      state={{ ingredientsLocation: location }}
-      ref={dragRef}
-    >
-      <div className={style.logoBox}>
-        <img className={style.logo} src={item.image} alt={item.name} />
-      </div>
-      <div className={style.priceBox}>
-        <span className={style.price}>{item.price}</span>
-        <CurrencyIcon type="primary" />
-      </div>
-      <h3 className={style.title}>{item.name}</h3>
-      {count > 0 && (
-        <div className={style.counter}>
-          <Counter count={count} size="default" />
+    <Transition nodeRef={nodeRef} in={isComponentMouned} timeout={500}>
+      {(state) => (
+        <div
+          ref={nodeRef}
+          className={styles[state]}
+          data-test-id={'burger-ingredient'}
+        >
+          <NavLink
+            className={`${styles.ingredient}`}
+            to={`${ingredientsPath}/:${item._id}`}
+            state={{ ingredientsLocation: location }}
+            ref={dragRef}
+          >
+            <div className={styles.logoBox}>
+              <img className={styles.logo} src={item.image} alt={item.name} />
+            </div>
+            <div className={styles.priceBox}>
+              <span className={styles.price}>{item.price}</span>
+              <CurrencyIcon type="primary" />
+            </div>
+            <h3 className={styles.title}>{item.name}</h3>
+            {count > 0 && (
+              <div className={styles.counter}>
+                <Counter count={count} size="default" />
+              </div>
+            )}
+          </NavLink>
         </div>
       )}
-    </NavLink>
-    // </div>
+    </Transition>
   )
 }
 

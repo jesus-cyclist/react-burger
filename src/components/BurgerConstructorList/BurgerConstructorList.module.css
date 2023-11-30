@@ -3,6 +3,7 @@
   flex-direction: column;
   gap: 10px;
   padding-top: 100px;
+  height: 100%;
 }
 
 .ingredients {
@@ -28,7 +29,7 @@
 
 .order {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   align-items: center;
   padding: 40px 16px 0 0;
 }

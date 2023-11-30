@@ -21,10 +21,10 @@ export const activeTabReducer = createReducer(initialState, (builder) => {
       state.current = 'bun'
     })
     .addCase(makeSauceActive, (state) => {
-      state.current = 'main'
+      state.current = 'sauce'
     })
     .addCase(makeMainActive, (state) => {
-      state.current = 'sauce'
+      state.current = 'main'
     })
     .addCase(makeScroll, (state, action) => {
       const { bunDistance, sauceDistance, mainDistance } = action.payload
