@@ -1,6 +1,6 @@
 ### stellar-burger
 
-### [Visit wake-up-neo](https://wake-up-neo.ru/login) 🌐
+### [Visit stellar-burger](https://jesus-cyclist.github.io/react-burger/) 🌐
 
 [![React](https://img.shields.io/badge/React-17.0.2-blue?style=flat-square&logo=react)](https://reactjs.org/)
 [![Redux](https://img.shields.io/badge/Redux-State%20Management-purple?style=flat-square&logo=redux)](https://redux.js.org/)
