@@ -6,9 +6,7 @@ import BurgerIngredientsList from '../BurgerIngredientsList/BurgerIngredientsLis
 const BurgerIngredients = (): JSX.Element => {
   return (
     <div className={style.column}>
-      <div className={style.title}>
-        <h2>Соберите бургер</h2>
-      </div>
+      <h2 className={style.title}>Соберите бургер</h2>
       <nav className={style.nav}>
         <BurgerIngredientsNav />
         <BurgerIngredientsList />

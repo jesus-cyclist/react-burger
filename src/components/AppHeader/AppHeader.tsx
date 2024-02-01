@@ -90,11 +90,6 @@ const AppHeader = (): JSX.Element => {
             >
               {'Личный кабинет'}
             </NavLink>
-            {isAuthenticated ? (
-              <span>Вы авторизированы</span>
-            ) : (
-              <span>Вы вышли</span>
-            )}
           </div>
         </nav>
       </div>
