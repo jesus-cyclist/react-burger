@@ -1,10 +1,9 @@
-import React, { FC } from 'react'
-import style from './BurgerConstructor.module.css'
-import BurgerConstructorList from '../BurgerConstructorList/BurgerConstructorList'
 import { useDrop } from 'react-dnd'
 import { useAppDispatch } from '../../hooks/hooks'
 import { addBuh, addFilling } from '../../services/actions/constructorList'
 import { TIngredient } from '../../utils/types'
+import BurgerConstructorList from '../BurgerConstructorList/BurgerConstructorList'
+import style from './BurgerConstructor.module.css'
 
 const BurgerConstructor = (): JSX.Element => {
   const dispatch = useAppDispatch()

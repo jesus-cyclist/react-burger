@@ -1,8 +1,8 @@
-import React, { useEffect, FC, ReactNode, SyntheticEvent } from 'react'
-import style from './Modal.module.css'
-import ModalOverlay from '../ModalOverlay/ModalOverlay'
-import { createPortal } from 'react-dom'
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import { ReactNode, useEffect } from 'react'
+import { createPortal } from 'react-dom'
+import ModalOverlay from '../ModalOverlay/ModalOverlay'
+import style from './Modal.module.css'
 
 const reactModal = document.querySelector('#react-modals')
 

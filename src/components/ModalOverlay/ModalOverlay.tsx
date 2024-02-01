@@ -1,4 +1,3 @@
-import React from 'react'
 import style from './ModalOverlay.module.css'
 
 type TModalOverlay = {

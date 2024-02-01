@@ -1,8 +1,7 @@
-import React, { FC } from 'react'
-import style from './BurgerIngredientsList.module.css'
-import BurgerIngredientsSection from '../BurgerIngredientsSection/BurgerIngredientsSection'
 import { useAppDispatch } from '../../hooks/hooks'
 import { makeScroll } from '../../services/actions/activeTab'
+import BurgerIngredientsSection from '../BurgerIngredientsSection/BurgerIngredientsSection'
+import style from './BurgerIngredientsList.module.css'
 
 const BurgerIngredientsList = (): JSX.Element => {
   const dispatch = useAppDispatch()
@@ -33,7 +32,7 @@ const BurgerIngredientsList = (): JSX.Element => {
     <ul
       className={style.list}
       onScroll={(e) => dispatch(makeScroll(scrollHandler()))}
-      data-test-id="burger-ingredients-list"
+      data-test-id='burger-ingredients-list'
     >
       {title.map((item) => (
         <BurgerIngredientsSection key={item} title={item} />

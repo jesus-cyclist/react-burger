@@ -43,9 +43,9 @@ const BurgerIngredientsNav = (): JSX.Element => {
 
   return (
     <div className={styles.menu} id={'tabs'}>
-      <a className="link" href="#bun">
+      <a className='link' href='#bun'>
         <Tab
-          value="bun"
+          value='bun'
           active={activeTab === 'bun'}
           onClick={() => dispatch(makeBunActive())}
         >
@@ -53,9 +53,9 @@ const BurgerIngredientsNav = (): JSX.Element => {
         </Tab>
       </a>
 
-      <a className="link" href="#sauce">
+      <a className='link' href='#sauce'>
         <Tab
-          value="sauce"
+          value='sauce'
           active={activeTab === 'sauce'}
           onClick={() => dispatch(makeMainActive())}
         >
@@ -63,9 +63,9 @@ const BurgerIngredientsNav = (): JSX.Element => {
         </Tab>
       </a>
 
-      <a className="link" href="#main">
+      <a className='link' href='#main'>
         <Tab
-          value="main"
+          value='main'
           active={activeTab === 'main'}
           onClick={() => dispatch(makeSauceActive())}
         >

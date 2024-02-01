@@ -2,9 +2,10 @@ import {
   Counter,
   CurrencyIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components'
-import { LegacyRef, RefObject, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDrag } from 'react-dnd'
 import { NavLink, useLocation } from 'react-router-dom'
+import { Transition } from 'react-transition-group'
 import { useAppSelector } from '../../hooks/hooks'
 import {
   selectBun,
@@ -13,7 +14,6 @@ import {
 import { ingredientsPath } from '../../utils/routerPath'
 import { TIngredient } from '../../utils/types'
 import styles from './BurgerIngredientsItem.module.css'
-import { Transition } from 'react-transition-group'
 
 type TBurgerIngredientsItemProps = {
   item: TIngredient
@@ -70,12 +70,12 @@ const BurgerIngredientsItem = (
             </div>
             <div className={styles.priceBox}>
               <span className={styles.price}>{item.price}</span>
-              <CurrencyIcon type="primary" />
+              <CurrencyIcon type='primary' />
             </div>
             <h3 className={styles.title}>{item.name}</h3>
             {count > 0 && (
               <div className={styles.counter}>
-                <Counter count={count} size="default" />
+                <Counter count={count} size='default' />
               </div>
             )}
           </NavLink>

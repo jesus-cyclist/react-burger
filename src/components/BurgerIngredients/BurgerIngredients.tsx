@@ -1,7 +1,6 @@
-import React, { FC } from 'react'
-import style from './BurgerIngredients.module.css'
-import BurgerIngredientsNav from '../BurgerIngredientsNav/BurgerIngredientsNav'
 import BurgerIngredientsList from '../BurgerIngredientsList/BurgerIngredientsList'
+import BurgerIngredientsNav from '../BurgerIngredientsNav/BurgerIngredientsNav'
+import style from './BurgerIngredients.module.css'
 
 const BurgerIngredients = (): JSX.Element => {
   return (

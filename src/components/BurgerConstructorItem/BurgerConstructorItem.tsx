@@ -1,14 +1,14 @@
-import React, { useRef, FC } from 'react'
 import {
   ConstructorElement,
   DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components'
-import style from './BurgerConstructorItem.module.css'
-import { deleteFilling } from '../../services/actions/constructorList'
-import { useAppDispatch } from '../../hooks/hooks'
-import { useDrag, useDrop } from 'react-dnd'
-import { TIngredient } from '../../utils/types'
 import { Identifier } from 'dnd-core'
+import { useRef } from 'react'
+import { useDrag, useDrop } from 'react-dnd'
+import { useAppDispatch } from '../../hooks/hooks'
+import { deleteFilling } from '../../services/actions/constructorList'
+import { TIngredient } from '../../utils/types'
+import style from './BurgerConstructorItem.module.css'
 
 type TBurgerConstructorItem = {
   id: string
@@ -135,7 +135,7 @@ const BurgerConstructorItem = (props: TBurgerConstructorItem): JSX.Element => {
       data-test-id={'constructor-ingredients'}
     >
       <div className={getClassName(dragIcon)}>
-        <DragIcon type="primary" />
+        <DragIcon type='primary' />
       </div>
 
       <ConstructorElement
