@@ -1,25 +1,11 @@
-# Stellar Burgers
+### stellar-burger
 
-Учебный проект на курсе Яндекс.Практикума React-разработчик. Написан на TypeScript. Инициализирован с помощью CRA.
+### [Visit wake-up-neo](https://wake-up-neo.ru/login) 🌐
 
-https://stellar-burger.nomoredomainsmonster.ru/
-
-## Запуск
-
-`npm run start` — сборка и запуск локального сервера для разработки на порту 3000
-
-## Сборка
-
-`npm run build`
-
-## Полученные навыки
-
-- TypeScript
-- CSS Modules
-- библиотека redux-toolkit
-- библиотека react-dnd
-- библиотека uniqid
-- Redux DevTools
-- библиотека react-router-dom
-- библиотека react-hook-form
-- инструменты тестирования jest, cypress
+[![React](https://img.shields.io/badge/React-17.0.2-blue?style=flat-square&logo=react)](https://reactjs.org/)
+[![Redux](https://img.shields.io/badge/Redux-State%20Management-purple?style=flat-square&logo=redux)](https://redux.js.org/)
+[![WebSocket](https://img.shields.io/badge/WebSocket-Real--Time%20Communication-green?style=flat-square&logo=websocket)](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket)
+[![React DnD](https://img.shields.io/badge/React%20DnD-Drag%20and%20Drop-orange?style=flat-square&logo=react)](https://react-dnd.github.io/react-dnd/)
+[![React Router DOM](https://img.shields.io/badge/React%20Router%20DOM-Navigation-blue?style=flat-square&logo=react-router)](https://reactrouter.com/)
+[![Jest](https://img.shields.io/badge/Jest-Testing-red?style=flat-square&logo=jest)](https://jestjs.io/)
+[![Cypress](https://img.shields.io/badge/Cypress-End%20to%20End%20Testing-brightgreen?style=flat-square&logo=cypress)](https://www.cypress.io/)
